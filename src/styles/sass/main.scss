@@ -1,0 +1,22 @@
+
+@import 'variables/fonts';
+@import 'variables/sizes';
+@import 'variables/colors';
+@import 'modules/texts';
+@import 'modules/buttons';
+@import 'modules/pages';
+@import 'modules/navbar';
+
+
+
+html {
+  box-sizing: border-box;
+}
+body {
+  font-family: $primaryFont;
+  margin: 0;
+  padding: 0;
+  background-color: $color-primario;
+}
+
+

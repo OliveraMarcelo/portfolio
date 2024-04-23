@@ -1,0 +1,42 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    margin: 5rem 7rem 1rem 7rem;
+}
+
+.presentation-box-photo {
+    display: flex;
+    flex-direction: row;
+    gap: 200px;
+}
+.presentation {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    gap: 20px;
+}
+.presentation {
+    opacity: 0;
+    transition: opacity 0.5s ease; 
+}
+.photo {
+    opacity: 0; 
+    transition: opacity 0.5s ease; 
+}
+
+.presentation.loaded {
+    opacity: 1; 
+}
+.photo.loaded {
+    opacity: 1; 
+}
+.box-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin: 20px 0 20px 0;
+}
+.photo {
+    border-radius: 100%;
+    width: 350px;
+}

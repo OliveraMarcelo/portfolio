@@ -1,0 +1,41 @@
+
+@mixin boton-base($fondo, $texto) {
+  background-color: $fondo;
+  color: $texto;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: inline-block;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 150px;
+  &:hover {
+    background-color: lighten($fondo, 10%);
+  }
+}
+
+@mixin boton-naranja {
+  @include boton-base($color-terciario, $color-primario);
+
+}
+
+@mixin boton-negro {
+  @include boton-base($color-secundario, $color-primario);
+
+  &:hover {
+    background-color: $color-primario;
+    color: $color-secundario;
+    //border: 1px solid black todo : poner border
+  }
+
+}
+
+// Ejemplo de uso:
+.boton-primario {
+  @include boton-naranja;
+}
+
+.boton-secundario {
+  @include boton-negro;
+}

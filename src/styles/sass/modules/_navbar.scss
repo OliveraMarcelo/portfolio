@@ -1,0 +1,30 @@
+nav {
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight:600;
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+a:hover {
+    color: $color-terciario;
+}
+
+.active {
+    color: $color-terciario;
+}

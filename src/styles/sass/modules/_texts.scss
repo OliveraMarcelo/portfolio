@@ -1,0 +1,35 @@
+.title{
+    font-size: 90px;
+    align-content: center;
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    color :$color-secundario;
+    line-height:1em;
+}
+.title span.orange-text{
+    font-size: 90px;
+    align-content: center;
+    margin: 0;
+    padding: 0;
+    color: $color-terciario;
+    font-weight: 700;
+    line-height:1em;
+}
+.section-title span.orange-text{
+    color: $color-terciario;
+}
+.subtitle{
+    font-size: 24px;
+    font-weight: 400;
+    align-content: center;
+}
+
+.section-title{
+    font-size: 56px;
+    font-weight: 700;
+
+}
+.projects-title{
+
+}
