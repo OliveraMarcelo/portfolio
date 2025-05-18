@@ -7,7 +7,7 @@
 .presentation-box-photo {
     display: flex;
     flex-direction: row;
-    gap: 200px;
+    justify-content: space-between;
 }
 .presentation {
     display: flex;
@@ -23,7 +23,15 @@
     opacity: 0; 
     transition: opacity 0.5s ease; 
 }
-
+.bordeline-photo{
+    width: 400px;
+    height: 400px;
+    border: solid 1px $color-terciario;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .presentation.loaded {
     opacity: 1; 
 }
@@ -39,4 +47,30 @@
 .photo {
     border-radius: 100%;
     width: 350px;
+}
+//projects view
+.projects{
+    display: flex;
+    flex-direction: column;
+    margin: 5rem 7rem 1rem 7rem;
+}
+.projects-description {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+//about view
+.about{
+    display: flex;
+    flex-direction: column;
+    margin: 5rem 7rem 1rem 7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+.about-description {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

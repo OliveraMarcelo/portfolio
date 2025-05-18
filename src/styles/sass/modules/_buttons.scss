@@ -7,6 +7,7 @@
   border-radius: 5px;
   display: inline-block;
   font-weight: 600;
+  font-family: $primaryFont;
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: 150px;
@@ -22,10 +23,11 @@
 
 @mixin boton-negro {
   @include boton-base($color-secundario, $color-primario);
-
+  
   &:hover {
     background-color: $color-primario;
     color: $color-secundario;
+
     //border: 1px solid black todo : poner border
   }
 

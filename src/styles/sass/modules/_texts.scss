@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     font-weight: 700;
-    color :$color-secundario;
+    color: $color-fuente-title;
     line-height:1em;
 }
 .title span.orange-text{
@@ -19,17 +19,26 @@
 .section-title span.orange-text{
     color: $color-terciario;
 }
+
 .subtitle{
     font-size: 24px;
     font-weight: 400;
     align-content: center;
+    color: $color-fuente-subtitle;
 }
-
+.subtitle span.orange-text{
+    font-size: 24px;
+    font-weight: 400;
+    align-content: center;
+    color: $color-terciario;
+    line-height:1em;
+}
 .section-title{
     font-size: 56px;
     font-weight: 700;
+    color: $color-fuente-title;
 
 }
 .projects-title{
-
+    color: $color-fuente-title;
 }

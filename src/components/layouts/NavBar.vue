@@ -1,19 +1,25 @@
 <template>
-    <div>
-        <nav>
+
+    <nav>
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            MarceCode
+        </div>
+        <div class="navigation">
             <ul>
-                <li v-for="(item, index) in navItems" :key="index" >
+                <li v-for="(item, index) in navItems" :key="index">
                     <router-link :to="item.path" @click="activateItem(index)" @mouseover="highlightItem(index)"
-                    :class="{ active: isCurrentPage(item.path) }"
-                        @mouseleave="resetHighlight">{{ item.name }}</router-link>
+                        :class="{ active: isCurrentPage(item.path) }" @mouseleave="resetHighlight">{{ item.name
+                        }}</router-link>
                 </li>
             </ul>
-        </nav>
-    </div>
+        </div>
+
+    </nav>
 </template>
 
 <script setup>
-import { ref,  } from 'vue';
+import { ref, } from 'vue';
 import { useRoute } from 'vue-router';
 
 const navItems = [
@@ -28,13 +34,13 @@ const navItems = [
     },
     {
         name: 'Sobre mí',
-        path : '/about'
+        path: '/about'
     }
 ];
 const route = useRoute();
 
 const isCurrentPage = (path) => {
-  return route.path === path;
+    return route.path === path;
 };
 
 const activeItem = ref();

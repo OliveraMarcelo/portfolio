@@ -1,7 +1,5 @@
 <template>
     <footer>
-
-
         <div class="subtitle">
             Me puede contactar a estas redes sociales
         </div>
