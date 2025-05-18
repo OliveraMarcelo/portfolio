@@ -3,7 +3,13 @@
     <SectionTitle text="Proyectos" span-text="." />
     <div class="card-list">
       <div v-for="(project, index) in props.projects" :key="index" :style="{ width: cardWidth(index) }">
-        <ItemProject :image="project.image" :title="project.title" :description="project.description" />
+        <ItemProject
+  :image="project.image"
+  :title="project.title"
+  :description="project.description"
+  :visit="project.visit"
+  :github="project.github"
+/>
       </div>
     </div>
   </div>

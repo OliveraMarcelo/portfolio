@@ -11,11 +11,11 @@
     </div>
    <div class="box-buttons">
     <ButtonCustom class="boton-primario" text="Descargar CV" :click="downloadPdf" />
-    <ButtonCustom class="boton-secundario" text="Ver proyectos" :click="()=>{console.log('print')}" />
-   </div>
+<!--     <ButtonCustom class="boton-secundario" text="Ver proyectos" :click="()=>{console.log('print')}" />
+ -->   </div>
   <ListProjects :projects="projects"/>
   <SkillList/>
-  <MyStory/>
+  <MyStory/> 
   </div>
 </template>
 
@@ -32,26 +32,21 @@ import { onMounted, ref } from 'vue';
 const  { downloadPdf } = useDownloadPdf('Marcelo%20Olivera%20-%20Curriculum%20Vitae.pdf');
 const projects = ref([
   {
-    title: 'Proyecto 1',
-    image: 'https://picsum.photos/300/200', // Lorem Picsum URL
-    description: 'Descripción breve del proyecto 1.',
+    title: 'Mensajeria en tiempo real',
+    image: 'https://picsum.photos/300/200',
+    description: 'Deseas mandar mensajes en tiempo real y chatear con tus amigos ! Entonces este proyecto te interesara!',
+    visit: 'https://misitio.com/proyecto1',
+    github: 'https://github.com/usuario/proyecto1',
   },
   {
-    title: 'Proyecto 2',
-    image: 'https://picsum.photos/300/200', // Lorem Picsum URL
+    title: 'Tienda online',
+    image: 'https://picsum.photos/300/200',
     description: 'Descripción breve del proyecto 2.',
-  },
-  {
-    title: 'Proyecto 3',
-    image: 'https://picsum.photos/300/200', // Lorem Picsum URL
-    description: 'Descripción breve del proyecto 1.',
-  },
-  {
-    title: 'Proyecto 4',
-    image: 'https://picsum.photos/300/200', // Lorem Picsum URL
-    description: 'Descripción breve del proyecto 2.',
+    visit: 'https://misitio.com/proyecto2',
+    github: 'https://github.com/usuario/proyecto2',
   },
 ]);
+
 onMounted(() => {
   setTimeout(() => {
     document.querySelectorAll('.presentation').forEach((card) => {
