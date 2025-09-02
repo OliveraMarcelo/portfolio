@@ -1,8 +1,8 @@
 <template>
     <div class="card">
-        <img :src="props.image" alt="Project Image" />
-        <h2>{{ props.title }}</h2>
-        <p>{{ props.description }}</p>
+  <img :src="props.image" alt="Project Image" />
+  <h2>{{$t(props.title)}}</h2>
+  <p>{{$t(props.description)}}</p>
         <div class="box-buttons">
             <ButtonCustom
   class="boton-primario"

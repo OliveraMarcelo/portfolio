@@ -1,7 +1,231 @@
+// Mobile: proyectos scrolleables horizontalmente
+@media (max-width: 766px) and (min-width: 368px) {
+    .card-list {
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        gap: 1rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
+    }
+    .card-list > div {
+        min-width: 85vw;
+        max-width: 90vw;
+        flex: 0 0 auto;
+        scroll-snap-align: center;
+    }
+}
+// Mobile: columna para presentación, textos centrados y destacados
+@media (max-width: 766px) and (min-width: 368px) {
+    .presentation-box-photo {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1.5rem !important;
+        text-align: center !important;
+    }
+    
+    .presentation {
+        width: 100% !important;
+        order: 1 !important;
+        text-align: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1rem !important;
+    }
+    
+    .bordeline-photo {
+        order: 2 !important;
+        width: 270px !important;
+        height: 270px !important;
+        margin: 0 auto !important;
+    }
+    
+    .photo {
+        width: 250px !important;
+    }
+    
+    .presentation-col .subtitle,
+    .presentation-col .title,
+    .presentation-col .main-title {
+        color: #222 !important;
+        font-weight: 700 !important;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        letter-spacing: 0.5px;
+    }
+    .presentation-col .subtitle {
+        font-size: 1.2rem !important;
+        margin-bottom: 0.2rem;
+    }
+    .presentation-col .title ,
+    .presentation-col .main-title {
+        font-size: 2rem !important;
+        margin: 0.2rem 0;
+    }
+    .title .orange-text {
+        font-size: 2rem !important;
+    }
+    .presentation-col .photo {
+        margin: 0.5rem 0;
+        border: 3px solid #ff9800;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    }
+}
+  .certificate-container {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .certificate-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 2px solid #ddd;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  // Mobile: certificado responsive
+  @media (max-width: 766px) {
+    .certificate-container {
+      margin: 1.5rem 0;
+      padding: 0 1rem;
+    }
+
+    .certificate-img {
+      max-width: 95%;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+      border: 1px solid #ccc;
+    }
+  }
+
+  // Tablet
+  @media (min-width: 767px) and (max-width: 1024px) {
+    .certificate-img {
+      max-width: 85%;
+    }
+  }
+
+  // Desktop pequeño
+  @media (min-width: 1025px) and (max-width: 1368px) {
+    .certificate-img {
+      max-width: 75%;
+    }
+  }
+
+  // Desktop grande (1920px o más)
+  @media (min-width: 1920px) {
+    .certificate-img {
+      max-width: 60%;
+    }
+  }
+
 .home {
-    display: flex;
-    flex-direction: column;
-    margin: 5rem 7rem 1rem 7rem;
+        display: flex;
+        flex-direction: column;
+        margin: 5rem 7rem 1rem 7rem;
+}
+
+// Responsive: 368px - 766px
+@media (max-width: 766px) and (min-width: 368px) {
+    .home {
+        margin: 2rem 0.5rem 1rem 0.5rem;
+    }
+    .presentation-box-photo {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .presentation {
+        width: 100%;
+        text-align: center;
+        gap: 10px;
+    }
+    .bordeline-photo {
+        width: 180px;
+        height: 180px;
+    }
+    .photo {
+        width: 150px;
+    }
+    .box-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+// Responsive: 766px - 1024px
+@media (min-width: 767px) and (max-width: 1024px) {
+    .home {
+        margin: 3rem 2rem 1rem 2rem;
+    }
+    .presentation-box-photo {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+    .presentation {
+        width: 50%;
+        gap: 15px;
+    }
+    .bordeline-photo {
+        width: 250px;
+        height: 250px;
+    }
+    .photo {
+        width: 180px;
+    }
+}
+
+// Responsive: 1024px - 1368px
+@media (min-width: 1025px) and (max-width: 1368px) {
+    .home {
+        margin: 4rem 4rem 1rem 4rem;
+    }
+    .presentation-box-photo {
+        gap: 2rem;
+    }
+    .presentation {
+        width: 45%;
+        gap: 18px;
+    }
+    .bordeline-photo {
+        width: 320px;
+        height: 320px;
+    }
+    .photo {
+        width: 220px;
+    }
+}
+
+// Responsive: 1920px o mayor (mantener diseño actual)
+@media (min-width: 1920px) {
+    .home {
+        margin: 5rem 7rem 1rem 7rem;
+    }
+    .presentation-box-photo {
+        flex-direction: row;
+        gap: 4rem;
+    }
+    .presentation {
+        width: 40%;
+        gap: 20px;
+    }
+    .bordeline-photo {
+        width: 400px;
+        height: 400px;
+    }
+    .photo {
+        width: 350px;
+    }
 }
 
 .presentation-box-photo {
@@ -73,4 +297,122 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+// Mobile: subtítulos y títulos responsive
+@media (max-width: 766px) and (min-width: 368px) {
+    // Títulos principales (MainTitle)
+    .main-title {
+        font-size: 1.8rem !important;
+        line-height: 1.3 !important;
+        margin: 0.5rem 0 !important;
+        text-align: center !important;
+    }
+    
+    // Subtítulos (SubTitle)
+    .subtitle {
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+        margin: 0.8rem 0 !important;
+        text-align: center !important;
+        padding: 0 0.5rem !important;
+    }
+    
+    // Títulos de secciones (SectionTitle)
+    .section-title {
+        font-size: 1.5rem !important;
+        line-height: 1.4 !important;
+        margin: 1.5rem 0 1rem 0 !important;
+        text-align: center !important;
+    }
+    
+    // ButtonCustom
+    .boton-primario,
+    .boton-secundario {
+        margin: 0.5rem 0 !important;
+    }
+    
+    // ListProjects - ya tienes el scroll horizontal
+    
+    // SkillList - hacer responsive
+    .skill-list {
+        padding: 0 1rem !important;
+    }
+    
+    .skill-item {
+        margin: 0.5rem 0 !important;
+        font-size: 0.9rem !important;
+        padding: 8px 12px !important;
+    }
+    
+    // MyStory - títulos y subtítulos ya cubiertos arriba
+    
+    // Ocultar elementos específicos en mobile
+    .navigation {
+        display: none !important;
+    }
+    
+    .lang-switcher {
+        display: none !important;
+    }
+    
+    // Mostrar solo estos elementos en mobile
+    .projects,
+    .skills,
+    .about {
+        display: none !important;
+    }
+    
+    // Logo centrado
+    .logo {
+        text-align: center !important;
+        margin: 0 auto !important;
+        display: block !important;
+    }
+}
+
+// Tablet: ajustes medios
+@media (min-width: 767px) and (max-width: 1024px) {
+    .main-title {
+        font-size: 2.2rem !important;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem !important;
+        padding: 0 1rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.8rem !important;
+    }
+}
+
+// Desktop pequeño
+@media (min-width: 1025px) and (max-width: 1368px) {
+    .main-title {
+        font-size: 2.5rem !important;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem !important;
+    }
+    
+    .section-title {
+        font-size: 2rem !important;
+    }
+}
+
+// Desktop grande (1920px o más) - mantener tamaños originales
+@media (min-width: 1920px) {
+    .main-title {
+        font-size: 3rem !important;
+    }
+    
+    .subtitle {
+        font-size: 1.3rem !important;
+    }
+    
+    .section-title {
+        font-size: 2.2rem !important;
+    }
 }

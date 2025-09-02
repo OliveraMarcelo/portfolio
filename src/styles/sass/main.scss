@@ -9,15 +9,39 @@
 
 
 
+
 html {
   box-sizing: border-box;
-
 }
 body {
   font-family: $primaryFont;
   margin: 0;
   padding: 0;
-  background-color: $color-primario;
+  background-color: $color-light-bg;
+  color: $color-light-text;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background-color: $color-dark-bg;
+  color: $color-dark-text-strong;
+}
+
+body.dark-mode,
+body.dark-mode .title,
+body.dark-mode .main-title,
+body.dark-mode .section-title,
+body.dark-mode .subtitle,
+body.dark-mode .project-title,
+body.dark-mode .about,
+body.dark-mode .projects,
+body.dark-mode .presentation,
+body.dark-mode .presentation-col,
+body.dark-mode .certificate-img,
+body.dark-mode .box-buttons,
+body.dark-mode .SkillList,
+body.dark-mode .MyStory {
+  color: $color-dark-text-strong !important;
 }
 
 

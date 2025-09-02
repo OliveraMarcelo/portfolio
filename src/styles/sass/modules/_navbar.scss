@@ -1,3 +1,39 @@
+// Dark mode: textos blancos en navbar excepto los naranjas
+body.dark-mode nav,
+body.dark-mode .navigation,
+body.dark-mode .logo,
+body.dark-mode nav a,
+body.dark-mode nav ul li {
+    color: $color-dark-text-strong !important;
+}
+body.dark-mode .logo .fa-code {
+    color: $color-terciario !important;
+}
+body.dark-mode nav .orange-text,
+body.dark-mode .logo,
+body.dark-mode .logo .orange-text {
+    color: $color-terciario !important;
+}
+// Centrar logo en mobile
+@media (max-width: 766px) and (min-width: 368px) {
+    nav {
+        justify-content: center !important;
+    }
+    .logo {
+        margin: 0 auto !important;
+        justify-content: center !important;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navigation,
+    .lang-switcher {
+        display: none !important;
+    }
+    nav {
+        justify-content: flex-start;
+    }
+}
 nav {
     display : flex;
     flex-direction : row;
