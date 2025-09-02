@@ -12,25 +12,25 @@ git-deploy-personal:
 		exit 1; \
 	fi
 	@echo "$(BLUE)🔄 Cambiando a cuenta personal de GitHub...$(NC)"
-	./switch_github.sh personal
+	sudo ./switch_github.sh personal
 	@echo "$(BLUE)🚀 Haciendo deploy con cuenta personal...$(NC)"
 	@$(MAKE) git-add
 	@$(MAKE) git-commit MSG="$(MSG)"
 	@$(MAKE) git-push
 	@echo "$(BLUE)🔄 Volviendo a cuenta de trabajo...$(NC)"
-	./switch_github.sh work
+	sudo ./switch_github.sh work
 	@echo "$(GREEN)✅ Deploy personal completado y cuenta restaurada!$(NC)"
 
 ## Git: Solo cambia a cuenta personal
 git-switch-personal:
 	@echo "$(BLUE)🔄 Cambiando a cuenta personal de GitHub...$(NC)"
-	./switch_github.sh personal
+	sudo ./switch_github.sh personal
 	@echo "$(GREEN)✅ Cambiado a cuenta personal!$(NC)"
 
 ## Git: Vuelve a cuenta de trabajo
 git-switch-work:
 	@echo "$(BLUE)🔄 Cambiando a cuenta de trabajo...$(NC)"
-	./switch_github.sh work
+	sudo ./switch_github.sh work
 	@echo "$(GREEN)✅ Cambiado a cuenta de trabajo!$(NC)"
 
 ## Git: Workflow completo para proyectos personales
@@ -41,7 +41,7 @@ workflow-personal:
 		exit 1; \
 	fi
 	@echo "$(BLUE)🔄 Ejecutando workflow personal completo...$(NC)"
-	./switch_github.sh personal
+	sudo ./switch_github.sh personal
 	@$(MAKE) git-pull
 	@$(MAKE) install
 	@$(MAKE) lint-fix
@@ -51,7 +51,7 @@ workflow-personal:
 	@$(MAKE) git-add
 	@$(MAKE) git-commit MSG="$(MSG)"
 	@$(MAKE) git-push
-	./switch_github.sh work
+	sudo ./switch_github.sh work
 	@echo "$(GREEN)✅ Workflow personal completado!$(NC)"
 PROJECT_NAME = portfolio
 DOCKER_IMAGE = $(PROJECT_NAME)
