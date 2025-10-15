@@ -1,29 +1,30 @@
-# portafolio
 
-## Project setup
+## ⚙️ Configuración del Proyecto
+
+### Instalación de dependencias
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compilar y hot-reload para desarrollo
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compilar y minificar para producción
 ```
 npm run build
 ```
 
-### Run your unit tests
+### Ejecutar pruebas unitarias
 ```
 npm run test:unit
 ```
 
-### Lints and fixes files
+### Linting y corrección de archivos
 ```
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Configuración personalizada
+Ver [Referencia de Configuración](https://cli.vuejs.org/config/).
