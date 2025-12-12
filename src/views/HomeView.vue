@@ -51,15 +51,21 @@ const projects = [
 ];
 
 onMounted(() => {
-  setTimeout(() => {
-    document.querySelectorAll('.presentation').forEach((card) => {
-      card.classList.add('loaded');
-    });
-  }, 100);
-  setTimeout(() => {
-    document.querySelectorAll('.photo').forEach((card) => {
-      card.classList.add('loaded');
-    });
-  }, 100);
+  const observeElements = (selector, options = { threshold: 0.15 }) => {
+    const els = document.querySelectorAll(selector);
+    if (!els.length) return;
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('loaded');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, options);
+    els.forEach(el => io.observe(el));
+  };
+
+  observeElements('.presentation', { threshold: 0.1 });
+  observeElements('.photo', { threshold: 0.2 });
 });
 </script>

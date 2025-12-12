@@ -13,6 +13,8 @@
 html {
   box-sizing: border-box;
 }
+/* Make box-sizing predictable across elements */
+*, *::before, *::after { box-sizing: inherit; }
 body {
   font-family: $primaryFont;
   margin: 0;
@@ -20,6 +22,8 @@ body {
   background-color: $color-light-bg;
   color: $color-light-text;
   transition: background 0.3s, color 0.3s;
+  /* Evita un scroll horizontal inesperado causado por márgenes/anchos en elementos */
+  overflow-x: hidden;
 }
 
 body.dark-mode {
