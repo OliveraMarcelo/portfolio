@@ -71,7 +71,9 @@ jobs:
 
             # Obtener certificado si no existe (standalone: libera el puerto 80 brevemente)
             if [ ! -f "/etc/letsencrypt/live/marcecode.com/fullchain.pem" ]; then
-              docker compose -f /opt/portfolio/docker-compose.prod.yml down || true
+              # Detener todos los containers que ocupen el puerto 80
+              docker ps -q --filter "publish=80" | xargs -r docker stop
+              docker compose -f /opt/portfolio/docker-compose.prod.yml down 2>/dev/null || true
               certbot certonly --standalone \
                 -d marcecode.com \
                 --email $LE_EMAIL \
