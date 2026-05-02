@@ -14,6 +14,7 @@ import ListProjects from '@/components/projects/ListProjects.vue';
 import MainTitle from '@/components/texts/MainTitle.vue';
 import SubTitle from '@/components/texts/SubTitle.vue';
 import jedamiPreview from '@/assets/icons/jedami-preview.png';
+import pokemonPreview from '@/assets/icons/pokemon-preview.png';
 import { onMounted, ref } from 'vue';
 
 const projects = ref([
@@ -23,6 +24,13 @@ const projects = ref([
     description: 'E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.',
     visit: 'https://jedamiapp.com',
     github: 'https://github.com/OliveraMarcelo/tienda-jedami',
+  },
+  {
+    title: 'Pokemon Game',
+    image: pokemonPreview,
+    description: '¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI. Desarrollado con TypeScript y Vue.',
+    visit: 'https://pokemon-game-theta-gold.vercel.app',
+    github: 'https://github.com/OliveraMarcelo/pokemon-game',
   },
 ]);
 

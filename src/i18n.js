@@ -16,6 +16,8 @@ const messages = {
     realtimeMessagingDesc: 'Deseas mandar mensajes en tiempo real y chatear con tus amigos ! Entonces este proyecto te interesara!',
   onlineStoreTitle: 'Tienda Jedami',
   onlineStoreDesc: 'E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.',
+  pokemonGameTitle: 'Pokemon Game',
+  pokemonGameDesc: '¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI. Desarrollado con TypeScript y Vue.',
   // Agrega aquí más textos según los que encuentres en la app
   },
   en: {
@@ -33,6 +35,8 @@ const messages = {
     realtimeMessagingDesc: 'Do you want to send real-time messages and chat with your friends? Then this project will interest you!',
   onlineStoreTitle: 'Jedami Store',
   onlineStoreDesc: 'E-commerce with product catalog, shopping cart and order management. Built with Node.js and Vue.',
+  pokemonGameTitle: 'Pokemon Game',
+  pokemonGameDesc: 'Who is that Pokémon? Guessing game with silhouettes using the PokéAPI. Built with TypeScript and Vue.',
   // Add more translations as needed
   },
 };

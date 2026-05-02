@@ -27,6 +27,7 @@ import MainTitle from '@/components/texts/MainTitle.vue';
 import SubTitle from '@/components/texts/SubTitle.vue';
 import useDownloadPdf from '@/composables/useDownloadPdf.vue';
 import jedamiPreview from '@/assets/icons/jedami-preview.png';
+import pokemonPreview from '@/assets/icons/pokemon-preview.png';
 
 import { onMounted, } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -41,6 +42,13 @@ const projects = [
     description: 'onlineStoreDesc',
     visit: 'https://jedamiapp.com',
     github: 'https://github.com/OliveraMarcelo/tienda-jedami',
+  },
+  {
+    title: 'pokemonGameTitle',
+    image: pokemonPreview,
+    description: 'pokemonGameDesc',
+    visit: 'https://pokemon-game-theta-gold.vercel.app',
+    github: 'https://github.com/OliveraMarcelo/pokemon-game',
   },
 ];
 
