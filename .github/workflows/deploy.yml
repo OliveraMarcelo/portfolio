@@ -27,23 +27,75 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/portfolio:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/portfolio:${{ github.sha }}
 
-  # ─── Deploy al servidor vía SSH ──────────────────────────────────────────
-  deploy:
-    name: Deploy → DigitalOcean
+  # ─── Copiar archivos de configuración al servidor ────────────────────────
+  copy-config:
+    name: Copiar config → servidor
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      - name: SSH deploy
-        uses: appleboy/ssh-action@v1.0.3
+      - uses: actions/checkout@v4
+
+      - name: SCP archivos de configuración
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            cd /opt/portfolio
-            docker compose -f docker-compose.prod.yml pull portfolio
-            docker compose -f docker-compose.prod.yml up -d portfolio
-            echo "Deploy exitoso"
-            docker image prune -f
+          source: "docker-compose.prod.yml,nginx-proxy.conf.template"
+          target: /opt/portfolio
+
+  # ─── Deploy al servidor vía SSH ──────────────────────────────────────────
+  deploy:
+    name: Deploy → DigitalOcean
+    needs: copy-config
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH deploy
+        uses: appleboy/ssh-action@v1.0.3
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+          LE_EMAIL: ${{ secrets.LE_EMAIL }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          envs: DOCKERHUB_USERNAME,DOMAIN,LE_EMAIL
+          script: |
+            set -e
+            cd /opt/portfolio
+
+            mkdir -p /opt/portfolio/certbot/conf /opt/portfolio/certbot/www
+
+            # Primer deploy: crear cert dummy para que nginx pueda arrancar
+            if [ ! -f "/opt/portfolio/certbot/conf/live/$DOMAIN/fullchain.pem" ]; then
+              mkdir -p /opt/portfolio/certbot/conf/live/$DOMAIN
+              openssl req -x509 -nodes -newkey rsa:2048 -days 1 \
+                -keyout /opt/portfolio/certbot/conf/live/$DOMAIN/privkey.pem \
+                -out /opt/portfolio/certbot/conf/live/$DOMAIN/fullchain.pem \
+                -subj "/CN=$DOMAIN" 2>/dev/null
+
+              docker compose -f docker-compose.prod.yml pull portfolio
+              docker compose -f docker-compose.prod.yml up -d
+
+              sleep 5
+
+              # Obtener certificado real de Let's Encrypt
+              docker compose -f docker-compose.prod.yml run --rm certbot certonly \
+                --webroot -w /var/www/certbot \
+                -d $DOMAIN \
+                --email $LE_EMAIL \
+                --agree-tos \
+                --no-eff-email \
+                --force-renewal \
+                --non-interactive
+
+              docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
+            else
+              # Deploys siguientes: solo actualizar imagen
+              docker compose -f docker-compose.prod.yml pull portfolio
+              docker compose -f docker-compose.prod.yml up -d
+            fi
+
+            echo "Deploy exitoso"
+            docker image prune -f

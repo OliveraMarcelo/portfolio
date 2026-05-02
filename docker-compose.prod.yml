@@ -1,6 +1,26 @@
 services:
-  portfolio:
-    image: ${DOCKERHUB_USERNAME}/portfolio:latest
+  nginx:
+    image: nginx:alpine
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+    volumes:
+      - ./nginx-proxy.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - /opt/portfolio/certbot/conf:/etc/letsencrypt:ro
+      - /opt/portfolio/certbot/www:/var/www/certbot:ro
+    depends_on:
+      - portfolio
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - /opt/portfolio/certbot/conf:/etc/letsencrypt
+      - /opt/portfolio/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --quiet; sleep 12h & wait $${!}; done;'"
+
+  portfolio:
+    image: ${DOCKERHUB_USERNAME}/portfolio:latest
+    restart: unless-stopped
