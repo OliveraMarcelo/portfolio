@@ -14,8 +14,8 @@ const messages = {
     downloadCV: 'Descargar CV',
     realtimeMessagingTitle: 'Mensajeria en tiempo real',
     realtimeMessagingDesc: 'Deseas mandar mensajes en tiempo real y chatear con tus amigos ! Entonces este proyecto te interesara!',
-  onlineStoreTitle: 'Tienda online',
-  onlineStoreDesc: 'Descripción breve del proyecto 2.',
+  onlineStoreTitle: 'Tienda Jedami',
+  onlineStoreDesc: 'E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.',
   // Agrega aquí más textos según los que encuentres en la app
   },
   en: {
@@ -31,8 +31,8 @@ const messages = {
     downloadCV: 'Download CV',
     realtimeMessagingTitle: 'Real-time Messaging',
     realtimeMessagingDesc: 'Do you want to send real-time messages and chat with your friends? Then this project will interest you!',
-  onlineStoreTitle: 'Online Store',
-  onlineStoreDesc: 'Brief description of project 2.',
+  onlineStoreTitle: 'Jedami Store',
+  onlineStoreDesc: 'E-commerce with product catalog, shopping cart and order management. Built with Node.js and Vue.',
   // Add more translations as needed
   },
 };

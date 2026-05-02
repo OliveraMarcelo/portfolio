@@ -26,6 +26,7 @@ import MyStory from '@/components/stories/MyStory.vue';
 import MainTitle from '@/components/texts/MainTitle.vue';
 import SubTitle from '@/components/texts/SubTitle.vue';
 import useDownloadPdf from '@/composables/useDownloadPdf.vue';
+import jedamiPreview from '@/assets/icons/jedami-preview.png';
 
 import { onMounted, } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -35,18 +36,11 @@ const  { downloadPdf } = useDownloadPdf('Marcelo%20Olivera%20-%20Curriculum%20Vi
 
 const projects = [
   {
-    title: 'realtimeMessagingTitle',
-    image: 'https://picsum.photos/300/200',
-    description: 'realtimeMessagingDesc',
-    visit: 'https://misitio.com/proyecto1',
-    github: 'https://github.com/usuario/proyecto1',
-  },
-  {
     title: 'onlineStoreTitle',
-    image: 'https://picsum.photos/300/200',
+    image: jedamiPreview,
     description: 'onlineStoreDesc',
-    visit: 'https://misitio.com/proyecto2',
-    github: 'https://github.com/usuario/proyecto2',
+    visit: 'https://jedamiapp.com',
+    github: 'https://github.com/OliveraMarcelo/tienda-jedami',
   },
 ];
 

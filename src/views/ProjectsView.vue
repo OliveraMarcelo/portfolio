@@ -11,41 +11,19 @@
 <script setup>
 
 import ListProjects from '@/components/projects/ListProjects.vue';
-/*import SkillList from '@/components/skills/SkillList.vue'; */  
 import MainTitle from '@/components/texts/MainTitle.vue';
 import SubTitle from '@/components/texts/SubTitle.vue';
+import jedamiPreview from '@/assets/icons/jedami-preview.png';
 import { onMounted, ref } from 'vue';
 
 const projects = ref([
-{
-    title: 'Proyecto 1',
-    image: 'https://picsum.photos/300/200',
-    description: 'Descripción breve del proyecto 1.',
-    visit: 'https://misitio.com/proyecto1',
-    github: 'https://github.com/usuario/proyecto1',
-  },
   {
-    title: 'Proyecto 2',
-    image: 'https://picsum.photos/300/200',
-    description: 'Descripción breve del proyecto 2.',
-    visit: 'https://misitio.com/proyecto2',
-    github: 'https://github.com/usuario/proyecto2',
+    title: 'Tienda Jedami',
+    image: jedamiPreview,
+    description: 'E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.',
+    visit: 'https://jedamiapp.com',
+    github: 'https://github.com/OliveraMarcelo/tienda-jedami',
   },
-  {
-    title: 'Proyecto 3',
-    image: 'https://picsum.photos/300/200',
-    description: 'Descripción breve del proyecto 1.',
-    visit: 'https://misitio.com/proyecto1',
-    github: 'https://github.com/usuario/proyecto1',
-  },
-  {
-    title: 'Proyecto 4',
-    image: 'https://picsum.photos/300/200',
-    description: 'Descripción breve del proyecto 2.',
-    visit: 'https://misitio.com/proyecto2',
-    github: 'https://github.com/usuario/proyecto2',
-  },
-  // Agrega más proyectos según sea necesario     
 ]);
 
 onMounted(() => {
