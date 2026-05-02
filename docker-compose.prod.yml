@@ -3,4 +3,4 @@ services:
     image: ${DOCKERHUB_USERNAME}/portfolio:latest
     restart: unless-stopped
     ports:
-      - "8081:80"
+      - "80:80"
