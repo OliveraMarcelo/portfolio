@@ -1,0 +1,49 @@
+name: Deploy a producción
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # ─── Build imagen Docker y push a Docker Hub ─────────────────────────────
+  build-and-push:
+    name: Build & Push → Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build y push portfolio
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/portfolio:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/portfolio:${{ github.sha }}
+
+  # ─── Deploy al servidor vía SSH ──────────────────────────────────────────
+  deploy:
+    name: Deploy → DigitalOcean
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/portfolio
+            docker compose -f docker-compose.prod.yml pull portfolio
+            docker compose -f docker-compose.prod.yml up -d portfolio
+            echo "Deploy exitoso"
+            docker image prune -f
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}

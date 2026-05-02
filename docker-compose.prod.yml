@@ -1,0 +1,6 @@
+services:
+  portfolio:
+    image: ${DOCKERHUB_USERNAME}/portfolio:latest
+    restart: unless-stopped
+    ports:
+      - "8081:80"
