@@ -1,4 +1,5 @@
 <template>
+  <AppSprite />
   <NavBar />
   <router-view />
   <Footer/>
@@ -33,6 +34,7 @@
 </style>
 <script setup>
 import { ref, onMounted } from 'vue';
+import AppSprite from '@/components/layout/AppSprite.vue';
 import NavBar from './components/layouts/NavBar.vue';
 import Footer from '@/components/layouts/FooterPage.vue';
 

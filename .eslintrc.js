@@ -1,7 +1,12 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
+    // Declara defineProps/defineEmits/defineExpose/withDefaults como globales.
+    // Sin esto, ESLint marca `defineProps is not defined` y hay que importarlo
+    // desde 'vue', que es el patrón deprecado que usan los componentes viejos.
+    // Lo provee eslint-plugin-vue 8+.
+    'vue/setup-compiler-macros': true
   },
   'extends': [
     'plugin:vue/vue3-essential',
