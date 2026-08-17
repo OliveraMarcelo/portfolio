@@ -6,13 +6,13 @@
            elementos anunciando "página actual" en la Home (los dos logos y
            el enlace Inicio). -->
       <RouterLink v-slot="{ href, navigate }" to="/" custom>
-        <a class="logo" :href="href" :aria-label="t('logoAria')" @click="navigate">
+        <a class="logo" :href="href" :aria-label="t('a11y.logo')" @click="navigate">
           <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
           <span class="logo-word">MarceCode</span>
         </a>
       </RouterLink>
 
-      <nav class="nav" :aria-label="t('navAria')">
+      <nav class="nav" :aria-label="t('nav.aria')">
         <ul class="nav-list">
           <li v-for="item in items" :key="item.name">
             <RouterLink
@@ -30,39 +30,28 @@
 
       <div class="header-actions">
         <ThemeToggle />
+        <LangToggle />
         <!-- El boton de menu mobile lo agrega la historia 2.4. -->
-        <button class="lang-btn" type="button" :aria-label="t('langAria')" @click="alternarIdioma">
-          <span class="lang-current">{{ idioma.toUpperCase() }}</span>
-          <span class="lang-sep" aria-hidden="true">/</span>
-          <span class="lang-other">{{ otroIdioma.toUpperCase() }}</span>
-        </button>
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import ThemeToggle from '@/components/ui/ThemeToggle.vue';
+import LangToggle from '@/components/ui/LangToggle.vue';
 
-/* Comportamiento provisorio del idioma: alterna el locale de vue-i18n, igual
-   que hacia NavBar.vue. La persistencia, el composable useLocale y el script
-   inline previo al primer pintado son la historia 1.7. */
-
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const route = useRoute();
 
 const items = [
-  { name: 'home', path: '/', clave: 'home' },
-  { name: 'projects', path: '/projects', clave: 'projects' },
-  { name: 'about', path: '/about', clave: 'about' },
+  { name: 'home', path: '/', clave: 'nav.home' },
+  { name: 'projects', path: '/projects', clave: 'nav.projects' },
+  { name: 'about', path: '/about', clave: 'nav.about' },
 ];
 
 const esActiva = (name) => route.name === name;
 
-const idioma = computed(() => locale.value);
-const otroIdioma = computed(() => (locale.value === 'es' ? 'en' : 'es'));
-const alternarIdioma = () => { locale.value = otroIdioma.value; };
 </script>

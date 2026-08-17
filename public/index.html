@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="es">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <!-- Tema antes del primer pintado. Va ANTES de toda hoja de estilo y sin
-         defer ni async: tiene que bloquear. Si el tema se aplicara al montar
-         la app, todo visitante con preferencia clara veria un destello oscuro,
-         y ese destello cuenta como cambio de layout percibido.
+    <!-- Tema e idioma antes del primer pintado. Va ANTES de toda hoja de
+         estilo y sin defer ni async: tiene que bloquear. Si el tema se
+         aplicara al montar la app, todo visitante con preferencia clara veria
+         un destello oscuro, y ese destello cuenta como cambio de layout
+         percibido.
 
          El try/catch no es decorativo: en modo privado de Safari el mero
          acceso a localStorage LANZA, y una excepcion en un script bloqueante
          dejaria la pagina sin tema y sin aplicacion.
 
-         La clave `mc-theme` tiene que ser identica a la de useTheme.js. -->
+         Las claves `mc-theme` y `mc-lang` tienen que ser IDENTICAS a las de
+         useTheme.js y useLocale.js. Si divergen, el sintoma es un destello en
+         cada carga sin ningun error en consola. -->
     <script>
       (function () {
-        var t = null;
-        try { t = localStorage.getItem('mc-theme'); } catch (e) { /* noop */ }
+        var d = document.documentElement;
+        var t = null, l = null;
+        try {
+          t = localStorage.getItem('mc-theme');
+          l = localStorage.getItem('mc-lang');
+        } catch (e) { /* noop */ }
+
         if (t !== 'light' && t !== 'dark') {
           t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
         }
-        document.documentElement.setAttribute('data-theme', t);
+        if (l !== 'es' && l !== 'en') l = 'es';
+
+        d.setAttribute('data-theme', t);
+        d.setAttribute('lang', l);
       })();
     </script>
 

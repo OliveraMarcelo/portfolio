@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "about": "Sobre mí",
+    "projects": "Proyectos",
+    "home": "Inicio",
+    "aria": "Navegación principal"
+  },
+  "a11y": {
+    "logo": "MarceCode — ir al inicio",
+    "skip": "Saltar al contenido"
+  },
+  "theme": {
+    "toLight": "Cambiar a tema claro",
+    "toDark": "Cambiar a tema oscuro"
+  },
+  "lang": {
+    "aria": "Switch site language to English"
+  },
+  "menu": {
+    "open": "Abrir menú",
+    "close": "Cerrar menú"
+  },
+  "footer": {
+    "made": "Hecho con Vue",
+    "whatsapp": "Escribime por WhatsApp",
+    "email": "Escribime un email",
+    "linkedin": "Ver mi perfil de LinkedIn"
+  },
+  "ui": {
+    "welcome": "Bienvenido a mi portafolio",
+    "contact": "Contacto",
+    "langBtn": "EN",
+    "helloIm": "Hola soy",
+    "developer": "Developer",
+    "aboutMeDesc": "Soy un apasionado desarrollador web con experiencia en front-end y back-end. Me encanta crear aplicaciones web increíbles y resolver problemas desafiantes.",
+    "downloadCV": "Descargar CV"
+  },
+  "proyectosLegacy": {
+    "realtimeMessagingTitle": "Mensajeria en tiempo real",
+    "realtimeMessagingDesc": "Deseas mandar mensajes en tiempo real y chatear con tus amigos ! Entonces este proyecto te interesara!",
+    "onlineStoreTitle": "Tienda Jedami",
+    "onlineStoreDesc": "E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.",
+    "pokemonGameTitle": "Pokemon Game",
+    "pokemonGameDesc": "¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI. Desarrollado con TypeScript y Vue."
+  }
+}

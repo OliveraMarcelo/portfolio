@@ -4,7 +4,7 @@
   <!-- Primer elemento enfocable, ANTES del header: si fuera después, quien
        navega por teclado tendría que atravesar todo el nav para encontrar el
        atajo que existe justamente para evitarlo. -->
-  <a class="skip-link" href="#main">{{ t('skipLink') }}</a>
+  <a class="skip-link" href="#main">{{ t('a11y.skip') }}</a>
 
   <AppNav />
 

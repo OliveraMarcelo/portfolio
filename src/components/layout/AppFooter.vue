@@ -4,7 +4,7 @@
       <!-- `custom` por el mismo motivo que en AppNav: el logo no debe
            anunciar aria-current. -->
       <RouterLink v-slot="{ href, navigate }" to="/" custom>
-        <a class="logo logo-sm" :href="href" :aria-label="t('logoAria')" @click="navigate">
+        <a class="logo logo-sm" :href="href" :aria-label="t('a11y.logo')" @click="navigate">
           <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
           <span class="logo-word">MarceCode</span>
         </a>
@@ -30,7 +30,7 @@
       <p class="footer-meta">
         <span>2026</span>
         <span class="footer-sep" aria-hidden="true">·</span>
-        <span>{{ t('footerMade') }}</span>
+        <span>{{ t('footer.made') }}</span>
       </p>
     </div>
   </footer>
@@ -47,9 +47,9 @@ const { t } = useI18n();
    `externo: false` en el email a proposito: mailto: no abre una pestaña, y
    con target="_blank" quedaria una en blanco huerfana. */
 const canales = [
-  { id: 'whatsapp', href: 'https://wa.me/541134323271', externo: true, icono: 'whatsapp', clave: 'footerWhatsapp' },
-  { id: 'email', href: 'mailto:olivera.m.et13@gmail.com', externo: false, icono: 'mail', clave: 'footerEmail' },
-  { id: 'linkedin', href: 'https://www.linkedin.com/in/marcelodanielolivera/', externo: true, icono: 'linkedin', clave: 'footerLinkedin' },
+  { id: 'whatsapp', href: 'https://wa.me/541134323271', externo: true, icono: 'whatsapp', clave: 'footer.whatsapp' },
+  { id: 'email', href: 'mailto:olivera.m.et13@gmail.com', externo: false, icono: 'mail', clave: 'footer.email' },
+  { id: 'linkedin', href: 'https://www.linkedin.com/in/marcelodanielolivera/', externo: true, icono: 'linkedin', clave: 'footer.linkedin' },
 ];
 </script>
 

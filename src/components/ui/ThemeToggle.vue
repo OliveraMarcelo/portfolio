@@ -25,5 +25,5 @@ const { theme, toggleTheme } = useTheme();
 
 /* La etiqueta describe ADÓNDE lleva el botón, no dónde estás: quien lo
    escucha necesita saber qué va a pasar si lo activa. */
-const etiqueta = computed(() => (theme.value === 'light' ? t('themeToDark') : t('themeToLight')));
+const etiqueta = computed(() => (theme.value === 'light' ? t('theme.toDark') : t('theme.toLight')));
 </script>

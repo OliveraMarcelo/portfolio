@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "about": "About me",
+    "projects": "Projects",
+    "home": "Home",
+    "aria": "Main navigation"
+  },
+  "a11y": {
+    "logo": "MarceCode — go to home",
+    "skip": "Skip to content"
+  },
+  "theme": {
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme"
+  },
+  "lang": {
+    "aria": "Cambiar el idioma del sitio a español"
+  },
+  "menu": {
+    "open": "Open menu",
+    "close": "Close menu"
+  },
+  "footer": {
+    "made": "Built with Vue",
+    "whatsapp": "Message me on WhatsApp",
+    "email": "Send me an email",
+    "linkedin": "View my LinkedIn profile"
+  },
+  "ui": {
+    "welcome": "Welcome to my portfolio",
+    "contact": "Contact",
+    "langBtn": "ES",
+    "helloIm": "Hello I am",
+    "developer": "Developer",
+    "aboutMeDesc": "I am a passionate web developer with experience in front-end and back-end. I love creating amazing web applications and solving challenging problems.",
+    "downloadCV": "Download CV"
+  },
+  "proyectosLegacy": {
+    "realtimeMessagingTitle": "Real-time Messaging",
+    "realtimeMessagingDesc": "Do you want to send real-time messages and chat with your friends? Then this project will interest you!",
+    "onlineStoreTitle": "Jedami Store",
+    "onlineStoreDesc": "E-commerce with product catalog, shopping cart and order management. Built with Node.js and Vue.",
+    "pokemonGameTitle": "Pokemon Game",
+    "pokemonGameDesc": "Who is that Pokémon? Guessing game with silhouettes using the PokéAPI. Built with TypeScript and Vue."
+  }
+}

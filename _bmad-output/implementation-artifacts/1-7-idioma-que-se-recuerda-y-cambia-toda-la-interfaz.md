@@ -1,6 +1,6 @@
 # Story 1.7: Idioma que se recuerda y cambia toda la interfaz
 
-Status: ready-for-dev
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -49,46 +49,46 @@ so that no tenga que cambiar el idioma en cada página.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Extraer los locales** (AC: #1, #5)
-  - [ ] Crear `src/locales/es.json` y `src/locales/en.json`
-  - [ ] Migrar las claves de interfaz que hoy están embebidas en `src/i18n.js`
-  - [ ] Sumar las claves del chasis que faltan (ver §Claves del chasis)
-  - [ ] Estructura anidada por dominio: `nav.home`, `a11y.skip`, `footer.made` — no claves planas con puntos literales
-  - [ ] **No** migres todavía los textos de contenido (proyectos, trayectoria): van a `src/content/` en sus épicas
+- [x] **Tarea 1 — Extraer los locales** (AC: #1, #5)
+  - [x] Crear `src/locales/es.json` y `src/locales/en.json`
+  - [x] Migrar las claves de interfaz que hoy están embebidas en `src/i18n.js`
+  - [x] Sumar las claves del chasis que faltan (ver §Claves del chasis)
+  - [x] Estructura anidada por dominio: `nav.home`, `a11y.skip`, `footer.made` — no claves planas con puntos literales
+  - [x] **No** migres todavía los textos de contenido (proyectos, trayectoria): van a `src/content/` en sus épicas
 
-- [ ] **Tarea 2 — Reducir `i18n.js`** (AC: #1)
-  - [ ] `src/i18n.js` queda solo con el import de los dos JSON y el `createI18n`
-  - [ ] Conservar `legacy: false`, `locale`, `fallbackLocale: 'en'`
-  - [ ] El `locale` inicial se lee del atributo `lang` que el script inline ya dejó puesto
-  - [ ] Borrar el comentario `// Agrega aquí más textos según los que encuentres en la app`
+- [x] **Tarea 2 — Reducir `i18n.js`** (AC: #1)
+  - [x] `src/i18n.js` queda solo con el import de los dos JSON y el `createI18n`
+  - [x] Conservar `legacy: false`, `locale`, `fallbackLocale: 'en'`
+  - [x] El `locale` inicial se lee del atributo `lang` que el script inline ya dejó puesto
+  - [x] Borrar el comentario `// Agrega aquí más textos según los que encuentres en la app`
 
-- [ ] **Tarea 3 — Extender el script inline** (AC: #3)
-  - [ ] Sumar al bloque de la historia 1.6 la lectura de `mc-lang` y el `setAttribute('lang', …)`
-  - [ ] Default `'es'` si no hay valor guardado ni valor válido
-  - [ ] Mismo `try/catch`, misma convención de claves `mc-`
+- [x] **Tarea 3 — Extender el script inline** (AC: #3)
+  - [x] Sumar al bloque de la historia 1.6 la lectura de `mc-lang` y el `setAttribute('lang', …)`
+  - [x] Default `'es'` si no hay valor guardado ni valor válido
+  - [x] Mismo `try/catch`, misma convención de claves `mc-`
 
-- [ ] **Tarea 4 — Composable `useLocale.js`** (AC: #2, #4)
-  - [ ] `src/composables/useLocale.js` con la misma forma que `useTheme`: `ref` de módulo, no estado por componente
-  - [ ] Exponer `{ locale, setLocale, toggleLocale }`
-  - [ ] `setLocale(valor)` actualiza el `locale` de vue-i18n, estampa `lang` en `<html>` y persiste en `mc-lang`
-  - [ ] **No** llames a `useI18n()` dentro del composable: usá la instancia de i18n importada directamente (ver §Por qué el store actual está roto)
+- [x] **Tarea 4 — Composable `useLocale.js`** (AC: #2, #4)
+  - [x] `src/composables/useLocale.js` con la misma forma que `useTheme`: `ref` de módulo, no estado por componente
+  - [x] Exponer `{ locale, setLocale, toggleLocale }`
+  - [x] `setLocale(valor)` actualiza el `locale` de vue-i18n, estampa `lang` en `<html>` y persiste en `mc-lang`
+  - [x] **No** llames a `useI18n()` dentro del composable: usá la instancia de i18n importada directamente (ver §Por qué el store actual está roto)
 
-- [ ] **Tarea 5 — Componente `LangToggle.vue`** (AC: #2)
-  - [ ] Markup canónico `<button class="lang-btn">` con `.lang-current`, `.lang-sep` y `.lang-other`
-  - [ ] `.lang-current` muestra el idioma activo; `.lang-other`, el otro
-  - [ ] `aria-label` en el **idioma de destino**, no en el activo (ver §El `aria-label` del botón de idioma)
-  - [ ] Reemplaza el botón de idioma provisorio que la historia 1.5 dejó en `AppNav.vue`
+- [x] **Tarea 5 — Componente `LangToggle.vue`** (AC: #2)
+  - [x] Markup canónico `<button class="lang-btn">` con `.lang-current`, `.lang-sep` y `.lang-other`
+  - [x] `.lang-current` muestra el idioma activo; `.lang-other`, el otro
+  - [x] `aria-label` en el **idioma de destino**, no en el activo (ver §El `aria-label` del botón de idioma)
+  - [x] Reemplaza el botón de idioma provisorio que la historia 1.5 dejó en `AppNav.vue`
 
-- [ ] **Tarea 6 — Eliminar el store roto** (AC: #4)
-  - [ ] Borrar `src/stores/langStore.js` y la carpeta `src/stores/`
-  - [ ] Verificar por `grep` que nada lo importa
+- [x] **Tarea 6 — Eliminar el store roto** (AC: #4)
+  - [x] Borrar `src/stores/langStore.js` y la carpeta `src/stores/`
+  - [x] Verificar por `grep` que nada lo importa
 
-- [ ] **Tarea 7 — Verificar** (AC: #1, #2, #3, #5)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Script de paridad de claves (§Comandos de verificación) sin diferencias
-  - [ ] Alternar idioma a mitad de una vista larga y confirmar que el scroll no salta
-  - [ ] Recargar tras alternar y confirmar que el idioma persiste
-  - [ ] Confirmar que `<html lang>` cambia y que ya no está vacío
+- [x] **Tarea 7 — Verificar** (AC: #1, #2, #3, #5)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Script de paridad de claves (§Comandos de verificación) sin diferencias
+  - [x] Alternar idioma a mitad de una vista larga y confirmar que el scroll no salta
+  - [x] Recargar tras alternar y confirmar que el idioma persiste
+  - [x] Confirmar que `<html lang>` cambia y que ya no está vacío
 
 ## Dev Notes
 
@@ -345,8 +345,141 @@ Con esta historia `src/stores/` desaparece del proyecto: la arquitectura absorbe
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**AC5 — paridad de claves, 28 en cada idioma, sin diferencias:**
+
+```
+solo en es: ninguna
+solo en en: ninguna
+total: 28
+```
+
+Estructura anidada por dominio: `nav` (4), `a11y` (2), `theme` (2), `lang` (1), `menu` (2),
+`footer` (4), `ui` (7), `proyectosLegacy` (6).
+
+**AC1/AC2 — alternar cambia TODO el chasis**, incluido lo que no se ve:
+
+| | ES | EN |
+|---|---|---|
+| skip link | Saltar al contenido | Skip to content |
+| nav | Inicio · Proyectos · Sobre mí | Home · Projects · About me |
+| `aria-label` del logo | MarceCode — ir al inicio | MarceCode — go to home |
+| `aria-label` del nav | Navegación principal | Main navigation |
+| `aria-label` del tema | Cambiar a tema oscuro | Switch to dark theme |
+| `aria-label` del idioma | Switch site language to English | Cambiar el idioma del sitio a español |
+| pie | 2026 · Hecho con Vue | 2026 · Built with Vue |
+| `aria-label` de los 3 canales | Escribime por WhatsApp, … | Message me on WhatsApp, … |
+| el propio botón | ES / EN | EN / ES |
+
+**AC3 — el atributo `lang` está puesto antes del primer pintado** y nunca queda vacío:
+
+```
+langAtributo: "es"     guardado: null     noVacio: true
+```
+
+El script inline **no persiste** el default, igual que con el tema.
+
+**AC2 — el scroll se mantiene y no hay remontaje.** Primera medición: 750 → 800, aparentemente un
+salto. Segunda medición al 40 % del rango scrolleable, lejos del límite de página:
+
+```
+antes:  scrollY 861   (de un máximo de 2152)
+después: scrollY 861   diferencia 0
+altura del documento: 2952 -> 2952, sin cambio
+mismoNodo: true    <- el .nav-link es el MISMO objeto del DOM
+```
+
+La identidad de objeto es la prueba de que **no hubo remontaje**: Vue re-renderizó los textos sobre
+los mismos nodos. El 750 → 800 de la primera medición era recorte contra el fondo de la página, no
+pérdida de scroll.
+
+**AC2 — persistencia entre recargas.** Con `mc-lang: 'en'` guardado y recargando:
+
+```
+langAtributo: "en"   nav: Home · Projects · About me   skip: Skip to content
+pie: 2026 · Built with Vue   botón: EN / ES
+```
+
+**AC4 — el store roto desapareció.** `src/stores/langStore.js` y la carpeta `src/stores/`
+eliminados. `grep -rn "langStore\|useLangStore" src/` devuelve solo un comentario en `useLocale.js`
+que explica por qué se reescribió.
+
+**Build y lint:** limpios (queda el warning preexistente de `ItemProject.vue`).
 
 ### Completion Notes List
 
+Los cinco criterios se cumplen. **Con esta historia cierra la Épica 1.**
+
+**El store anterior era una reescritura, no un refactor.** `langStore.js` llamaba a `useI18n()`
+desde una función exportada que puede invocarse en cualquier contexto, cuando `useI18n()` solo es
+válido dentro del `setup()` de un componente — funcionaba por accidente. Y mantenía un
+`state.locale` paralelo al `locale` de vue-i18n: dos fuentes de verdad para el mismo dato.
+
+`useLocale.js` importa la **instancia**, no el hook:
+
+```js
+import i18n from '@/i18n';
+i18n.global.locale.value = valor;
+```
+
+Así el composable funciona desde cualquier lado, incluido un guard del router — que es exactamente
+lo que la historia 2.1 necesita para retraducir el título del documento, y por eso esta decisión
+importa más allá de esta historia.
+
+**El `lang` vacío se llenó en dos momentos.** El template pasó de `<html lang="">` a
+`<html lang="es">`, así el documento es válido incluso si el script inline fallara; el script lo
+sobrescribe con la preferencia real antes del primer pintado; y `useLocale` lo actualiza al
+alternar. Un `lang` vacío es peor que ausente: los lectores de pantalla no pueden elegir voz ni
+pronunciación.
+
+**Los locales se separaron por ciclo de vida, no por capricho.** `src/locales/{es,en}.json` tiene
+las etiquetas de interfaz; el grupo `proyectosLegacy` conserva los seis textos de proyecto que hoy
+usa `HomeView.vue`, marcados como tales, y la historia 4.1 los mueve a `src/content/projects.js`
+con la clave `i18n` del propio dato. Dejarlos en un grupo con nombre explícito es más honesto que
+consolidarlos como si fueran definitivos.
+
+Se sumaron además `menu.open` y `menu.close`, que la historia 2.4 va a necesitar: tener las claves
+listas evita volver a tocar los locales.
+
+**El `aria-label` del botón de idioma parece un error de traducción y no lo es.** En el locale
+**español** dice "Switch site language to English". El botón anuncia **la acción**, y la acción
+lleva al otro idioma: un visitante anglófono que cae en el sitio en español necesita que su lector
+le diga, en inglés, que ese control cambia a inglés. Mismo criterio que `theme.toLight` /
+`theme.toDark`, ya aplicado en la historia 1.6.
+
+**Un efecto que aparece recién en la historia 2.2.** Las etiquetas del nav cambian de ancho al
+cambiar de idioma —"Sobre mí" y "About me" no miden lo mismo— así que el indicador animado tendrá
+que recalcular su posición en el cambio de idioma y no solo en el de ruta. Queda anotado; no se
+implementa acá.
+
+**Sobre la medición del scroll.** La primera lectura sugirió que el scroll se movía 50 px y estuve a
+punto de anotarlo como problema. La causa era el recorte contra el fondo de la página: había pedido
+`scrollTo(0, 800)` sobre un máximo de 750. Repetido al 40 % del rango da diferencia cero. Es el
+quinto error de medición propio de la épica, y el patrón es siempre el mismo: **una lectura
+alarmante hay que verificarla antes de actuar sobre ella.**
+
 ### File List
+
+```
+src/locales/es.json                        NUEVO — 28 claves, anidadas por dominio
+src/locales/en.json                        NUEVO — 28 claves, paridad exacta
+src/i18n.js                                REESCRITO — solo createI18n; locale inicial del atributo lang
+src/composables/useLocale.js               NUEVO — reemplaza stores/langStore.js
+src/components/ui/LangToggle.vue           NUEVO
+src/components/layout/AppNav.vue           MODIFICADO — LangToggle; claves anidadas; deja de manejar el idioma
+src/components/layout/AppFooter.vue        MODIFICADO — claves anidadas
+src/components/ui/ThemeToggle.vue          MODIFICADO — claves anidadas
+src/App.vue                                MODIFICADO — clave anidada del skip link
+public/index.html                          MODIFICADO — el script inline suma lang; <html lang="es">
+src/stores/langStore.js                    ELIMINADO
+src/stores/                                ELIMINADA
+```
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Idioma con script inline previo al primer pintado, locales anidados con paridad exacta, `useLocale` sobre la instancia de i18n y el store roto eliminado. **Cierra la Épica 1.** Estado `done`. |
