@@ -56,3 +56,22 @@ span.mask-in { display: block; }
   transition: none !important;
 }
 [data-qa="show-all"] .timeline-progress { transform: scaleY(1) !important; }
+
+/* ---------- Transicion entre vistas (A6) ------------------- */
+/* Respaldo para cuando la View Transitions API no existe, o cuando el
+   visitante pidio movimiento reducido y el guard la saltea.
+   Salida: opacity -> 0 con translateY(-12px) en 200ms.
+   Entrada: opacity 0 -> 1 con translateY(16px) -> 0 en --dur-base. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .view-enter-active {
+    transition: opacity var(--dur-base) var(--ease-in-out),
+                transform var(--dur-base) var(--ease-in-out);
+  }
+  .view-leave-active {
+    transition: opacity 200ms var(--ease-in-out),
+                transform 200ms var(--ease-in-out);
+  }
+  .view-enter-from { opacity: 0; transform: translateY(16px); }
+  .view-leave-to   { opacity: 0; transform: translateY(-12px); }
+}

@@ -1,6 +1,6 @@
 # Story 2.5: Posición de scroll coherente al navegar
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -30,26 +30,26 @@ so that no tenga que buscar de nuevo dónde estaba.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Declarar `scrollBehavior`** (AC: #1, #2)
-  - [ ] En `createRouter`, agregar la función `scrollBehavior(to, from, savedPosition)`
-  - [ ] Si hay `savedPosition`, devolverla
-  - [ ] Si no, devolver `{ top: 0 }`
-  - [ ] Soportar además el salto a un `hash` si la ruta lo trae
+- [x] **Tarea 1 — Declarar `scrollBehavior`** (AC: #1, #2)
+  - [x] En `createRouter`, agregar la función `scrollBehavior(to, from, savedPosition)`
+  - [x] Si hay `savedPosition`, devolverla
+  - [x] Si no, devolver `{ top: 0 }`
+  - [x] Soportar además el salto a un `hash` si la ruta lo trae
 
-- [ ] **Tarea 2 — Respetar el movimiento reducido** (AC: #3)
-  - [ ] `base.scss` declara hoy `html { scroll-behavior: smooth }` y el bloque de movimiento reducido lo anula con `scroll-behavior: auto !important`
-  - [ ] Verificar que ese `!important` esté presente: sin él, el `scroll-behavior: smooth` del CSS gana y el reposicionamiento se anima igual (ver §El `scroll-behavior` del CSS manda)
+- [x] **Tarea 2 — Respetar el movimiento reducido** (AC: #3)
+  - [x] `base.scss` declara hoy `html { scroll-behavior: smooth }` y el bloque de movimiento reducido lo anula con `scroll-behavior: auto !important`
+  - [x] Verificar que ese `!important` esté presente: sin él, el `scroll-behavior: smooth` del CSS gana y el reposicionamiento se anima igual (ver §El `scroll-behavior` del CSS manda)
 
-- [ ] **Tarea 3 — Reevaluar el header** (AC: #1)
-  - [ ] Después de ir al tope, el header tiene que salir de `.is-scrolled` (historia 2.3)
-  - [ ] Confirmarlo: scrollear bien abajo, navegar, y mirar el header
+- [x] **Tarea 3 — Reevaluar el header** (AC: #1)
+  - [x] Después de ir al tope, el header tiene que salir de `.is-scrolled` (historia 2.3)
+  - [x] Confirmarlo: scrollear bien abajo, navegar, y mirar el header
 
-- [ ] **Tarea 4 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Navegar entre las tres vistas y confirmar que cada una arranca en el tope
-  - [ ] Scrollear, navegar, volver atrás y confirmar la restauración
-  - [ ] Con `prefers-reduced-motion: reduce`, confirmar que el reposicionamiento es instantáneo
-  - [ ] Verificar en 390 px, donde el scroll suave se nota más
+- [x] **Tarea 4 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Navegar entre las tres vistas y confirmar que cada una arranca en el tope
+  - [x] Scrollear, navegar, volver atrás y confirmar la restauración
+  - [x] Con `prefers-reduced-motion: reduce`, confirmar que el reposicionamiento es instantáneo
+  - [x] Verificar en 390 px, donde el scroll suave se nota más
 
 ## Dev Notes
 
@@ -193,8 +193,44 @@ src/components/layout/AppNav.vue  MODIFICADO (si hace falta) — reevaluar .is-s
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 — navegación nueva al tope:** `scrollY === 0` tras navegar, en los dos caminos.
+
+**AC2 — restauración hacia atrás**, con una posición guardada de 590 px sobre un máximo de 1180:
+
+| Camino | Guardado | Restaurado | |
+|---|---|---|---|
+| Con la View Transitions API | 590 | **590** | ✓ |
+| Con la API anulada | 590 | **590** | ✓ |
+
+**AC3 —** el bloque de movimiento reducido de `base.scss` declara
+`html { scroll-behavior: auto !important }`, verificado presente.
+
+### Un diagnóstico que empezó mal y por qué importa
+
+La primera implementación —`return savedPosition`, sincrónica— restauraba **171 px en lugar de 590**.
+
+La arquitectura tenía anticipada esta brecha (la número 3) y traía la salida ya decidida: *"si hay
+conflicto, se salta la transición en navegación hacia atrás y se conserva el scroll"*. Estuve a punto
+de aplicarla.
+
+**Antes de hacerlo, probé el mismo caso con `document.startViewTransition` anulado: el recorte
+ocurría igual, 171 px.** La View Transitions API **no era la causa**. Aplicar la salida prevista no
+habría arreglado nada y habría agregado complejidad para nada — exactamente el error que el prototipo
+ya había cometido al atribuir un arreglo de navegación a la regla `@view-transition` sin verificarlo.
+
+La causa real: `savedPosition` se aplica **antes de que la vista destino tenga altura**, así que el
+navegador recorta la posición al máximo scroll de un documento a medio renderizar. Y hay **dos**
+retrasos distintos en ese montaje: la transición nativa cuando corre, y el `mode="out-in"` del
+`<Transition>` de respaldo, que no monta la vista nueva hasta que termina la salida de la vieja. Por
+eso una primera corrección con `nextTick` + dos `requestAnimationFrame` arregló el camino con API y
+dejó el otro roto.
+
+La corrección definitiva no adivina cuánto esperar: espera **la condición que importa**, que el
+documento sea lo bastante alto para la posición guardada, con un techo de 40 fotogramas para no
+colgarse. `scrollBehavior` acepta una promesa, así que es el lugar natural.
 
 ### File List

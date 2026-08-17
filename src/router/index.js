@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { ref, nextTick } from 'vue'
 import i18n from '@/i18n'
+import { movimientoReducido } from '@/composables/useReducedMotion'
 
 /* Los metadatos van por ruta y los aplica un guard `afterEach` (D11): en un
    solo lugar, en lugar de dispersarse como un `onMounted` en cuatro vistas.
@@ -30,6 +32,47 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+
+  /* `savedPosition` viene poblado SOLO en navegacion por el historial —boton
+     atras o adelante—; en una navegacion nueva llega null. Vue Router ya
+     distingue los dos casos, no hay que detectarlo a mano.
+
+     El `top: 80` del caso hash compensa la altura del header fijo: sin el, el
+     destino queda tapado. */
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) return { el: to.hash, top: 80 }
+    if (!savedPosition) return { top: 0 }
+
+    /* La restauracion NO puede ser sincrona, y tampoco alcanza con esperar
+       un par de fotogramas.
+
+       Con `return savedPosition` el navegador aplica la posicion antes de que
+       la vista destino tenga altura, asi que RECORTA: medido, 590px guardados
+       se restauraban en 171px — el maximo scroll de la vista a medio renderizar.
+
+       Verificado que la View Transitions API NO es la causa: el recorte ocurre
+       igual con la API anulada. La causa real son DOS retrasos distintos en el
+       montaje de la vista destino: la propia transicion nativa, y el
+       `mode="out-in"` del <Transition> de respaldo, que no monta la vista nueva
+       hasta que termina la salida de la vieja.
+
+       En lugar de adivinar cuanto esperar, se espera la CONDICION que importa:
+       que el documento sea lo bastante alto para la posicion guardada. Con un
+       techo de fotogramas para no colgarse si nunca lo es. */
+    return new Promise((resolve) => {
+      let intentos = 0
+      const intentar = () => {
+        const alcanzable = document.documentElement.scrollHeight - window.innerHeight
+        if (alcanzable >= savedPosition.top || intentos > 40) {
+          resolve(savedPosition)
+          return
+        }
+        intentos += 1
+        requestAnimationFrame(intentar)
+      }
+      nextTick(intentar)
+    })
+  },
 })
 
 /* Crea la etiqueta la primera vez y la reutiliza después: public/index.html
@@ -56,6 +99,61 @@ export function aplicarMetadatos(ruta = router.currentRoute.value) {
 /* `afterEach` y no `beforeEach`: si otro guard cancelara la navegación, con
    `beforeEach` ya habrías cambiado el título por una página a la que el
    visitante nunca llegó. */
-router.afterEach((to) => aplicarMetadatos(to))
+/* Transicion entre vistas (D6, A6).
+
+   El guard va en `beforeResolve` y NO en `beforeEach`: las vistas se cargan
+   diferidas, y si la transicion arrancara antes de resolver el componente
+   destino, la API capturaria el fotograma de una vista vacia. `beforeResolve`
+   corre despues de que todos los componentes asincronos estan resueltos.
+
+   El punto fino: `startViewTransition` espera una promesa que se resuelva
+   CUANDO EL DOM YA CAMBIO. En una SPA con Vue, `next()` no actualiza el DOM
+   de forma sincrona: la navegacion se confirma despues y Vue renderiza en su
+   propio ciclo. Resolviendo la promesa con un doble rAF, la API se queda
+   esperando y aborta con "Transition was aborted because of timeout in DOM
+   update". La promesa se resuelve desde `afterEach` + `nextTick`, que es
+   cuando Vue ya monto la vista nueva.
+
+   La existencia de la API se chequea EN CADA navegacion, no una vez al crear
+   el router: asi el camino de degradacion es probable anulando
+   document.startViewTransition desde la consola. */
+export const usarVistaNativa = ref(false)
+
+function hayApi() {
+  return typeof document.startViewTransition === 'function'
+}
+
+/* Resolver de la promesa que la API esta esperando. */
+let avisarDomActualizado = null
+
+router.beforeResolve((to, from, next) => {
+  /* En la primera carga no hay desde donde transicionar. */
+  if (!from.name || !hayApi() || movimientoReducido()) {
+    usarVistaNativa.value = false
+    next()
+    return
+  }
+
+  usarVistaNativa.value = true
+  const transicion = document.startViewTransition(() => {
+    next()
+    return new Promise((resolve) => { avisarDomActualizado = resolve })
+  })
+
+  transicion.finished
+    .catch(() => { /* una transicion salteada no es un error para el visitante */ })
+    .finally(() => { usarVistaNativa.value = false })
+})
+
+router.afterEach((to) => {
+  aplicarMetadatos(to)
+  /* La navegacion ya se confirmo; `nextTick` espera a que Vue haya volcado el
+     DOM. Recien ahi la API puede capturar el fotograma nuevo. */
+  if (avisarDomActualizado) {
+    const avisar = avisarDomActualizado
+    avisarDomActualizado = null
+    nextTick(() => avisar())
+  }
+})
 
 export default router

@@ -9,7 +9,18 @@
   <AppNav />
 
   <main id="main">
-    <router-view />
+    <!-- `mode="out-in"`: sin el, Vue monta la vista nueva mientras la vieja
+         todavia sale y las dos coexisten un instante, lo que empuja el layout.
+         A6 describe salida y despues entrada.
+
+         El `name` se vacia cuando la View Transition esta corriendo: un
+         <Transition> sin nombre no anima, y asi las dos no se superponen en un
+         fade doble. -->
+    <RouterView v-slot="{ Component }">
+      <Transition :name="usarVistaNativa ? '' : 'view'" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
   </main>
 
   <AppFooter />
@@ -17,6 +28,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
+import { usarVistaNativa } from '@/router';
 import { useI18n } from 'vue-i18n';
 import AppSprite from '@/components/layout/AppSprite.vue';
 import AppNav from '@/components/layout/AppNav.vue';

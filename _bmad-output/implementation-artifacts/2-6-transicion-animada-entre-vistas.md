@@ -1,6 +1,6 @@
 # Story 2.6: Transición animada entre vistas
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -38,35 +38,35 @@ so that el sitio se perciba como una aplicación y no como páginas sueltas.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Fade con `<Transition>`** (AC: #2)
-  - [ ] Envolver el `<RouterView />` de `App.vue` en un `<Transition name="view" mode="out-in">`
-  - [ ] Definir en `src/styles/animations.scss` las clases `.view-enter-from`, `.view-enter-active`, `.view-leave-to`, `.view-leave-active`
-  - [ ] Salida: `opacity → 0` con `translateY(-12px)` en 200 ms. Entrada: `opacity 0 → 1` con `translateY(16px) → 0` en `--dur-base` con `--ease-in-out`
-  - [ ] Solo `transform` y `opacity` (NFR-02)
+- [x] **Tarea 1 — Fade con `<Transition>`** (AC: #2)
+  - [x] Envolver el `<RouterView />` de `App.vue` en un `<Transition name="view" mode="out-in">`
+  - [x] Definir en `src/styles/animations.scss` las clases `.view-enter-from`, `.view-enter-active`, `.view-leave-to`, `.view-leave-active`
+  - [x] Salida: `opacity → 0` con `translateY(-12px)` en 200 ms. Entrada: `opacity 0 → 1` con `translateY(16px) → 0` en `--dur-base` con `--ease-in-out`
+  - [x] Solo `transform` y `opacity` (NFR-02)
 
-- [ ] **Tarea 2 — Guard de View Transitions** (AC: #1, #3)
-  - [ ] `router.beforeResolve` que envuelve la resolución en `document.startViewTransition` cuando la API existe **y** el visitante no pidió movimiento reducido
-  - [ ] Si falta cualquiera de las dos condiciones, dejar pasar la navegación sin envolver
-  - [ ] Consultar el movimiento reducido a través de `useReducedMotion` (ver §Un solo origen de verdad para el movimiento reducido)
+- [x] **Tarea 2 — Guard de View Transitions** (AC: #1, #3)
+  - [x] `router.beforeResolve` que envuelve la resolución en `document.startViewTransition` cuando la API existe **y** el visitante no pidió movimiento reducido
+  - [x] Si falta cualquiera de las dos condiciones, dejar pasar la navegación sin envolver
+  - [x] Consultar el movimiento reducido a través de `useReducedMotion` (ver §Un solo origen de verdad para el movimiento reducido)
 
-- [ ] **Tarea 3 — Composable `useReducedMotion`** (AC: #3)
-  - [ ] `src/composables/useReducedMotion.js` con un `ref` de módulo alimentado por `matchMedia('(prefers-reduced-motion: reduce)')`
-  - [ ] Escuchar el evento `change` para que reaccione si el visitante cambia la preferencia en vivo
-  - [ ] Es el **único** origen de verdad de esa preferencia en todo el proyecto
+- [x] **Tarea 3 — Composable `useReducedMotion`** (AC: #3)
+  - [x] `src/composables/useReducedMotion.js` con un `ref` de módulo alimentado por `matchMedia('(prefers-reduced-motion: reduce)')`
+  - [x] Escuchar el evento `change` para que reaccione si el visitante cambia la preferencia en vivo
+  - [x] Es el **único** origen de verdad de esa preferencia en todo el proyecto
 
-- [ ] **Tarea 4 — Evitar la doble animación** (AC: #1, #2)
-  - [ ] Cuando la View Transition corre, el `<Transition>` de Vue **no** debe animar también (ver §Las dos transiciones no pueden correr juntas)
+- [x] **Tarea 4 — Evitar la doble animación** (AC: #1, #2)
+  - [x] Cuando la View Transition corre, el `<Transition>` de Vue **no** debe animar también (ver §Las dos transiciones no pueden correr juntas)
 
-- [ ] **Tarea 5 — Reverificar el scroll** (AC: #4)
-  - [ ] Volver a probar la navegación hacia atrás de la historia 2.5 con la transición activa
-  - [ ] Si la restauración de scroll se rompe, saltar la transición en navegación hacia atrás y conservar el scroll
+- [x] **Tarea 5 — Reverificar el scroll** (AC: #4)
+  - [x] Volver a probar la navegación hacia atrás de la historia 2.5 con la transición activa
+  - [x] Si la restauración de scroll se rompe, saltar la transición en navegación hacia atrás y conservar el scroll
 
-- [ ] **Tarea 6 — Verificar los dos caminos** (AC: #4)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Recorrer el sitio completo **con** la API disponible
-  - [ ] Recorrer el sitio completo **sin** la API, forzando el camino de degradación (ver §Cómo probar el camino sin la API)
-  - [ ] Con `prefers-reduced-motion: reduce`, confirmar que no hay transición y que la navegación funciona
-  - [ ] Confirmar que ninguna vista queda en blanco en ningún camino
+- [x] **Tarea 6 — Verificar los dos caminos** (AC: #4)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Recorrer el sitio completo **con** la API disponible
+  - [x] Recorrer el sitio completo **sin** la API, forzando el camino de degradación (ver §Cómo probar el camino sin la API)
+  - [x] Con `prefers-reduced-motion: reduce`, confirmar que no hay transición y que la navegación funciona
+  - [x] Confirmar que ninguna vista queda en blanco en ningún camino
 
 ## Dev Notes
 
@@ -226,8 +226,68 @@ acá, la 2.7 le suma `.reveal`, `.mask` y `.mask-in`.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC4 — los dos caminos recorridos completos.** Navegando con clics reales en los enlaces, que es lo
+que ejercita los guards:
+
+| Camino | `/projects` | `/about` | `/` | Ninguna vacía |
+|---|---|---|---|---|
+| Con la API | 445 car. | 2200 car. | 2312 car. | ✓ |
+| Con la API anulada | 445 car. | 2200 car. | 2312 car. | ✓ |
+
+Idénticos: la navegación funciona igual por los dos caminos.
+
+**Consola:** vuelta a 1 error, el 404 preexistente del icono del PWA.
+
+### El guard tuvo que corregirse, y el error de la API lo dijo
+
+La primera versión resolvía la promesa de `startViewTransition` con un doble
+`requestAnimationFrame` después de llamar a `next()`. Resultado en consola:
+
+```
+Transition was skipped                      (x5)
+Transition was aborted because of timeout in DOM update
+```
+
+`startViewTransition` espera una promesa que se resuelva **cuando el DOM ya cambió**. En una SPA con
+Vue, `next()` no actualiza el DOM de forma sincrónica: la navegación se confirma después y Vue
+renderiza en su propio ciclo. Con un doble `rAF` la API se quedaba esperando un cambio que todavía no
+había ocurrido, y abortaba.
+
+Corregido guardando el `resolve` y llamándolo desde `afterEach` + `nextTick`, que es el punto en que
+la navegación está confirmada y Vue ya volcó el DOM. Los seis errores desaparecieron.
+
+### Las dos transiciones no se superponen
+
+`usarVistaNativa` es un `ref` exportado por el router. `App.vue` lo usa para vaciar el `name` del
+`<Transition>` mientras la transición nativa corre —un `<Transition>` sin nombre no anima— así que no
+hay fade doble. El `ref` vuelve a `false` en el `finally` de `transition.finished`.
+
+El `catch` sobre `finished` es deliberado: una transición salteada no es un error para el visitante y
+no debe ensuciar la consola.
+
+### `mode="out-in"` y su costo
+
+Sin él, Vue monta la vista nueva mientras la vieja todavía sale y las dos coexisten un instante, lo
+que empuja el layout. A6 describe salida y después entrada, así que `out-in` es lo correcto.
+
+El costo apareció en la historia 2.5: `out-in` retrasa el montaje de la vista destino lo que dura la
+salida, y eso rompía la restauración de scroll. Está documentado allá.
+
+### `useReducedMotion` — origen único de verdad
+
+Se creó acá y lo van a consumir las historias 4.6, 5.2 y 7.6. Expone un `ref` de módulo con
+`readonly`, escucha el evento `change` de la media query para reaccionar si el visitante cambia la
+preferencia con la pestaña abierta, y ofrece además una lectura sincrónica `movimientoReducido()`
+para los guards del router, que no corren dentro de un `setup()`.
+
+### La existencia de la API se chequea en cada navegación
+
+No se captura en una constante al crear el router. Es lo que hace **probable** el camino de
+degradación: anulando `document.startViewTransition` desde la consola, el guard toma la otra rama en
+la navegación siguiente. Si se capturara al arrancar, ese método de prueba no probaría nada.
 
 ### File List
