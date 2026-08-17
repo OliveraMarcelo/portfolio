@@ -6,12 +6,18 @@
    400–700 en una sola petición, en lugar de cinco cortes estáticos.
    Los pesos que el design system realmente usa son 400, 500, 600 y 700.
 
+   El hint es format('woff2'), no format('woff2-variations'): ese ultimo
+   nunca fue un valor estandar, y la spec de CSS Fonts obliga a DESCARTAR
+   la entrada de `src` cuyo hint el navegador no reconozca. Un woff2 puede
+   contener una fuente variable sin necesidad de anunciarlo; lo que declara
+   el rango es `font-weight: 400 700`.
+
    Licencias en este mismo directorio (SIL Open Font License / Inter).
    ============================================================ */
 
 @font-face {
   font-family: 'Space Grotesk';
-  src: url('~@/assets/fonts/space-grotesk-variable.woff2') format('woff2-variations');
+  src: url('~@/assets/fonts/space-grotesk-variable.woff2') format('woff2');
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -19,7 +25,7 @@
 
 @font-face {
   font-family: 'Inter';
-  src: url('~@/assets/fonts/inter-variable.woff2') format('woff2-variations');
+  src: url('~@/assets/fonts/inter-variable.woff2') format('woff2');
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -27,7 +33,7 @@
 
 @font-face {
   font-family: 'JetBrains Mono';
-  src: url('~@/assets/fonts/jetbrains-mono-variable.woff2') format('woff2-variations');
+  src: url('~@/assets/fonts/jetbrains-mono-variable.woff2') format('woff2');
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;

@@ -44,7 +44,7 @@ development_status:
   epic-1: in-progress
   1-1-linea-base-de-dependencias: review
   1-2-tokens-del-sistema-de-diseno-en-runtime: done
-  1-3-tipografia-propia-sin-origenes-externos: review
+  1-3-tipografia-propia-sin-origenes-externos: done
   1-4-iconos-como-sprite-svg: ready-for-dev
   1-5-chasis-persistente-header-y-pie-de-pagina: ready-for-dev
   1-6-tema-oscuro-y-claro-que-se-recuerda: ready-for-dev

@@ -1,6 +1,6 @@
 # Story 1.3: Tipografía propia, sin orígenes externos
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -348,3 +348,123 @@ public/index.html                                  MODIFICADO — se quita Googl
 | Fecha | Cambio |
 |---|---|
 | 2026-08-17 | Tres familias self-hosted en woff2 variable; Google Fonts eliminado; preload con URL hasheada vía `require()` en el template. Estado `review`. |
+
+
+## Senior Developer Review (AI)
+
+**Fecha:** 2026-08-17
+**Revisor:** claude-opus-5, pasada adversarial
+**Resultado:** **Changes Requested → corregido y aprobado**
+
+**Contraste File List vs git:** los 9 archivos declarados coinciden exactamente con
+`git diff --name-only HEAD~1 HEAD -- src/ public/`. Sin discrepancias.
+
+**`font-display: swap`:** presente en los 3 `@font-face` del CSS compilado. Verificado contando
+ocurrencias en el bundle, no leyendo el fuente.
+
+### 🔴 Alto — 1 hallazgo, corregido
+
+**H1 — `format('woff2-variations')` no es un valor estándar y arriesgaba dejar el sitio sin fuentes
+en algunos navegadores.** `src/styles/fonts.scss`
+
+Los tres `@font-face` declaraban:
+
+```css
+src: url('…woff2') format('woff2-variations');
+```
+
+`woff2-variations` **nunca fue un valor estándar** de `format()`. Los valores del spec de CSS Fonts
+son `woff2`, `woff`, `truetype`, `opentype`, `embedded-opentype`, `svg` y `collection`. El sufijo
+`-variations` fue una propuesta interina que solo Safari implementó en su momento.
+
+Y lo importante: **el spec obliga a descartar la entrada de `src` cuyo hint el navegador no
+reconozca.** No es una degradación elegante — si el navegador no lo tolera, el `@font-face` queda
+sin `src` válido y la familia entera cae al respaldo del sistema. Con una sola entrada de `src` por
+familia, eso significa **las tres fuentes sin cargar**.
+
+Chromium lo tolera —las mediciones de la implementación lo confirman— pero NFR-13 exige las dos
+últimas versiones de Chrome, Firefox, Safari y Edge. Apostar a la tolerancia de tres motores más, a
+cambio de **ningún beneficio**, no se sostiene: un woff2 puede contener una fuente variable sin
+anunciarlo, y lo que declara el rango es `font-weight: 400 700`.
+
+**Intenté probarlo en Firefox** (está instalado) pero Playwright no existe como módulo del proyecto
+y agregarlo habría sido ampliar el alcance. La decisión no depende del test: el valor estándar es
+correcto en todos los motores, así que usar el no estándar es riesgo sin contrapartida.
+
+**Corregido a `format('woff2')`.** Reverificado en navegador con un respaldo **proporcional**
+(`serif`, 472.86 px), que discrimina bien las tres familias:
+
+| Familia | Ancho renderizado | Respaldo `serif` | ¿Usa la fuente? |
+|---|---|---|---|
+| Space Grotesk | 507.67 px | 472.86 px | **sí** |
+| Inter | 483.19 px | 472.86 px | **sí** |
+| JetBrains Mono | 600.00 px | 472.86 px | **sí** |
+
+Las tres en estado `loaded`, y el eje variable de Inter sigue funcionando: 483.19 px a peso 400 y
+509.69 px a 700.
+
+### 🟡 Medio — 1 hallazgo, NO corregido (fuera de alcance, asignado)
+
+**M1 — Las fuentes precargadas son el 60 % del camino crítico, e Inter sola son 344 KB.**
+
+Medido sobre el build:
+
+| | Peso |
+|---|---|
+| `inter-variable.woff2` | **344 KB** ← precargada |
+| `jetbrains-mono-variable.woff2` | 111 KB |
+| `space-grotesk-variable.woff2` | 48 KB ← precargada |
+| **Total precargado** | **392 KB** |
+| CSS de la app | 14 KB |
+| JS crítico (vendors + app) | 246 KB |
+
+**Las fuentes son el 60 % de los bytes del camino crítico.** Con la red 4G simulada que Lighthouse
+usa, 392 KB de fuentes son del orden de dos segundos por sí solos — contra un presupuesto de LCP
+< 2.5 s (NFR-01, M3).
+
+La causa es que `InterVariable.woff2` trae el juego de glifos completo: latín, griego, cirílico y un
+set grande de símbolos. Un portfolio en español e inglés nunca usa la mayor parte.
+
+**Recomendación concreta para la historia 7.8:** subsetear Inter a latín con `pyftsubset` de
+fonttools. Un subset latino de Inter variable suele quedar entre 60 y 100 KB, o sea unos 250 KB
+menos en el camino crítico.
+
+**No se corrigió acá** porque requiere instalar `fonttools` —verificado que no está disponible— y
+el alcance de esta historia no incluye agregar dependencias. La 7.8 es la que mide NFR-01 contra el
+presupuesto y decide si hace falta.
+
+**Palanca alternativa si el subsetting no se hace:** dejar de precargar Inter y precargar solo Space
+Grotesk (48 KB). El texto del cuerpo aparecería con el respaldo del sistema durante el primer
+fotograma, lo que es exactamente lo que `font-display: swap` está diseñado para manejar.
+
+### 🟢 Bajo — 2 hallazgos, aceptados sin cambio
+
+**L1 — No hay caras itálicas declaradas.** Los tres `@font-face` son `font-style: normal`. Si algún
+componente usa `<em>` con estas familias, el navegador sintetiza una oblicua inclinando los glifos.
+El design system lo neutraliza donde importa (`.hero-role em { font-style: normal }`). Agregar tres
+archivos itálicos duplicaría el peso de fuentes para un uso que el diseño no tiene.
+
+**L2 — Sin `unicode-range`**, así que cualquier carácter latino descarga el archivo completo de la
+familia. Es la otra cara de M1 y se resuelve con el mismo subsetting.
+
+### Errores de medición propios, detectados durante la implementación
+
+**Cuarto de la serie** (los tres primeros están en el review de la historia 1.2): comparar una
+fuente **monoespaciada** contra el respaldo `monospace` no discrimina —JetBrains Mono dio 602.06 px
+y `monospace` también— y por un momento pareció que la fuente no cargaba. Forzando
+`document.fonts.load()` el estado pasó a `loaded` y la petición devolvió 200.
+
+**La corrección de método**, ya aplicada en la reverificación: usar un respaldo **proporcional**
+(`serif`) como referencia, que difiere de cualquier familia bajo prueba.
+
+### Action Items
+
+- [x] [AI-Review][Alto] Cambiar `format('woff2-variations')` por `format('woff2')` en los tres `@font-face` [fonts.scss:20,28,36]
+- [ ] [AI-Review][Medio] Subsetear Inter a latín con `pyftsubset`; son 344 KB de 392 KB precargados, el 60 % del camino crítico — **historia 7.8**
+- [ ] [AI-Review][Bajo] Si no se subsetea, evaluar quitar Inter del `preload` y dejar solo Space Grotesk — **historia 7.8**
+
+### Change Log — actualización
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Code review: 1 hallazgo alto corregido (`format()` no estándar). 1 medio asignado a la historia 7.8 con la medición. Estado `done`. |
