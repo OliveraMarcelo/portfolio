@@ -2,7 +2,7 @@
 
     <nav>
         <div class="logo">
-            <i class="fas fa-code"></i>
+            <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>
             MarceCode
         </div>
         <div class="navigation">

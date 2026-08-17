@@ -1,6 +1,6 @@
 # Story 1.1: Línea base de dependencias
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -51,44 +51,44 @@ so that el rediseño se construya sobre una base que no arrastre peso ni conflic
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 0 — Trabajar en rama** (AC: todos)
-  - [ ] Verificar la rama actual. Si es `main`, crear una rama de rediseño antes de tocar nada
-  - [ ] El sitio está **en producción** en marcecode.com y el push a `main` dispara el deploy
+- [x] **Tarea 0 — Trabajar en rama** (AC: todos)
+  - [x] Verificar la rama actual. Si es `main`, crear una rama de rediseño antes de tocar nada
+  - [x] El sitio está **en producción** en marcecode.com y el push a `main` dispara el deploy
 
-- [ ] **Tarea 1 — Actualizar dependencias de runtime** (AC: #1)
-  - [ ] `npm i vue@3.5.41 vue-router@4.6.4 vue-i18n@11.4.8`
-  - [ ] Verificar que `npm ls` no reporte `UNMET PEER DEPENDENCY`
-  - [ ] Confirmar que `package.json` quedó con esas versiones y que el `package-lock.json` se actualizó
+- [x] **Tarea 1 — Actualizar dependencias de runtime** (AC: #1)
+  - [x] `npm i vue@3.5.41 vue-router@4.6.4 vue-i18n@11.4.8`
+  - [x] Verificar que `npm ls` no reporte `UNMET PEER DEPENDENCY`
+  - [x] Confirmar que `package.json` quedó con esas versiones y que el `package-lock.json` se actualizó
 
-- [ ] **Tarea 2 — Actualizar dependencias de desarrollo** (AC: #1)
-  - [ ] `npm i -D sass@1.102.0 @vue/cli-service@5.0.9`
-  - [ ] **NO** tocar `eslint`: se queda en `^7.32.0` (ver §Guardarraíles)
-  - [ ] Verificar que el rango de `sass` sea `^1.102.0` y no permita saltar a 2.0
+- [x] **Tarea 2 — Actualizar dependencias de desarrollo** (AC: #1)
+  - [x] `npm i -D sass@1.102.0 @vue/cli-service@5.0.9`
+  - [x] **NO** tocar `eslint`: se queda en `^7.32.0` (ver §Guardarraíles)
+  - [x] Verificar que el rango de `sass` sea `^1.102.0` y no permita saltar a 2.0
 
-- [ ] **Tarea 3 — Eliminar `pdfjs-dist` y el visor de PDF** (AC: #2)
-  - [ ] `npm rm pdfjs-dist`
-  - [ ] Borrar `src/components/stories/PdfViewer.vue`
-  - [ ] Limpiar en `src/components/stories/MyStory.vue` el import comentado de la línea 30 y el uso comentado de la línea 11
-  - [ ] Verificar por `grep` que no queda ninguna referencia a `pdfjs` ni a `cdnjs.cloudflare.com`
+- [x] **Tarea 3 — Eliminar `pdfjs-dist` y el visor de PDF** (AC: #2)
+  - [x] `npm rm pdfjs-dist`
+  - [x] Borrar `src/components/stories/PdfViewer.vue`
+  - [x] Limpiar en `src/components/stories/MyStory.vue` el import comentado de la línea 30 y el uso comentado de la línea 11
+  - [x] Verificar por `grep` que no queda ninguna referencia a `pdfjs` ni a `cdnjs.cloudflare.com`
 
-- [ ] **Tarea 4 — Eliminar Font Awesome sin romper el logo** (AC: #2, #3)
-  - [ ] Reemplazar en `src/components/layouts/NavBar.vue` línea 5 el `<i class="fas fa-code"></i>` por `<span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>` — es el marcador de logo canónico del design system, no un SVG inventado
-  - [ ] Eliminar de `src/main.js` la línea `import '@fortawesome/fontawesome-free/css/all.css'`
-  - [ ] `npm rm @fortawesome/fontawesome-free font-awesome-icons`
-  - [ ] Verificar visualmente que el logo del header sigue igual
+- [x] **Tarea 4 — Eliminar Font Awesome sin romper el logo** (AC: #2, #3)
+  - [x] Reemplazar en `src/components/layouts/NavBar.vue` línea 5 el `<i class="fas fa-code"></i>` por `<span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>` — es el marcador de logo canónico del design system, no un SVG inventado
+  - [x] Eliminar de `src/main.js` la línea `import '@fortawesome/fontawesome-free/css/all.css'`
+  - [x] `npm rm @fortawesome/fontawesome-free font-awesome-icons`
+  - [x] Verificar visualmente que el logo del header sigue igual
 
-- [ ] **Tarea 5 — Silenciar la consola en producción** (AC: #4)
-  - [ ] En `src/registerServiceWorker.js`, envolver cada `console.log` en `if (process.env.NODE_ENV !== 'production')`
-  - [ ] Dejar el `console.error` del handler `error()` tal cual: un fallo real de registro debe seguir siendo visible
+- [x] **Tarea 5 — Silenciar la consola en producción** (AC: #4)
+  - [x] En `src/registerServiceWorker.js`, envolver cada `console.log` en `if (process.env.NODE_ENV !== 'production')`
+  - [x] Dejar el `console.error` del handler `error()` tal cual: un fallo real de registro debe seguir siendo visible
 
-- [ ] **Tarea 6 — Verificar** (AC: #1, #2, #4, #5)
-  - [ ] `npm run build` sin errores
-  - [ ] `npm run lint` sin advertencias
-  - [ ] `npm run serve` y recorrer `/`, `/projects` y `/about`
-  - [ ] Consola del navegador sin errores
-  - [ ] Pestaña de red: ninguna petición a `cdnjs.cloudflare.com`
-  - [ ] Toggle de idioma y toggle de tema siguen funcionando
-  - [ ] `npm ci` funciona en limpio — es lo que corre el Dockerfile (ver §El lockfile no es opcional)
+- [x] **Tarea 6 — Verificar** (AC: #1, #2, #4, #5)
+  - [x] `npm run build` sin errores
+  - [x] `npm run lint` sin advertencias
+  - [x] `npm run serve` y recorrer `/`, `/projects` y `/about`
+  - [x] Consola del navegador sin errores
+  - [x] Pestaña de red: ninguna petición a `cdnjs.cloudflare.com`
+  - [x] Toggle de idioma y toggle de tema siguen funcionando
+  - [x] `npm ci` funciona en limpio — es lo que corre el Dockerfile (ver §El lockfile no es opcional)
 
 ## Dev Notes
 
@@ -267,8 +267,116 @@ historia y la 1.4, donde el sprite SVG toma su lugar. No inviertas tiempo en hac
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**Versiones instaladas, verificadas tras `npm ci`:**
+
+```
+vue 3.5.41
+vue-router 4.6.4
+vue-i18n 11.4.8
+sass 1.102.0
+@vue/cli-service 5.0.9
+eslint 7.32.0   (sin cambio, deliberado)
+```
+
+**`npm ls vue vue-router vue-i18n`** — sin `UNMET PEER DEPENDENCY`. Los tres paquetes resuelven
+`vue@3.5.41 deduped`.
+
+**Dependencias tras la limpieza** — de 8 a 5:
+
+```json
+{ "core-js": "^3.8.3", "register-service-worker": "^1.7.2",
+  "vue": "^3.5.41", "vue-i18n": "^11.4.8", "vue-router": "^4.6.4" }
+```
+
+**`npm run lint`** → `DONE No lint errors found!`
+
+**`npm run build`** → `DONE Build complete` en 5898 ms, hash `89f7123492b3fc0d`.
+
+**`npm ci` en limpio** → correcto. `pdfjs-dist`, `@fortawesome/fontawesome-free` y
+`font-awesome-icons` confirmados ausentes de `node_modules/` después de la reinstalación.
+
+**Verificación en navegador** sobre el build de producción servido en el puerto 8099:
+
+```
+consola: 0 errores, 1 warning (preexistente, ver notas)
+peticiones a cdnjs.cloudflare.com: ninguna
+logo: "</> MarceCode", .logo-mark visible con aria-hidden="true"
+elementos <i class*="fa">: 0
+vistas: / (2748 car.), /projects (550), /about (2306) — las tres cargan
+toggle de idioma: "Inicio" → "Home", el botón alterna EN → ES
+toggle de tema: body "" → "dark-mode"
+```
 
 ### Completion Notes List
 
+Los cinco criterios de aceptación se cumplen, verificados midiendo y mirando, no solo compilando.
+
+**AC1 —** Las tres dependencias de runtime subieron juntas en un solo comando, que es lo que evita
+el conflicto de peer que la historia anticipaba: `vue-router@4.6.4` exige `vue ^3.5.0`, y con
+`vue@3.4.21` instalado npm habría fallado. `vue-router` quedó en `^4.6.4`, no en la 5.
+
+**AC2 —** `pdfjs-dist` resultó ser exactamente la dependencia muerta que la historia describía:
+`PdfViewer.vue` estaba comentado en `MyStory.vue` en las líneas 11 y 30, así que nada la importaba
+en runtime. Se eliminó el paquete, el componente y las dos líneas comentadas. `font-awesome-icons`
+tampoco aparecía importado en ningún archivo. Cero peticiones a `cdnjs.cloudflare.com`.
+
+**AC3 —** `@fortawesome/fontawesome-free` sí estaba en uso, en un único lugar: `NavBar.vue:5`. Se
+reemplazó por el marcador canónico del design system, `<span class="logo-mark">&lt;/&gt;</span>`.
+El logo renderiza `</> MarceCode` en color de acento y no quedó ningún `<i class*="fa">` en el
+proyecto.
+
+**AC4 —** Cero errores en consola. Los seis `console.log` de `registerServiceWorker.js` pasan por
+un helper `log()` condicionado a `NODE_ENV !== 'production'`. El `console.error` del handler
+`error()` se dejó incondicional a propósito: un fallo real de registro del service worker no es
+ruido y tiene que verse.
+
+**AC5 —** Sin regresión funcional. Las tres vistas cargan con contenido, el toggle de idioma
+cambia el nav de "Inicio" a "Home" y el de tema aplica `dark-mode` al `body`.
+
+**Dos hallazgos ajenos a esta historia, que conviene no perder:**
+
+1. **El manifest del PWA referencia iconos que no existen.** La consola emite un warning:
+   `Error while trying to use the following icon from the Manifest: /img/icons/android-chrome-192x192.png`.
+   `@vue/cli-plugin-pwa` genera un manifest con cuatro iconos que nunca se crearon en
+   `public/img/icons/`. Verificado como **preexistente** —`public/img/` no existe desde el primer
+   commit— y por lo tanto fuera del alcance de esta historia, cuyo AC4 pide cero *errores*.
+   Pero M7 pide **cero salida** en consola, así que **la historia 7.3 tiene que resolverlo**: o se
+   agregan los iconos, o se ajusta la configuración del plugin PWA.
+
+2. **`public/ui-generated/` se está copiando a `dist/`.** El build lo confirma: aparecen
+   `dist/ui-generated/_system/system.js`, `dist/ui-generated/home/page.css` y el resto. Como vive
+   dentro de `public/`, el prototipo quedaría publicado en `marcecode.com/ui-generated/` en el
+   próximo deploy. **Hay que excluirlo del build en `vue.config.js` antes de mergear a `main`.**
+   No se resolvió acá porque `vue.config.js` está explícitamente fuera del alcance de esta
+   historia, y las 41 historias referencian esas rutas como fuente normativa, así que mover los
+   archivos no es opción.
+
+**Deuda que la historia dejó deliberadamente en pie:** Google Fonts sigue cargando Poppins desde
+`fonts.googleapis.com` (historia 1.3), los siete `@import` de SASS siguen emitiendo advertencias
+de deprecación (historia 1.2), y `useDownloadPdf.vue` sigue siendo un `.vue` (historia 3.2).
+Ninguna se tocó, según los guardarraíles.
+
 ### File List
+
+```
+package.json                              MODIFICADO — versiones y 3 dependencias removidas
+package-lock.json                         MODIFICADO — regenerado (crítico: el Dockerfile usa npm ci)
+src/main.js                               MODIFICADO — se quita el import de Font Awesome
+src/components/layouts/NavBar.vue          MODIFICADO — <i class="fas fa-code"> → .logo-mark
+src/components/stories/MyStory.vue         MODIFICADO — se limpian las líneas comentadas 11 y 30
+src/components/stories/PdfViewer.vue       ELIMINADO
+src/registerServiceWorker.js               MODIFICADO — console.log condicionados a desarrollo
+```
+
+Siete archivos, exactamente los que la sección §Project Structure Notes anticipaba. Ningún otro
+archivo aparece en el diff.
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Línea base de dependencias fijada; 3 dependencias muertas o reemplazadas eliminadas; consola silenciada en producción. Historia completa, estado `review`. |

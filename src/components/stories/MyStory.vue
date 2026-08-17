@@ -8,7 +8,6 @@
       <div class="certificate-container">
       <img src="@/assets/icons/image.png" alt="Certificado Full Stack Developer - Digital House" class="certificate-img" />
     </div>
-     <!--  <PdfViewer/> -->
       <SectionTitle text="Experiencia laboral" span-text="." />
       <SubTitle text="💼 Actualmente trabajo como Frontend Developer en EXO S.A., donde formo parte del equipo de desarrollo de software. Me especializo en el desarrollo de interfaces modernas utilizando Flutter, Riverpod y Dart para  web, mobile y aplicaciones de escritorio (Windows)  . Participo activamente en el diseño de componentes, consumo de APIS y mantenimiento de código." />
       <SubTitle text="🌐 También he trabajado con Vue.js, desarrollando dashboards para visualización de datos y herramientas internas, contribuyendo al desarrollo de experiencias de usuario fluidas y accesibles." />
@@ -27,8 +26,6 @@
   <script setup>
   import SectionTitle from '../texts/SectionTitle.vue';
   import SubTitle from '../texts/SubTitle.vue';
-  /* import PdfViewer from './PdfViewer.vue'; */
-
   </script>
   
   <style lang="scss" scoped>
