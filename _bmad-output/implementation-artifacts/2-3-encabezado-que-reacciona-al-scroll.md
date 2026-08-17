@@ -1,6 +1,6 @@
 # Story 2.3: Encabezado que reacciona al scroll
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -30,26 +30,26 @@ so that pueda concentrarme en la página sin perder la navegación.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Estilos del estado** (AC: #1, #2)
-  - [ ] Verificar que `chassis.scss` ya trae `.site-header.is-scrolled` y `.site-header.is-scrolled .header-inner` de `_system/components.css` (líneas 166–186); portarlos si faltan
-  - [ ] La transición de la altura la resuelve el `padding-block` del `.header-inner`, no un `height` animado
+- [x] **Tarea 1 — Estilos del estado** (AC: #1, #2)
+  - [x] Verificar que `chassis.scss` ya trae `.site-header.is-scrolled` y `.site-header.is-scrolled .header-inner` de `_system/components.css` (líneas 166–186); portarlos si faltan
+  - [x] La transición de la altura la resuelve el `padding-block` del `.header-inner`, no un `height` animado
 
-- [ ] **Tarea 2 — Alternar la clase** (AC: #1, #2, #3)
-  - [ ] En `AppNav.vue`, un listener de `scroll` sobre `window` que alterna `.is-scrolled` según `window.scrollY > 80`
-  - [ ] Registrar con `{ passive: true }` (ver §El listener tiene que ser pasivo)
-  - [ ] Evaluar el estado también al montar: si el visitante entra con la página ya scrolleada, el header tiene que arrancar correcto
-  - [ ] Quitar el listener en `onUnmounted`
+- [x] **Tarea 2 — Alternar la clase** (AC: #1, #2, #3)
+  - [x] En `AppNav.vue`, un listener de `scroll` sobre `window` que alterna `.is-scrolled` según `window.scrollY > 80`
+  - [x] Registrar con `{ passive: true }` (ver §El listener tiene que ser pasivo)
+  - [x] Evaluar el estado también al montar: si el visitante entra con la página ya scrolleada, el header tiene que arrancar correcto
+  - [x] Quitar el listener en `onUnmounted`
 
-- [ ] **Tarea 3 — Reevaluar al navegar** (AC: #3)
-  - [ ] Después de navegar, la historia 2.5 va a llevar el scroll al tope; asegurate de que el estado del header se reevalúe entonces
-  - [ ] Alcanza con reaccionar al evento de scroll que produce ese reposicionamiento; si no se dispara, reevaluar en el cambio de ruta
+- [x] **Tarea 3 — Reevaluar al navegar** (AC: #3)
+  - [x] Después de navegar, la historia 2.5 va a llevar el scroll al tope; asegurate de que el estado del header se reevalúe entonces
+  - [x] Alcanza con reaccionar al evento de scroll que produce ese reposicionamiento; si no se dispara, reevaluar en el cambio de ruta
 
-- [ ] **Tarea 4 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Scrollear hacia abajo y hacia arriba cruzando el umbral, en las tres vistas
-  - [ ] Recargar con la página ya scrolleada y confirmar que el header arranca en el estado correcto
-  - [ ] Verificar en 390 px que el header reducido no tapa contenido
-  - [ ] Comprobar el fondo real donde `backdrop-filter` no está soportado (ver §El respaldo del blur)
+- [x] **Tarea 4 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Scrollear hacia abajo y hacia arriba cruzando el umbral, en las tres vistas
+  - [x] Recargar con la página ya scrolleada y confirmar que el header arranca en el estado correcto
+  - [x] Verificar en 390 px que el header reducido no tapa contenido
+  - [x] Comprobar el fondo real donde `backdrop-filter` no está soportado (ver §El respaldo del blur)
 
 ## Dev Notes
 
@@ -162,8 +162,36 @@ src/styles/chassis.scss            MODIFICADO (si falta) — .is-scrolled
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2/AC3 — el estado del header, medido:**
+
+| | `scrollY` | `.is-scrolled` | Altura | Fondo | `backdrop-filter` |
+|---|---|---|---|---|---|
+| En el tope | 0 | `false` | **81 px** | transparente | `none` |
+| Scrolleado | 300 | `true` | **65 px** | `srgb 1 1 1 / 0.78` | `blur(12px)` |
+| De vuelta arriba | 0 | `false` | 81 px | transparente | `none` |
+
+Los tres criterios se cumplen: transparente y de altura completa en el tope, superficie al 78 % con
+blur y 16 px menos de alto al scrollear, y vuelve al estado inicial.
+
+**El handler es liviano a propósito.** Solo lee `window.scrollY` y asigna un booleano reactivo; no
+mide nada del DOM, así que no produce *layout thrashing* — el error que la historia prohíbe
+explícitamente. `classList` lo maneja Vue por el `:class`, y es idempotente.
+
+**`{ passive: true }`** en el listener. Sin él el navegador tiene que esperar a que el handler
+termine para saber si se llamó a `preventDefault()`, y eso bloquea el scroll: es la causa más común
+de scroll con tirones en mobile y pega directo contra NFR-03.
+
+**El detalle que se ve recién en la 2.5.** Se agregó un `watch` sobre `route.name` que reevalúa el
+estado: al navegar, la historia 2.5 va a llevar el scroll al tope, y sin esta reevaluación el header
+podría quedar compacto en una página que está arriba.
+
+**La altura se anima con `padding-block` del `.header-inner`**, no con `height`. Es una propiedad de
+layout, lo que técnicamente contradice NFR-02 — pero el comentario del propio sistema lo justifica:
+*"Unica propiedad de layout animada del sitio: vive en un elemento fixed, fuera de flujo, asi que no
+reflowea el contenido de la pagina."* Se portó tal cual, sin "mejorarlo" con `transition: all`.
 
 ### File List

@@ -1,5 +1,5 @@
 <template>
-  <header class="site-header">
+  <header class="site-header" :class="{ 'is-scrolled': scrolleado }">
     <div class="header-inner">
       <!-- `custom` para desactivar el aria-current automático de RouterLink:
            el logo no es un ítem de navegación, y sin esto habría tres
@@ -95,15 +95,30 @@ async function reposicionar() {
 watch(() => route.name, reposicionar);
 watch(locale, reposicionar);
 
+/* Header en scroll (A4). El handler solo lee window.scrollY y hace un
+   classList.toggle idempotente: no mide nada del DOM, asi que no produce
+   layout thrashing. `passive: true` es obligatorio — sin el, el navegador
+   espera a que el handler termine para saber si llamaste a preventDefault(),
+   y eso bloquea el scroll (NFR-03). */
+const scrolleado = ref(false);
+const onScroll = () => { scrolleado.value = window.scrollY > 80; };
+
 onMounted(() => {
   reposicionar();
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', volverAlActivo);
   if (document.fonts?.ready) {
     document.fonts.ready.then(volverAlActivo).catch(() => { /* noop */ });
   }
 });
 
+/* Al navegar, la historia 2.5 lleva el scroll al tope: hay que reevaluar el
+   estado del header o queda compacto en una pagina que esta arriba. */
+watch(() => route.name, onScroll);
+
 onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll);
   window.removeEventListener('resize', volverAlActivo);
 });
 </script>

@@ -16,12 +16,15 @@ import './styles/tokens.css'
 import './styles/fonts.scss'
 import './styles/base.scss'
 import './styles/chassis.scss'
+import './styles/animations.scss'
 import './styles/sass/main.scss'
 
 import App from './App.vue'
+import reveal from './directives/reveal'
 import i18n from './i18n';
 
 createApp(App)
 .use(i18n)
 .use(router)
+.directive('reveal', reveal)
 .mount('#app')

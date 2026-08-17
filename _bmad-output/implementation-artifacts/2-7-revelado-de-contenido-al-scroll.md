@@ -1,6 +1,6 @@
 # Story 2.7: Revelado de contenido al scroll
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -43,40 +43,40 @@ so that la lectura tenga ritmo en lugar de ser un muro de contenido.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Portar las utilidades de animación** (AC: #2, #5)
-  - [ ] Portar a `src/styles/animations.scss` las clases `.reveal`, `.reveal.is-visible`, `.mask`, `.mask-in` y `.is-loaded .mask-in` de `_system/components.css` (líneas 112–151)
-  - [ ] Portar el hook de QA `[data-qa="show-all"]` del mismo bloque
-  - [ ] Revisar que ninguna declare `display` (ver §La regla que costó el layout del hero)
-  - [ ] Importar en `src/main.js` después de `base.scss`
+- [x] **Tarea 1 — Portar las utilidades de animación** (AC: #2, #5)
+  - [x] Portar a `src/styles/animations.scss` las clases `.reveal`, `.reveal.is-visible`, `.mask`, `.mask-in` y `.is-loaded .mask-in` de `_system/components.css` (líneas 112–151)
+  - [x] Portar el hook de QA `[data-qa="show-all"]` del mismo bloque
+  - [x] Revisar que ninguna declare `display` (ver §La regla que costó el layout del hero)
+  - [x] Importar en `src/main.js` después de `base.scss`
 
-- [ ] **Tarea 2 — La directiva** (AC: #1, #2, #3)
-  - [ ] `src/directives/reveal.js` con un `IntersectionObserver` a nivel de **módulo**, creado una sola vez
-  - [ ] Umbral `0.15` y `rootMargin: '0px 0px -5% 0px'`
-  - [ ] En `mounted`: agregar `.reveal` al elemento y registrarlo en el observer
-  - [ ] Al intersectar: agregar `.is-visible` y `observer.unobserve(el)`
-  - [ ] En `unmounted`: `unobserve` por si el elemento se va antes de aparecer
-  - [ ] Registrarla globalmente en `src/main.js` con `app.directive('reveal', reveal)`
+- [x] **Tarea 2 — La directiva** (AC: #1, #2, #3)
+  - [x] `src/directives/reveal.js` con un `IntersectionObserver` a nivel de **módulo**, creado una sola vez
+  - [x] Umbral `0.15` y `rootMargin: '0px 0px -5% 0px'`
+  - [x] En `mounted`: agregar `.reveal` al elemento y registrarlo en el observer
+  - [x] Al intersectar: agregar `.is-visible` y `observer.unobserve(el)`
+  - [x] En `unmounted`: `unobserve` por si el elemento se va antes de aparecer
+  - [x] Registrarla globalmente en `src/main.js` con `app.directive('reveal', reveal)`
 
-- [ ] **Tarea 3 — Escalonado por argumento** (AC: #3)
-  - [ ] `v-reveal="{ delay: 70 }"` aplica `transition-delay` al elemento, o define una custom property que el CSS consuma
-  - [ ] Sin valor, el retardo es 0
+- [x] **Tarea 3 — Escalonado por argumento** (AC: #3)
+  - [x] `v-reveal="{ delay: 70 }"` aplica `transition-delay` al elemento, o define una custom property que el CSS consuma
+  - [x] Sin valor, el retardo es 0
 
-- [ ] **Tarea 4 — Respaldo y movimiento reducido** (AC: #4)
-  - [ ] Si `IntersectionObserver` no existe, agregar `.is-visible` a todo de inmediato
-  - [ ] Si `useReducedMotion` indica preferencia reducida, agregar `.is-visible` de inmediato y **no** observar
-  - [ ] El estado inicial oculto tiene que estar dentro de `@media (prefers-reduced-motion: no-preference)` (ver §El estado oculto va condicionado)
+- [x] **Tarea 4 — Respaldo y movimiento reducido** (AC: #4)
+  - [x] Si `IntersectionObserver` no existe, agregar `.is-visible` a todo de inmediato
+  - [x] Si `useReducedMotion` indica preferencia reducida, agregar `.is-visible` de inmediato y **no** observar
+  - [x] El estado inicial oculto tiene que estar dentro de `@media (prefers-reduced-motion: no-preference)` (ver §El estado oculto va condicionado)
 
-- [ ] **Tarea 5 — Marcar `is-loaded`** (AC: #2)
-  - [ ] En `App.vue`, agregar `.is-loaded` al `<body>` dentro de un doble `requestAnimationFrame` tras el montaje
-  - [ ] Es lo que dispara las animaciones de máscara `.mask-in` que la historia 3.3 va a usar
+- [x] **Tarea 5 — Marcar `is-loaded`** (AC: #2)
+  - [x] En `App.vue`, agregar `.is-loaded` al `<body>` dentro de un doble `requestAnimationFrame` tras el montaje
+  - [x] Es lo que dispara las animaciones de máscara `.mask-in` que la historia 3.3 va a usar
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Aplicar `v-reveal` de forma temporal a algunos bloques de las vistas actuales y ver el revelado
-  - [ ] Confirmar que hay **un** observer, no varios (ver §Comandos de verificación)
-  - [ ] Con `prefers-reduced-motion: reduce`, confirmar que todo es legible de entrada
-  - [ ] Grabar el scroll en el panel Performance y confirmar que no cae de 60 fps
-  - [ ] Quitar los `v-reveal` temporales antes de cerrar
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Aplicar `v-reveal` de forma temporal a algunos bloques de las vistas actuales y ver el revelado
+  - [x] Confirmar que hay **un** observer, no varios (ver §Comandos de verificación)
+  - [x] Con `prefers-reduced-motion: reduce`, confirmar que todo es legible de entrada
+  - [x] Grabar el scroll en el panel Performance y confirmar que no cae de 60 fps
+  - [x] Quitar los `v-reveal` temporales antes de cerrar
 
 ## Dev Notes
 
@@ -252,8 +252,54 @@ clases de transición de vista, esta historia le suma las de revelado y máscara
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC5 — ninguna clase de animación declara `display`.** Verificado inyectando un `<div>` con cada
+clase y leyendo el `display` computado:
+
+```
+reveal:   display=block      <- el default del div, la clase no lo toca
+mask:     display=block
+mask-in:  display=block
+```
+
+Es el defecto del prototipo que esta historia no repite: allí `.mask-in { display: block }` pisó el
+`display: flex` de `.chips` por igual especificidad y orden posterior, y apiló los chips del hero a
+ancho completo.
+
+**AC2 — el contrato completo de revelado, medido:**
+
+```
+estado inicial   opacity 0    transform matrix(1,0,0,1,0,24)   <- translateY(24px)
+tras .is-visible opacity 1    transform none
+transicion       opacity, transform / 0.6s, 0.6s               <- --dur-slow
+```
+
+**AC3 — el escalonado por `--d`:** asignando `--d: 140ms` el `transition-delay` computado pasa a
+`0.14s`.
+
+**AC4 y `is-loaded`:** `document.body.classList.contains('is-loaded')` es `true`, y el hook
+`[data-qa="show-all"]` fuerza `opacity: 1`.
+
+**`v-reveal` aplicado a un componente real** (`MyStory` en `/about`, render temporal ya quitado):
+recibió `.reveal`, el observer lo detectó al intersectar y le agregó `.is-visible`.
+
+**Una mejora sobre el sistema, deliberada.** El bloque del sistema declara el estado oculto de
+`.reveal` y `.mask-in` sin condición, y depende del `!important` del bloque de `reduce` para
+neutralizarlo. Acá el estado oculto vive **dentro de `@media (prefers-reduced-motion:
+no-preference)`**, que es la defensa estructural que la historia pedía: si `.is-visible` no llegara
+—JavaScript deshabilitado, un error en la directiva, un elemento que nunca entra en viewport— el
+contenido queda visible igual, sin depender de que nadie lo revele. Cubre además el caso sin
+JavaScript, que el `!important` no cubre.
+
+**El sistema usa `--d`, no `--i` × `--stagger`.** La historia sugería calcular el retardo con un
+índice; el sistema ya tenía resuelto un `transition-delay: var(--d, 0ms)` más simple. Se usó el del
+sistema.
+
+**`unobserve` en los dos lados.** Al revelar, para que el observer deje de notificar ese elemento en
+cada cruce del umbral —con veinte elementos serían veinte callbacks inútiles por movimiento de
+scroll—, y en `unmounted`, para que no queden referencias a nodos fuera del documento.
 
 ### File List

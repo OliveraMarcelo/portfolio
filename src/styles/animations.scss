@@ -1,0 +1,58 @@
+/* ============================================================
+   MarceCode — animations.scss
+   Utilidades de animacion, portadas de _system/components.css.
+
+   CONTRATO: ninguna de estas clases declara `display`. En el prototipo
+   `.mask-in { display: block }` piso el `display: flex` de `.chips` por
+   igual especificidad y orden posterior, y apilo los chips del hero a
+   ancho completo. Donde el display es necesario va con selector
+   CONTEXTUAL o de elemento, nunca en la utilidad a secas.
+   ============================================================ */
+
+/* El estado inicial OCULTO vive dentro de `no-preference`, no suelto.
+   Es una defensa estructural, no una condicion que se chequea: si `.is-visible`
+   no llegara —JavaScript deshabilitado, un error en la directiva, un elemento
+   que nunca entra en viewport— el contenido queda visible igual. El bloque de
+   `reduce` en base.scss tambien lo fuerza con !important, pero esto ademas
+   cubre el caso sin JavaScript. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--dur-slow) var(--ease-out),
+                transform var(--dur-slow) var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+
+  .mask-in {
+    opacity: 0;
+    transform: translateY(105%);
+    transition: opacity var(--dur-hero) var(--ease-out),
+                transform var(--dur-hero) var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.mask { overflow: hidden; }
+
+/* Especificidad de elemento para no pisar layouts ajenos. */
+span.mask-in { display: block; }
+
+.is-loaded .mask-in { opacity: 1; transform: none; }
+
+/* Hook de verificacion: estado final visible, sin correr animaciones.
+   La Epica 7 lo usa para auditar layout sin esperar scroll. */
+[data-qa="show-all"] .reveal,
+[data-qa="show-all"] .mask-in,
+[data-qa="show-all"] .project-actions,
+[data-qa="show-all"] .scroll-cue {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+[data-qa="show-all"] .timeline-progress { transform: scaleY(1) !important; }
