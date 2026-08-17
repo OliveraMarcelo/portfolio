@@ -42,5 +42,19 @@
     "onlineStoreDesc": "E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.",
     "pokemonGameTitle": "Pokemon Game",
     "pokemonGameDesc": "¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI. Desarrollado con TypeScript y Vue."
+  },
+  "meta": {
+    "home": {
+      "title": "Marcelo Olivera — Frontend Developer",
+      "description": "Frontend Developer especializado en interfaces modernas con Vue, Flutter y Dart. Proyectos reales, stack usado y cómo contactarme."
+    },
+    "projects": {
+      "title": "Proyectos — Marcelo Olivera",
+      "description": "E-commerce con Vue y Node, un juego sobre la PokéAPI y mensajería en tiempo real con WebSockets: el problema, el stack y el rol."
+    },
+    "about": {
+      "title": "Sobre mí — Marcelo Olivera",
+      "description": "Frontend Developer en EXO S.A. Formación en desarrollo de software, experiencia con Flutter, Riverpod y Vue, y proyectos propios."
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { ref, readonly } from 'vue';
 import i18n from '@/i18n';
+import { aplicarMetadatos } from '@/router';
 
 /* Estado global de idioma. Reemplaza a src/stores/langStore.js, que estaba
    roto por construccion: llamaba a useI18n() desde una funcion exportada que
@@ -27,6 +28,9 @@ function setLocale(valor, persistir = true) {
   i18n.global.locale.value = valor;
   raiz.setAttribute('lang', valor);
   locale.value = valor;
+  /* El titulo y la meta description tambien son i18n: se retraducen sin
+     necesidad de navegar (historia 2.1). */
+  aplicarMetadatos();
   if (persistir) {
     try { localStorage.setItem(CLAVE, valor); } catch (e) { /* noop */ }
   }

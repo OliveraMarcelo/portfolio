@@ -1,6 +1,6 @@
 # Story 2.1: Rutas con título y descripción propios
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -30,30 +30,30 @@ so that el enlace signifique algo fuera del sitio.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Declarar los metadatos** (AC: #1)
-  - [ ] En `src/router/index.js`, agregar `meta: { titleKey, descriptionKey }` a las tres rutas
-  - [ ] Conservar los `component: () => import(...)` diferidos que ya existen
-  - [ ] Conservar los `name` actuales: `home`, `projects`, `about`
+- [x] **Tarea 1 — Declarar los metadatos** (AC: #1)
+  - [x] En `src/router/index.js`, agregar `meta: { titleKey, descriptionKey }` a las tres rutas
+  - [x] Conservar los `component: () => import(...)` diferidos que ya existen
+  - [x] Conservar los `name` actuales: `home`, `projects`, `about`
 
-- [ ] **Tarea 2 — Claves de metadatos en los locales** (AC: #1, #3)
-  - [ ] Agregar a `src/locales/{es,en}.json` la sección `meta` con título y descripción por ruta
-  - [ ] El título incluye el nombre del sitio: `Marcelo Olivera — Frontend Developer` en Home
-  - [ ] La descripción, entre 120 y 160 caracteres, distinta por ruta
+- [x] **Tarea 2 — Claves de metadatos en los locales** (AC: #1, #3)
+  - [x] Agregar a `src/locales/{es,en}.json` la sección `meta` con título y descripción por ruta
+  - [x] El título incluye el nombre del sitio: `Marcelo Olivera — Frontend Developer` en Home
+  - [x] La descripción, entre 120 y 160 caracteres, distinta por ruta
 
-- [ ] **Tarea 3 — Guard `afterEach`** (AC: #1, #2)
-  - [ ] `router.afterEach((to) => { … })` traduce `to.meta.titleKey` con la instancia de i18n y lo asigna a `document.title`
-  - [ ] Actualiza o crea el `<meta name="description">` (ver §Actualizar la meta description)
-  - [ ] Importar la instancia de i18n directamente, **no** llamar a `useI18n()`: un guard no está en un `setup()`
+- [x] **Tarea 3 — Guard `afterEach`** (AC: #1, #2)
+  - [x] `router.afterEach((to) => { … })` traduce `to.meta.titleKey` con la instancia de i18n y lo asigna a `document.title`
+  - [x] Actualiza o crea el `<meta name="description">` (ver §Actualizar la meta description)
+  - [x] Importar la instancia de i18n directamente, **no** llamar a `useI18n()`: un guard no está en un `setup()`
 
-- [ ] **Tarea 4 — Retraducir al cambiar idioma** (AC: #3)
-  - [ ] En `useLocale.setLocale`, después de cambiar el `locale`, volver a aplicar los metadatos de la ruta actual
-  - [ ] Extraer la lógica de aplicación a una función reutilizable para no duplicarla entre el guard y el composable
+- [x] **Tarea 4 — Retraducir al cambiar idioma** (AC: #3)
+  - [x] En `useLocale.setLocale`, después de cambiar el `locale`, volver a aplicar los metadatos de la ruta actual
+  - [x] Extraer la lógica de aplicación a una función reutilizable para no duplicarla entre el guard y el composable
 
-- [ ] **Tarea 5 — Verificar** (AC: #1, #2, #3)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Navegar por las tres rutas y confirmar que el título de la pestaña cambia
-  - [ ] Alternar idioma sin navegar y confirmar que el título se retraduce
-  - [ ] Inspeccionar el `<meta name="description">` en cada ruta
+- [x] **Tarea 5 — Verificar** (AC: #1, #2, #3)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Navegar por las tres rutas y confirmar que el título de la pestaña cambia
+  - [x] Alternar idioma sin navegar y confirmar que el título se retraduce
+  - [x] Inspeccionar el `<meta name="description">` en cada ruta
 
 ## Dev Notes
 
@@ -176,8 +176,69 @@ public/index.html            MODIFICADO (opcional) — <meta name="description">
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**Los tres títulos y descripciones, medidos en navegador:**
+
+| Ruta | `document.title` | Largo de la descripción |
+|---|---|---|
+| `/` | Marcelo Olivera — Frontend Developer | 133 |
+| `/projects` | Projects — Marcelo Olivera | 132 |
+| `/about` | About — Marcelo Olivera | 132 |
+
+Los tres títulos distintos entre sí, las tres descripciones distintas, y todas dentro del rango de
+120–160 caracteres (en ambos idiomas: 128–133).
+
+**Retraducción sin navegar**, sobre `/about`:
+
+```
+tituloAntes:   "About — Marcelo Olivera"
+tituloDespues: "Sobre mí — Marcelo Olivera"
+seRetradujo:   true
+```
+
+**Paridad de claves tras sumar el grupo `meta`:** 34 en cada idioma, sin diferencias.
 
 ### Completion Notes List
 
+Los tres criterios se cumplen.
+
+**La cuarta ruta no se registró.** `/projects/:slug` necesita el módulo de contenido de la historia
+4.1 para resolver el slug y la vista de la 4.5; registrarla ahora apuntando a un componente
+inexistente rompería el build. Las tres rutas existentes quedaron con sus metadatos.
+
+**El guard va en `afterEach`.** Si otro guard cancelara la navegación, con `beforeEach` ya se habría
+cambiado el título por una página a la que el visitante nunca llegó.
+
+**`aplicarMetadatos` se exporta.** `useLocale.setLocale` la invoca después de cambiar el locale, así
+el título y la descripción se retraducen sin necesidad de navegar. Es la razón por la que
+`useLocale` importa la **instancia** de i18n y no el hook: esta función corre desde un guard, que no
+está dentro del `setup()` de ningún componente — la decisión de la historia 1.7 rindió acá.
+
+**`setMeta` crea la etiqueta la primera vez.** `public/index.html` no trae ningún
+`<meta name="description">`, así que la primera aplicación la inserta y las siguientes la
+reutilizan.
+
+**Una lectura que parecía un fallo y no lo era.** La primera verificación de retraducción comparó el
+`document.title` de la Home antes y después de alternar el idioma, y dio `false`. El motivo: el
+título de la Home es **deliberadamente idéntico** en los dos idiomas ("Marcelo Olivera — Frontend
+Developer" es un nombre propio y un rol que no se traduce). La descripción sí había cambiado.
+Repetido sobre `/about`, cuyo título sí difiere, da `true`. Sexto caso de la serie: **elegí un campo
+que por diseño no cambia y leí eso como que el mecanismo no funcionaba.**
+
 ### File List
+
+```
+src/router/index.js          REESCRITO — meta por ruta, guard afterEach, aplicarMetadatos exportada
+src/locales/es.json          MODIFICADO — grupo meta con title y description por ruta
+src/locales/en.json          MODIFICADO — ídem
+src/composables/useLocale.js MODIFICADO — reaplica los metadatos al cambiar de idioma
+```
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Metadatos por ruta vía `route.meta` y guard `afterEach`, con retraducción sin navegar. Estado `done`. |
