@@ -1,0 +1,364 @@
+/* proyectos — page.css
+   Solo lo propio de esta pantalla. Tokens, chasis (header/nav/footer),
+   botones, chips, placeholders y utilidades de animacion viven en
+   ../_system/. Ningun selector de aca redefine el sistema. */
+
+main, .site-header, .site-footer { position: relative; z-index: 1; }
+
+:focus:not(:focus-visible) { outline: none; }
+
+.logo-word { white-space: nowrap; }
+
+.nav-link[aria-current="page"] { color: var(--color-text); }
+
+.icon-btn .ic { grid-area: 1 / 1; }
+
+.lang-code.is-on { color: var(--color-text); }
+
+.menu-btn .ic-close { display: none; }
+
+.menu-btn[aria-expanded="true"] .ic-menu { display: none; }
+
+.menu-btn[aria-expanded="true"] .ic-close { display: block; }
+
+/* Nav mobile */
+@media (max-width: 859px) {
+  .menu-btn { display: grid; }
+  .nav-indicator { display: none; }
+
+  .nav-main {
+    position: fixed;
+    inset-block-start: var(--nav-h);
+    inset-inline: 0;
+    padding: var(--space-4) var(--gutter) calc(var(--space-4) * 1.5);
+    background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+    border-bottom: 1px solid var(--color-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+    transition: opacity var(--dur-fast) var(--ease-out),
+                transform var(--dur-fast) var(--ease-out),
+                visibility 0s linear var(--dur-fast);
+  }
+  .nav-main.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .nav-list { flex-direction: column; align-items: stretch; gap: 0; }
+  .nav-link {
+    min-height: 52px;
+    padding-inline: 0.25rem;
+    font-size: var(--text-lg);
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .nav-list li:last-child .nav-link { border-bottom: none; }
+  .nav-link[aria-current="page"] { color: var(--color-accent-ink); }
+
+  .nav-scrim {
+    display: block;
+    position: fixed;
+    inset-block-start: var(--nav-h);
+    inset-inline: 0;
+    block-size: 100dvh;
+    background: rgba(0, 0, 0, 0.44);
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  .nav-scrim.is-visible { opacity: 1; }
+
+  html.nav-open, html.nav-open body { overflow: hidden; }
+
+  /* Con el menú abierto la cabecera no se encoge: el panel queda pegado. */
+  html.nav-open .site-header { height: var(--nav-h); }
+}
+
+/* ---------- 5. Encabezado de vista -------------------------- */
+
+.view-head {
+  padding-block: clamp(3rem, 7vw, var(--space-16)) clamp(2rem, 5vw, 3.25rem);
+}
+
+.view-title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.view-title .mask-in { display: block; }
+
+.view-title .dot { color: var(--color-accent-ink); }
+
+.lede {
+  max-width: 46ch;
+  margin-top: 1.25rem;
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.lede .mask-in { display: block; }
+
+/* ---------- 6. Grilla de proyectos -------------------------- */
+
+.projects { padding-block-end: clamp(3rem, 8vw, var(--space-24)); }
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+
+.card-media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ph-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.card-media-tag {
+  position: absolute;
+  inset-block-end: 0.625rem;
+  inset-inline-start: 0.625rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.card-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.card-summary {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  max-width: 44ch;
+}
+
+.chip-lead {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.card-note {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+/* Hover de card — un solo gesto protagónico. */
+@media (hover: hover) and (pointer: fine) {
+  /* Las acciones asientan al hover, pero nunca desaparecen: un
+     reclutador que escanea en 60 s tiene que ver el CTA sin apuntar.
+     Para la aparición pura del brief, poner --actions-rest: 0. */
+  .card-actions {
+    opacity: var(--actions-rest, 0.6);
+    transform: translateY(4px);
+    transition: opacity var(--dur-fast) var(--ease-out),
+                transform var(--dur-fast) var(--ease-out);
+  }
+  .project-card:hover .card-actions,
+  .card:focus-within .card-actions { opacity: 1; transform: translateY(0); }
+
+  .project-card:hover .card {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: color-mix(in srgb, var(--color-border) 60%, var(--color-accent));
+  }
+  .card { box-shadow: var(--shadow-md); }
+  .project-card:hover .card-img { transform: scale(1.06); }
+}
+
+.btn-quiet:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.btn-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  opacity: 0.72;
+}
+
+/* Subrayado que crece desde la izquierda. */
+.link-underline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  min-height: 44px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 12px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.link-underline:hover { color: var(--color-text); }
+
+.link-underline:hover::after,
+.link-underline:focus-visible::after { transform: scaleX(1); }
+
+/* ---------- 8. Contacto ------------------------------------- */
+
+.contact { padding-block-end: clamp(3rem, 8vw, var(--space-24)); }
+
+.contact-box {
+  padding: clamp(1.75rem, 4vw, var(--space-8));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.contact-title {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  max-width: 18ch;
+}
+
+.contact-lede {
+  margin-top: 0.875rem;
+  max-width: 46ch;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 559px) {
+
+
+  .contact-actions { flex-direction: column; align-items: stretch; }
+}
+
+/* ---------- 10. Animación (clases canónicas) ---------------- */
+/* Ninguna clase utilitaria declara `display`. */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js .mask-in {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+
+.js .mask-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* La bajada sigue al H1 a 70 ms. */
+.js .lede .mask-in { transition-delay: var(--stagger); }
+
+/* ---------- 11. Hooks de verificación / reduced motion ------ */
+
+[data-qa="show-all"] .reveal,
+[data-qa="show-all"] .mask-in,
+[data-qa="show-all"] .card-actions {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+
+  .reveal, .mask-in, .card-actions {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}

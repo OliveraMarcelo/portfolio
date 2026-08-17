@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+/* Resolucion de tema antes del primer paint: sin flash al recargar. */
+(function () {
+  try {
+    var saved = localStorage.getItem('mc-theme');
+    var theme = (saved === 'light' || saved === 'dark')
+      ? saved
+      : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+    var lang = localStorage.getItem('mc-lang');
+    if (lang === 'en' || lang === 'es') document.documentElement.setAttribute('lang', lang);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+<title>Marcelo Olivera — Frontend Developer</title>
+<meta name="description" content="Marcelo Olivera, Frontend Developer. Construyo interfaces que se sienten tan bien como se ven: web, mobile y escritorio.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0D10'/%3E%3Cpath d='M12 10 7 16l5 6M20 10l5 6-5 6' fill='none' stroke='%23FF7948' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_system/tokens.css">
+  <link rel="stylesheet" href="../_system/components.css">
+  <link rel="stylesheet" href="page.css">
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 13.4A8.2 8.2 0 0 1 10.6 4a8.2 8.2 0 1 0 9.4 9.4Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14.5V19a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V8a1.5 1.5 0 0 1 1.5-1.5H10"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M9.2 20.6v-2.9c-3 .6-3.8-1.3-3.8-1.3-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.6 1.2 3.2.9.1-.7.4-1.2.7-1.5-2.4-.3-5-1.2-5-5.4 0-1.2.4-2.2 1.1-2.9-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1a10 10 0 0 1 5.4 0c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.7 1.1 2.9 0 4.2-2.6 5.1-5 5.4.4.4.8 1.1.8 2.2v3.3"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3.5 20.5 5 16.4A8 8 0 1 1 8 19.3l-4.5 1.2Z"/><path d="M9 9.2c.2 1.6 1.9 4 4.2 4.8.7.2 1.3-.3 1.5-.9l-1.6-.9-.8.7c-.9-.5-1.6-1.2-2-2.1l.8-.7-.8-1.6c-.6.2-1.2.6-1.3 1.3Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 7.1 5.3c.7.5 1.6.5 2.2 0L20.2 7"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V17M8 7.4v.1M12 17v-3.6a2.4 2.4 0 0 1 4.8 0V17"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7.5 4 12l4.5 4.5M15.5 7.5 20 12l-4.5 4.5M13.5 5l-3 14"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 4 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 16l8 4 8-4"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m5 8 4 4-4 4M12.5 16H19"/><rect x="3" y="4" width="18" height="16" rx="2.5"/></symbol>
+  <symbol id="i-triangle" viewBox="0 0 24 24"><path d="M12 5 21 19H3l9-14Z"/><path d="M12 12.5 15 19H9l3-6.5Z"/></symbol>
+  <symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.6"/><ellipse cx="12" cy="12" rx="9.5" ry="4.2"/><ellipse cx="12" cy="12" rx="9.5" ry="4.2" transform="rotate(60 12 12)"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M12 3.5 20 8v8l-8 4.5L4 16V8l8-4.5Z"/><path d="M4 8l8 4.5L20 8M12 12.5V20"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><path d="M5 18h6a4 4 0 0 0 0-8H9a4 4 0 0 1 0-8h6"/><path d="m16.5 4.5 2.5-2.5M16.5 4.5 19 7" transform="translate(-2 0)"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6"/><path d="M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="5.5" r="2.5"/><circle cx="7" cy="18.5" r="2.5"/><circle cx="17" cy="9" r="2.5"/><path d="M7 8v8M17 11.5c0 3-3.5 3.2-6 4.4"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Saltar al contenido</a>
+
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a class="logo" href="index.html" aria-label="MarceCode — ir al inicio" data-i18n-aria="a11y.logo">
+      <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span><span class="logo-word">MarceCode</span>
+    </a>
+
+    <nav class="nav" id="primary-nav" aria-label="Navegación principal" data-i18n-aria="nav.aria">
+      <ul class="nav-list">
+        <li><a class="nav-link is-active" href="index.html" aria-current="page" data-i18n="nav.home">Inicio</a></li>
+        <li><a class="nav-link" href="../proyectos/index.html" data-i18n="nav.projects">Proyectos</a></li>
+        <li><a class="nav-link" href="../sobre-mi/index.html" data-i18n="nav.about">Sobre mí</a></li>
+      </ul>
+      <span class="nav-indicator" id="nav-indicator" aria-hidden="true"></span>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn theme-btn" id="theme-toggle" type="button" aria-label="Cambiar a tema claro" data-i18n-aria="theme.toLight">
+        <svg class="ico ico-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+        <svg class="ico ico-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+      </button>
+      <button class="lang-btn" id="lang-toggle" type="button" aria-label="Switch site language to English" data-i18n-aria="lang.aria">
+        <span class="lang-current">ES</span><span class="lang-sep" aria-hidden="true">/</span><span class="lang-other">EN</span>
+      </button>
+      <button class="icon-btn menu-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú" data-i18n-aria="menu.open">
+        <svg class="ico ico-menu" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <svg class="ico ico-close" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul class="mobile-list">
+      <li><a class="mobile-link is-active" href="index.html" aria-current="page" data-i18n="nav.home">Inicio</a></li>
+      <li><a class="mobile-link" href="../proyectos/index.html" data-i18n="nav.projects">Proyectos</a></li>
+      <li><a class="mobile-link" href="../sobre-mi/index.html" data-i18n="nav.about">Sobre mí</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="nav-scrim" aria-hidden="true"></div>
+
+<main id="main" data-od-id="main">
+
+  <!-- Hero -->
+  <section class="hero" id="inicio" data-od-id="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="hero-kicker mask"><span class="mask-in" style="--d:0ms" data-i18n="hero.kicker">Hola, soy</span></p>
+
+        <h1 class="hero-title" data-od-id="hero-title">
+          <span class="mask"><span class="mask-in" style="--d:70ms">Marcelo</span></span>
+          <span class="mask"><span class="mask-in" style="--d:140ms">Olivera</span></span>
+        </h1>
+
+        <p class="hero-role mask" data-od-id="hero-role">
+          <span class="mask-in" style="--d:210ms"><em data-i18n="hero.roleAccent">Frontend</em> <span data-i18n="hero.roleRest">Developer</span></span>
+        </p>
+
+        <p class="hero-lede reveal" style="--d:340ms" data-i18n="hero.lede" data-od-id="hero-lede">
+          Construyo interfaces que se sienten tan bien como se ven — web, mobile y escritorio.
+        </p>
+
+        <div class="hero-actions reveal" style="--d:410ms">
+          <a class="btn btn-primary" href="../proyectos/index.html" data-i18n="hero.ctaProjects" data-od-id="cta-projects">Ver proyectos</a>
+          <a class="btn btn-ghost" href="../../Marcelo%20Olivera%20-%20Curriculum%20Vitae.pdf" download data-i18n="hero.ctaCv" data-od-id="cta-cv">Descargar CV</a>
+        </div>
+
+        <ul class="chips" aria-label="Stack principal" data-i18n-aria="hero.stackAria" data-od-id="hero-chips">
+          <li class="reveal" style="--d:480ms"><span class="chip">Vue</span></li>
+          <li class="reveal" style="--d:550ms"><span class="chip">Flutter</span></li>
+          <li class="reveal" style="--d:620ms"><span class="chip">TypeScript</span></li>
+          <li class="reveal" style="--d:690ms"><span class="chip">Node.js</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-portrait" data-od-id="hero-portrait">
+        <figure class="portrait">
+          <div class="portrait-ph" role="img" aria-label="Retrato de Marcelo Olivera (pendiente: photo.jpeg)" data-i18n-aria="hero.portraitAria">
+            <span class="ph-label">photo.jpeg</span>
+            <span class="ph-note" data-i18n="hero.portraitNote">retrato — pendiente</span>
+          </div>
+        </figure>
+      </div>
+    </div>
+
+    <div class="scroll-cue" id="scroll-cue" aria-hidden="true">
+      <span class="scroll-cue-track"><span class="scroll-cue-dot"></span></span>
+      <span class="scroll-cue-text" data-i18n="hero.scroll">desplazá</span>
+    </div>
+  </section>
+
+  <!-- Proyectos destacados -->
+  <section class="section" id="proyectos" aria-labelledby="proyectos-title" data-od-id="section-projects">
+    <div class="container">
+      <header class="section-head">
+        <h2 class="section-title reveal" id="proyectos-title"><span data-i18n="projects.title">Proyectos</span><span class="dot" aria-hidden="true">.</span></h2>
+        <p class="section-lede reveal" style="--d:70ms" data-i18n="projects.lede">Tres cosas que están corriendo, no ejercicios de curso.</p>
+      </header>
+
+      <div class="projects-grid" data-od-id="projects-grid">
+
+        <article class="project-card reveal" data-od-id="project-jedami">
+          <div class="project-media">
+            <div class="ph-img" role="img" aria-label="Captura de Tienda Jedami (pendiente: jedami-preview.png)" data-i18n-aria="projects.jedami.imgAria">
+              <span class="ph-label">jedami-preview.png</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title"><a class="card-title-link" href="../proyecto-detalle/index.html">Tienda Jedami</a></h3>
+            <p class="project-desc" data-i18n="projects.jedami.desc">E-commerce con catálogo de productos, carrito de compras y gestión de pedidos.</p>
+            <ul class="chips chips-sm" aria-label="Stack de Tienda Jedami" data-i18n-aria="projects.jedami.stackAria">
+              <li><span class="chip">Vue</span></li>
+              <li><span class="chip">Node.js</span></li>
+            </ul>
+            <div class="project-actions">
+              <a class="link-action" href="https://jedamiapp.com" target="_blank" rel="noopener noreferrer">
+                <svg class="ico" aria-hidden="true"><use href="#i-external"></use></svg><span data-i18n="projects.live">En vivo</span>
+              </a>
+              <a class="link-action" href="https://github.com/OliveraMarcelo/tienda-jedami" target="_blank" rel="noopener noreferrer">
+                <svg class="ico" aria-hidden="true"><use href="#i-github"></use></svg><span>GitHub</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--d:70ms" data-od-id="project-pokemon">
+          <div class="project-media">
+            <div class="ph-img" role="img" aria-label="Captura de Pokemon Game (pendiente: pokemon-preview.png)" data-i18n-aria="projects.pokemon.imgAria">
+              <span class="ph-label">pokemon-preview.png</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Pokemon Game</h3>
+            <p class="project-desc" data-i18n="projects.pokemon.desc">¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI.</p>
+            <ul class="chips chips-sm" aria-label="Stack de Pokemon Game" data-i18n-aria="projects.pokemon.stackAria">
+              <li><span class="chip">TypeScript</span></li>
+              <li><span class="chip">Vue</span></li>
+            </ul>
+            <div class="project-actions">
+              <a class="link-action" href="https://pokemon-game-theta-gold.vercel.app" target="_blank" rel="noopener noreferrer">
+                <svg class="ico" aria-hidden="true"><use href="#i-external"></use></svg><span data-i18n="projects.live">En vivo</span>
+              </a>
+              <a class="link-action" href="https://github.com/OliveraMarcelo/pokemon-game" target="_blank" rel="noopener noreferrer">
+                <svg class="ico" aria-hidden="true"><use href="#i-github"></use></svg><span>GitHub</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--d:140ms" data-od-id="project-chat">
+          <div class="project-media">
+            <div class="ph-img" role="img" aria-label="Vista previa pendiente de Mensajería en tiempo real" data-i18n-aria="projects.chat.imgAria">
+              <span class="ph-label">chat-preview.png</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title" data-i18n="projects.chat.title">Mensajería en tiempo real</h3>
+            <p class="project-desc" data-i18n="projects.chat.desc">Chat en tiempo real con WebSockets, centrado en rendimiento y experiencia de usuario.</p>
+            <ul class="chips chips-sm" aria-label="Stack de Mensajería en tiempo real" data-i18n-aria="projects.chat.stackAria">
+              <li><span class="chip">WebSockets</span></li>
+              <li><span class="chip">Node.js</span></li>
+            </ul>
+            <div class="project-actions">
+              <span class="status-note" data-i18n="projects.chat.status">En desarrollo — sin enlace público todavía</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="section-foot reveal">
+        <a class="link-arrow" href="../proyectos/index.html" data-od-id="all-projects">
+          <span data-i18n="projects.all">Ver todos los proyectos</span>
+          <svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="section section-alt" id="stack" aria-labelledby="stack-title" data-od-id="section-stack">
+    <div class="container">
+      <header class="section-head">
+        <h2 class="section-title reveal" id="stack-title"><span data-i18n="stack.title">Mis habilidades</span><span class="dot" aria-hidden="true">.</span></h2>
+        <p class="section-lede reveal" style="--d:70ms" data-i18n="stack.lede">Lo que uso todos los días, y lo que uso cuando hace falta.</p>
+      </header>
+
+      <div class="stack-groups">
+        <section class="stack-group reveal" aria-labelledby="stack-front">
+          <h3 class="stack-group-title" id="stack-front">Frontend</h3>
+          <ul class="skill-list">
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-code"></use></svg>HTML</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-layers"></use></svg>CSS</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-terminal"></use></svg>JavaScript</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-triangle"></use></svg>Vue</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-orbit"></use></svg>React</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-box"></use></svg>Flutter</li>
+          </ul>
+        </section>
+
+        <section class="stack-group reveal" style="--d:70ms" aria-labelledby="stack-back">
+          <h3 class="stack-group-title" id="stack-back">Backend</h3>
+          <ul class="skill-list">
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-server"></use></svg>Node.js</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-route"></use></svg>Express</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-database"></use></svg>SQL / NoSQL</li>
+          </ul>
+        </section>
+
+        <section class="stack-group reveal" style="--d:140ms" aria-labelledby="stack-tools">
+          <h3 class="stack-group-title" id="stack-tools" data-i18n="stack.tools">Herramientas</h3>
+          <ul class="skill-list">
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-branch"></use></svg>Git</li>
+            <li class="skill"><svg class="ico" aria-hidden="true"><use href="#i-box"></use></svg>Docker</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trayectoria -->
+  <section class="section" id="trayectoria" aria-labelledby="trayectoria-title" data-od-id="section-timeline">
+    <div class="container container-narrow">
+      <header class="section-head">
+        <h2 class="section-title reveal" id="trayectoria-title"><span data-i18n="path.title">Mi camino</span><span class="dot" aria-hidden="true">.</span></h2>
+      </header>
+
+      <ol class="timeline" id="timeline" data-od-id="timeline">
+        <span class="timeline-rail" aria-hidden="true"><span class="timeline-progress" id="timeline-progress"></span></span>
+
+        <li class="milestone reveal" data-od-id="milestone-exo">
+          <span class="milestone-node" aria-hidden="true"></span>
+          <p class="milestone-meta"><span class="milestone-tag is-now" data-i18n="path.now">actual</span></p>
+          <h3 class="milestone-title">Frontend Developer <span class="milestone-org">— EXO S.A.</span></h3>
+          <p class="milestone-desc" data-i18n="path.exo">Interfaces con Flutter, Riverpod y Dart para web, mobile y escritorio Windows. Dashboards de visualización de datos con Vue.js.</p>
+        </li>
+
+        <li class="milestone reveal" style="--d:70ms" data-od-id="milestone-ifts">
+          <span class="milestone-node" aria-hidden="true"></span>
+          <p class="milestone-meta"><span class="milestone-tag" data-i18n="path.ongoing">en curso</span></p>
+          <h3 class="milestone-title">Desarrollo de Software <span class="milestone-org">— IFTS N.º 11</span></h3>
+          <p class="milestone-desc" data-i18n="path.ifts">Algoritmos, estructuras de datos y programación orientada a objetos.</p>
+        </li>
+
+        <li class="milestone reveal" style="--d:140ms" data-od-id="milestone-dh">
+          <span class="milestone-node" aria-hidden="true"></span>
+          <p class="milestone-meta"><span class="milestone-tag" data-i18n="path.graduate">egresado</span></p>
+          <h3 class="milestone-title">Full Stack Developer <span class="milestone-org">— Digital House</span></h3>
+          <p class="milestone-desc" data-i18n="path.dh">HTML, CSS, JavaScript, Node.js, Express, React y bases de datos relacionales y no relacionales.</p>
+        </li>
+      </ol>
+
+      <p class="section-foot reveal">
+        <a class="link-arrow" href="../sobre-mi/index.html" data-od-id="about-link">
+          <span data-i18n="path.more">Conocer más sobre mí</span>
+          <svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="section section-alt" id="contacto" aria-labelledby="contacto-title" data-od-id="section-contact">
+    <div class="container">
+      <header class="section-head">
+        <h2 class="section-title reveal" id="contacto-title"><span data-i18n="contact.title">Hablemos</span><span class="dot" aria-hidden="true">.</span></h2>
+        <p class="section-lede reveal" style="--d:70ms" data-i18n="contact.lede">Respondo rápido. WhatsApp es el camino más corto.</p>
+      </header>
+
+      <ul class="contact-list" data-od-id="contact-list">
+        <li class="reveal">
+          <a class="contact-card" href="https://wa.me/541134323271" target="_blank" rel="noopener noreferrer" data-od-id="contact-whatsapp">
+            <svg class="ico ico-lg" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+            <span class="contact-label">WhatsApp</span>
+            <span class="contact-value">+54 11 3432-3271</span>
+            <svg class="ico contact-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+          </a>
+        </li>
+        <li class="reveal" style="--d:70ms">
+          <a class="contact-card" href="mailto:olivera.m.et13@gmail.com" data-od-id="contact-email">
+            <svg class="ico ico-lg" aria-hidden="true"><use href="#i-mail"></use></svg>
+            <span class="contact-label">Email</span>
+            <span class="contact-value">olivera.m.et13@gmail.com</span>
+            <svg class="ico contact-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+          </a>
+        </li>
+        <li class="reveal" style="--d:140ms">
+          <a class="contact-card" href="https://www.linkedin.com/in/marcelodanielolivera/" target="_blank" rel="noopener noreferrer" data-od-id="contact-linkedin">
+            <svg class="ico ico-lg" aria-hidden="true"><use href="#i-linkedin"></use></svg>
+            <span class="contact-label">LinkedIn</span>
+            <span class="contact-value">marcelodanielolivera</span>
+            <svg class="ico contact-arrow" aria-hidden="true"><use href="#i-arrow"></use></svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a class="logo logo-sm" href="index.html" aria-label="MarceCode — ir al inicio" data-i18n-aria="a11y.logo">
+      <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span><span class="logo-word">MarceCode</span>
+    </a>
+    <p class="footer-meta"><span>2026</span><span class="footer-sep" aria-hidden="true">·</span><span data-i18n="footer.made">Hecho con Vue</span></p>
+  </div>
+</footer>
+
+<script src="../_system/system.js"></script>
+  <script src="page.js"></script>
+</body>
+</html>

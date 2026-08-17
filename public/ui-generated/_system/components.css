@@ -1,0 +1,521 @@
+/* ============================================================
+   MarceCode — DESIGN SYSTEM · components.css
+   UNA fuente de verdad. Ninguna pantalla redefine esto.
+   Extraido de la pantalla tesis (Home) y unificado para las 4.
+   ============================================================ */
+
+/* ---------- Base ------------------------------------------ */
+/* ---------- 2. Base --------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color var(--dur-base) var(--ease-in-out),
+              color var(--dur-base) var(--ease-in-out);
+}
+
+/* Grano: el negro nunca se ve plano. Sin imagen pesada. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  transition: opacity var(--dur-base) var(--ease-in-out);
+}
+
+img, svg { display: block; max-width: 100%; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+::selection { background: var(--color-accent); color: #0B0D10; }
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container-narrow { max-width: 820px; }
+
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.ico {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+.ico-lg { width: 26px; height: 26px; }
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  z-index: 100;
+  transform: translateY(-140%);
+  padding: 0.75rem 1.25rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-accent);
+  color: #0B0D10;
+  font-weight: 600;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus-visible { transform: translateY(0); }
+
+/* ---------- 3. Utilidades de animacion (contrato) --------- */
+/* Ninguna de estas clases declara `display`. */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.mask { overflow: hidden; }
+
+.mask-in {
+  opacity: 0;
+  transform: translateY(105%);
+  transition: opacity var(--dur-hero) var(--ease-out),
+              transform var(--dur-hero) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+/* Selector con especificidad de elemento para no pisar layouts ajenos. */
+span.mask-in { display: block; }
+
+.is-loaded .mask-in { opacity: 1; transform: none; }
+
+/* Hook de verificacion: estado final visible, sin correr animaciones. */
+[data-qa="show-all"] .reveal,
+[data-qa="show-all"] .mask-in,
+[data-qa="show-all"] .project-actions,
+[data-qa="show-all"] .scroll-cue {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+[data-qa="show-all"] .timeline-progress { transform: scaleY(1) !important; }
+
+
+/* ---------- Chasis: header / nav / menu movil ------------- */
+/* ---------- 4. Header / nav ------------------------------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              backdrop-filter var(--dur-base) var(--ease-out);
+}
+.site-header.is-scrolled {
+  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  border-bottom-color: var(--color-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  /* Unica propiedad de layout animada del sitio: vive en un elemento
+     fixed, fuera de flujo, asi que no reflowea el contenido de la pagina. */
+  padding-block: 1.125rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: padding-block var(--dur-base) var(--ease-out);
+}
+.site-header.is-scrolled .header-inner { padding-block: 0.625rem; }
+
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  margin-right: auto;
+  min-height: 44px;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.logo-mark {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  color: var(--color-accent-text);
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+.logo:hover .logo-mark { transform: translateX(2px); }
+
+.nav { position: relative; display: none; }
+.nav-list { display: flex; gap: 0.25rem; }
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.875rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover, .nav-link.is-active { color: var(--color-text); }
+
+/* Indicador: ancho base 1px + scaleX, para animar solo transform. */
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 1px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  transform-origin: left center;
+  transform: translateX(var(--nav-x, 0px)) scaleX(var(--nav-w, 0));
+  opacity: 0;
+  transition: transform var(--dur-base) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out);
+}
+.nav-indicator.is-ready { opacity: 1; }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.icon-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-instant) var(--ease-out);
+}
+.icon-btn:hover { color: var(--color-text); background: var(--color-surface-raised); }
+.icon-btn:active { transform: scale(0.94); }
+.icon-btn .ico { grid-area: 1 / 1; transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-fast) var(--ease-out); }
+
+.theme-btn .ico-sun { opacity: 0; transform: rotate(-180deg) scale(0.6); }
+.theme-btn .ico-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+[data-theme="light"] .theme-btn .ico-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+[data-theme="light"] .theme-btn .ico-moon { opacity: 0; transform: rotate(180deg) scale(0.6); }
+
+.lang-btn {
+  min-width: 60px;
+  height: 44px;
+  padding-inline: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-instant) var(--ease-out);
+}
+.lang-btn:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+.lang-btn:active { transform: scale(0.96); }
+.lang-current { color: var(--color-text); }
+.lang-sep { opacity: 0.5; }
+
+.menu-btn .ico-close { opacity: 0; transform: rotate(-90deg) scale(0.7); }
+.menu-btn[aria-expanded="true"] .ico-menu { opacity: 0; transform: rotate(90deg) scale(0.7); }
+.menu-btn[aria-expanded="true"] .ico-close { opacity: 1; transform: none; }
+
+/* Panel absoluto bajo el header fijo: se anima con transform + opacity,
+   sin tocar la altura de nada. */
+.mobile-menu {
+  position: absolute;
+  inset: 100% 0 auto 0;
+  max-height: calc(100svh - var(--header-h));
+  overflow-y: auto;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility 0s linear var(--dur-base);
+}
+.mobile-menu.is-open {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility 0s;
+}
+.mobile-list { padding: 0.5rem var(--gutter) 1rem; }
+.mobile-link {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.mobile-link:hover { color: var(--color-text); }
+.mobile-link.is-active { color: var(--color-text); }
+.mobile-link.is-active::before {
+  content: "";
+  width: 10px;
+  height: 2px;
+  margin-right: 0.625rem;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+}
+
+@media (min-width: 768px) {
+  .nav { display: block; }
+  .menu-btn, .mobile-menu { display: none; }
+}
+
+
+/* ---------- Primitivas: botones y chips ------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  transition: transform var(--dur-instant) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.btn:active { transform: scale(0.97); }
+
+/* Texto casi negro sobre naranja en ambos temas: es el unico par que
+   pasa 4.5:1 con el acento de marca en claro (5.09:1) y en oscuro (7.4:1). */
+.btn-primary {
+  background: var(--color-accent);
+  color: #0B0D10;
+  box-shadow: var(--shadow-accent);
+}
+.btn-primary:hover { background: var(--color-accent-hover); }
+/* En claro el token de hover es mas oscuro (#C84615) y bajaria a 3.98:1
+   contra el texto; aclaramos en su lugar para sostener el contraste. */
+[data-theme="light"] .btn-primary:hover {
+  background: color-mix(in srgb, var(--color-accent) 86%, #FFFFFF);
+}
+
+.btn-ghost {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+.btn-ghost:hover { border-color: var(--color-text-muted); background: var(--color-surface); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: var(--space-8);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: transform var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+.chips-sm { margin-top: 0.875rem; }
+
+/* ---------- Chasis: footer + reduced motion --------------- */
+/* ---------- 11. Footer ------------------------------------ */
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: var(--space-8);
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.logo-sm { font-size: 0.9375rem; margin-right: 0; }
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+.footer-sep { opacity: 0.6; }
+
+/* ---------- 12. Reduced motion ---------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .reveal,
+  .mask-in,
+  .portrait,
+  .project-actions,
+  .scroll-cue {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero-glow { opacity: 0.35 !important; }
+  .timeline-progress { transform: scaleY(1) !important; }
+  .scroll-cue-dot { animation: none; }
+}
+
+/* Titulo de card como enlace al detalle (agregado al armar el prototipo navegable) */
+.card-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+.card-title-link:hover,
+.card-title-link:focus-visible {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+/* ---------- Chasis: velo del menu movil ------------------- */
+/* z-index explicito en las tres capas: scrim < header < panel.
+   Con los tres en `auto` el scrim se pinta encima del panel y se
+   come los clicks de los enlaces. */
+.nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.44);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-base) var(--ease-out), visibility var(--dur-base);
+}
+.nav-scrim.is-visible { opacity: 1; visibility: visible; }
+.site-header  { z-index: 100; }
+.mobile-menu  { z-index: 105; }
+
+/* ---------- Transiciones entre documentos ----------------- */
+/* NO se declara aca a proposito. Las cross-document view transitions
+   exigen same-origin, y al abrir el prototipo con file:// cada documento
+   tiene origen opaco: la transicion no es valida y la navegacion puede
+   quedar colgada. system.js la activa solo cuando el protocolo la
+   soporta (http/https). Si falta en una de las dos pantallas
+   involucradas, el navegador la descarta. */
+
+/* ---------- Titulo de card como enlace -------------------- */
+.card-title-link { color: inherit; text-decoration: none; }
+.card-title-link:hover,
+.card-title-link:focus-visible {
+  color: var(--color-accent-text, var(--color-accent));
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Marcadores de captura (SVG placeholder) ------- */
+/* Los usan Proyectos y Detalle; viven aca para no duplicarlos. */
+.ph-bg     { fill: var(--ph-bg); }
+.ph-panel  { fill: var(--ph-panel); }
+.ph-line   { fill: var(--ph-line); }
+.ph-dim    { fill: var(--ph-dim); }
+.ph-accent { fill: var(--ph-dim); }

@@ -1,0 +1,65 @@
+<!-- ============================================================
+     MarceCode — DESIGN SYSTEM · chasis.html
+     Header + footer CANONICOS. Markup identico en las 4 pantallas.
+     Lo unico que varia por pantalla: los href y cual item esta activo.
+
+     Marcadores que instancia el generador:
+       {{HOME}} {{PROYECTOS}} {{SOBRE}}   -> rutas segun el contexto
+       {{ACT_HOME}} {{ACT_PROY}} {{ACT_SOBRE}} -> ' is-active' o vacio
+       {{CUR_HOME}} {{CUR_PROY}} {{CUR_SOBRE}} -> ' aria-current="page"' o vacio
+     ============================================================ -->
+
+<!-- SKIP -->
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Saltar al contenido</a>
+
+<!-- HEADER -->
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a class="logo" href="{{HOME}}" aria-label="MarceCode — ir al inicio" data-i18n-aria="a11y.logo">
+      <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span><span class="logo-word">MarceCode</span>
+    </a>
+
+    <nav class="nav" id="primary-nav" aria-label="Navegación principal" data-i18n-aria="nav.aria">
+      <ul class="nav-list">
+        <li><a class="nav-link{{ACT_HOME}}" href="{{HOME}}"{{CUR_HOME}} data-i18n="nav.home">Inicio</a></li>
+        <li><a class="nav-link{{ACT_PROY}}" href="{{PROYECTOS}}"{{CUR_PROY}} data-i18n="nav.projects">Proyectos</a></li>
+        <li><a class="nav-link{{ACT_SOBRE}}" href="{{SOBRE}}"{{CUR_SOBRE}} data-i18n="nav.about">Sobre mí</a></li>
+      </ul>
+      <span class="nav-indicator" id="nav-indicator" aria-hidden="true"></span>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn theme-btn" id="theme-toggle" type="button" aria-label="Cambiar a tema claro" data-i18n-aria="theme.toLight">
+        <svg class="ico ico-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+        <svg class="ico ico-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+      </button>
+      <button class="lang-btn" id="lang-toggle" type="button" aria-label="Switch site language to English" data-i18n-aria="lang.aria">
+        <span class="lang-current">ES</span><span class="lang-sep" aria-hidden="true">/</span><span class="lang-other">EN</span>
+      </button>
+      <button class="icon-btn menu-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú" data-i18n-aria="menu.open">
+        <svg class="ico ico-menu" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <svg class="ico ico-close" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul class="mobile-list">
+      <li><a class="mobile-link{{ACT_HOME}}" href="{{HOME}}"{{CUR_HOME}} data-i18n="nav.home">Inicio</a></li>
+      <li><a class="mobile-link{{ACT_PROY}}" href="{{PROYECTOS}}"{{CUR_PROY}} data-i18n="nav.projects">Proyectos</a></li>
+      <li><a class="mobile-link{{ACT_SOBRE}}" href="{{SOBRE}}"{{CUR_SOBRE}} data-i18n="nav.about">Sobre mí</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="nav-scrim" aria-hidden="true"></div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a class="logo logo-sm" href="{{HOME}}" aria-label="MarceCode — ir al inicio" data-i18n-aria="a11y.logo">
+      <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span><span class="logo-word">MarceCode</span>
+    </a>
+    <p class="footer-meta"><span>2026</span><span class="footer-sep" aria-hidden="true">·</span><span data-i18n="footer.made">Hecho con Vue</span></p>
+  </div>
+</footer>

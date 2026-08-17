@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tienda Jedami — Proyectos | MarceCode</title>
+<meta name="description" content="Tienda Jedami: e-commerce con catálogo, carrito y gestión de pedidos. Vue, Node.js, Express y MySQL. Proyecto de Marcelo Olivera, Frontend Developer.">
+<meta name="color-scheme" content="dark light">
+
+<script>
+/* Resuelve tema e idioma antes del primer paint. Sin flash. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var t = localStorage.getItem('mc-theme');
+    if (t !== 'light' && t !== 'dark') {
+      t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    d.setAttribute('data-theme', t);
+    var l = localStorage.getItem('mc-lang');
+    if (l !== 'en') l = 'es';
+    d.setAttribute('lang', l);
+    d.setAttribute('data-lang', l);
+  } catch (e) {
+    d.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_system/tokens.css">
+  <link rel="stylesheet" href="../_system/components.css">
+  <link rel="stylesheet" href="page.css">
+</head>
+
+<body>
+
+<!-- Barra de progreso de lectura: 2 px, solo transform. -->
+<div class="read-progress" aria-hidden="true"><span class="read-progress-bar" id="read-progress-bar"></span></div>
+
+<!-- Sprite de iconos monoline (stroke 1.6, currentColor) -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 13.4A8.2 8.2 0 0 1 10.6 4a8.2 8.2 0 1 0 9.4 9.4Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14.5V19a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V8a1.5 1.5 0 0 1 1.5-1.5H10"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M9.2 20.6v-2.9c-3 .6-3.8-1.3-3.8-1.3-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.6 1.2 3.2.9.1-.7.4-1.2.7-1.5-2.4-.3-5-1.2-5-5.4 0-1.2.4-2.2 1.1-2.9-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1a10 10 0 0 1 5.4 0c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.7 1.1 2.9 0 4.2-2.6 5.1-5 5.4.4.4.8 1.1.8 2.2v3.3"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3.5 20.5 5 16.4A8 8 0 1 1 8 19.3l-4.5 1.2Z"/><path d="M9 9.2c.2 1.6 1.9 4 4.2 4.8.7.2 1.3-.3 1.5-.9l-1.6-.9-.8.7c-.9-.5-1.6-1.2-2-2.1l.8-.7-.8-1.6c-.6.2-1.2.6-1.3 1.3Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 7.1 5.3c.7.5 1.6.5 2.2 0L20.2 7"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V17M8 7.4v.1M12 17v-3.6a2.4 2.4 0 0 1 4.8 0V17"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7.5 4 12l4.5 4.5M15.5 7.5 20 12l-4.5 4.5M13.5 5l-3 14"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4.5 12h15M13.4 6l6 6-6 6"/>
+  </symbol>
+</svg>
+
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Saltar al contenido</a>
+
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a class="logo" href="../home/index.html" aria-label="MarceCode — ir al inicio" data-i18n-aria="a11y.logo">
+      <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span><span class="logo-word">MarceCode</span>
+    </a>
+
+    <nav class="nav" id="primary-nav" aria-label="Navegación principal" data-i18n-aria="nav.aria">
+      <ul class="nav-list">
+        <li><a class="nav-link" href="../home/index.html" data-i18n="nav.home">Inicio</a></li>
+        <li><a class="nav-link is-active" href="../proyectos/index.html" aria-current="page" data-i18n="nav.projects">Proyectos</a></li>
+        <li><a class="nav-link" href="../sobre-mi/index.html" data-i18n="nav.about">Sobre mí</a></li>
+      </ul>
+      <span class="nav-indicator" id="nav-indicator" aria-hidden="true"></span>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn theme-btn" id="theme-toggle" type="button" aria-label="Cambiar a tema claro" data-i18n-aria="theme.toLight">
+        <svg class="ico ico-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+        <svg class="ico ico-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+      </button>
+      <button class="lang-btn" id="lang-toggle" type="button" aria-label="Switch site language to English" data-i18n-aria="lang.aria">
+        <span class="lang-current">ES</span><span class="lang-sep" aria-hidden="true">/</span><span class="lang-other">EN</span>
+      </button>
+      <button class="icon-btn menu-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú" data-i18n-aria="menu.open">
+        <svg class="ico ico-menu" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <svg class="ico ico-close" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul class="mobile-list">
+      <li><a class="mobile-link" href="../home/index.html" data-i18n="nav.home">Inicio</a></li>
+      <li><a class="mobile-link is-active" href="../proyectos/index.html" aria-current="page" data-i18n="nav.projects">Proyectos</a></li>
+      <li><a class="mobile-link" href="../sobre-mi/index.html" data-i18n="nav.about">Sobre mí</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="nav-scrim" aria-hidden="true"></div>
+
+<main id="contenido" data-od-id="main">
+
+  <!-- Migas -->
+  <nav class="crumbs" data-i18n-label="a11y.crumbs" aria-label="Migas de navegación" data-od-id="breadcrumbs">
+    <div class="container">
+      <ol class="crumb-list">
+        <li><a class="crumb-link" href="../proyectos/index.html" data-i18n="nav.projects">Proyectos</a></li>
+        <li aria-hidden="true" class="crumb-sep">/</li>
+        <li><span class="crumb-current" aria-current="page">Tienda Jedami</span></li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Encabezado del proyecto -->
+  <header class="project-head" data-od-id="project-head">
+    <div class="container">
+      <h1 class="project-title" id="project-title" data-od-id="project-title">
+        <span class="mask"><span class="mask-in">Tienda Jedami</span></span>
+      </h1>
+
+      <p class="project-lede reveal" style="--i:1" data-i18n="head.lede" data-od-id="project-lede">
+        E-commerce con catálogo, carrito y gestión de pedidos.
+      </p>
+
+      <ul class="chips reveal" style="--i:2" data-i18n-label="a11y.stack" aria-label="Stack de Tienda Jedami" data-od-id="project-chips">
+        <li class="chip chip-lead">Vue</li>
+        <li class="chip">JavaScript</li>
+        <li class="chip">Node.js</li>
+        <li class="chip">Express</li>
+        <li class="chip">MySQL</li>
+        <li class="chip">SASS</li>
+      </ul>
+
+      <div class="project-actions reveal" style="--i:3" data-od-id="project-actions">
+        <a class="btn btn-primary" href="https://jedamiapp.com" target="_blank" rel="noopener noreferrer" data-od-id="cta-live">
+          <span data-i18n="action.live">Ver en vivo</span>
+          <svg class="ico" aria-hidden="true" width="16" height="16"><use href="#i-external"></use></svg>
+        </a>
+        <a class="btn btn-quiet" href="https://github.com/OliveraMarcelo/tienda-jedami" target="_blank" rel="noopener noreferrer" data-od-id="cta-code">
+          <svg class="ico" aria-hidden="true" width="16" height="16"><use href="#i-code"></use></svg>
+          <span data-i18n="action.code">Ver código</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Imagen del proyecto. Elemento compartido con la card de /projects. -->
+  <div class="project-media-wrap">
+    <div class="container">
+      <!-- Marcador de captura. Reemplazar por:
+           <img class="project-img" src="jedami-preview.png" width="1600" height="1000" decoding="async" alt="Catálogo de productos de Tienda Jedami"> -->
+      <figure class="project-media" style="view-transition-name: project-img-tienda-jedami" data-od-id="project-media">
+        <svg class="project-img" width="1600" height="1000" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="ph-jedami">
+          <title id="ph-jedami">Marcador de captura pendiente: jedami-preview.png — catálogo de productos</title>
+          <rect class="ph-bg" width="960" height="600"/>
+          <rect class="ph-line" x="0" y="86" width="960" height="1"/>
+          <rect class="ph-dim" x="56" y="40" width="112" height="12" rx="6"/>
+          <rect class="ph-line" x="640" y="40" width="180" height="12" rx="6"/>
+          <rect class="ph-accent" x="852" y="34" width="52" height="24" rx="12"/>
+          <g>
+            <rect class="ph-panel" x="56" y="134" width="256" height="212" rx="14"/>
+            <rect class="ph-panel" x="352" y="134" width="256" height="212" rx="14"/>
+            <rect class="ph-panel" x="648" y="134" width="256" height="212" rx="14"/>
+            <rect class="ph-line" x="56" y="378" width="150" height="12" rx="6"/>
+            <rect class="ph-line" x="352" y="378" width="184" height="12" rx="6"/>
+            <rect class="ph-line" x="648" y="378" width="126" height="12" rx="6"/>
+            <rect class="ph-dim" x="56" y="406" width="88" height="10" rx="5"/>
+            <rect class="ph-dim" x="352" y="406" width="88" height="10" rx="5"/>
+            <rect class="ph-dim" x="648" y="406" width="88" height="10" rx="5"/>
+          </g>
+          <rect class="ph-line" x="56" y="486" width="848" height="1"/>
+        </svg>
+        <figcaption class="project-media-tag">jedami-preview.png</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- Ficha rápida -->
+  <section class="facts reveal" data-i18n-label="a11y.facts" aria-label="Ficha rápida del proyecto" data-od-id="facts">
+    <div class="container">
+      <dl class="fact-strip">
+        <div class="fact">
+          <dt data-i18n="facts.role">Rol</dt>
+          <dd data-i18n="facts.roleValue">Desarrollador full stack</dd>
+        </div>
+        <div class="fact">
+          <dt data-i18n="facts.year">Año</dt>
+          <dd>2025</dd>
+        </div>
+        <div class="fact">
+          <dt data-i18n="facts.status">Estado</dt>
+          <dd class="fact-live"><span class="fact-dot" aria-hidden="true"></span><span data-i18n="facts.statusValue">En producción</span></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Bloques de lectura -->
+  <div class="chapters">
+    <div class="container">
+
+      <section class="chapter reveal" aria-labelledby="c-problema" data-od-id="chapter-problema">
+        <h2 class="chapter-title" id="c-problema" data-i18n="ch1.title">El problema</h2>
+        <p class="chapter-body" data-i18n="ch1.body">Un comercio necesitaba vender online sin depender de una plataforma de terceros: catálogo propio, control del stock y gestión de los pedidos desde un mismo lugar.</p>
+      </section>
+
+      <section class="chapter reveal" aria-labelledby="c-solucion" data-od-id="chapter-solucion">
+        <h2 class="chapter-title" id="c-solucion" data-i18n="ch2.title">La solución</h2>
+        <p class="chapter-body" data-i18n="ch2.body">Una aplicación web con catálogo de productos, carrito de compras y panel de gestión de pedidos. El frontend se construyó con Vue, consumiendo una API propia en Node.js y Express sobre una base de datos relacional. Las vistas se armaron con componentes reutilizables y rutas protegidas para la parte de administración.</p>
+      </section>
+
+      <section class="chapter reveal" aria-labelledby="c-rol" data-od-id="chapter-rol">
+        <h2 class="chapter-title" id="c-rol" data-i18n="ch3.title">Mi rol</h2>
+        <p class="chapter-body" data-i18n="ch3.body">Diseñé e implementé la interfaz completa, definí la estructura de componentes y el manejo de estado, y construí la API que la alimenta. También me ocupé del despliegue y de que el sitio funcione bien en mobile, que es por donde entra la mayoría de los clientes.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Stack completo -->
+  <section class="stack reveal" aria-labelledby="stack-title" data-od-id="stack">
+    <div class="container">
+      <div class="stack-inner">
+      <h2 class="chapter-title" id="stack-title" data-i18n="stack.title">Stack completo</h2>
+
+      <div class="stack-groups">
+        <div class="stack-group">
+          <h3 class="stack-group-title" data-i18n="stack.g1">Interfaz</h3>
+          <dl class="stack-list">
+            <div class="stack-row">
+              <dt class="stack-name">Vue</dt>
+              <dd class="stack-why" data-i18n="stack.vue">interfaz y manejo de estado del carrito</dd>
+            </div>
+            <div class="stack-row">
+              <dt class="stack-name">JavaScript</dt>
+              <dd class="stack-why" data-i18n="stack.js">lógica de la aplicación</dd>
+            </div>
+            <div class="stack-row">
+              <dt class="stack-name">SASS</dt>
+              <dd class="stack-why" data-i18n="stack.sass">estilos con variables y componentes</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="stack-group">
+          <h3 class="stack-group-title" data-i18n="stack.g2">Servidor y datos</h3>
+          <dl class="stack-list">
+            <div class="stack-row">
+              <dt class="stack-name">Node.js + Express</dt>
+              <dd class="stack-why" data-i18n="stack.node">API de productos y pedidos</dd>
+            </div>
+            <div class="stack-row">
+              <dt class="stack-name">MySQL</dt>
+              <dd class="stack-why" data-i18n="stack.mysql">persistencia de catálogo, stock y pedidos</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Siguiente proyecto. Ruta real del sitio: /projects/pokemon-game -->
+  <section class="next reveal" aria-labelledby="next-name" data-od-id="next-project">
+    <div class="container">
+      <a class="next-card" href="../proyectos/index.html" data-od-id="next-project-link">
+        <span class="next-kicker" data-i18n="next.kicker">Siguiente proyecto</span>
+        <h2 class="next-name" id="next-name">Pokemon Game</h2>
+        <span class="next-arrow" aria-hidden="true">
+          <svg class="ico" width="22" height="22"><use href="#i-arrow-right"></use></svg>
+        </span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a class="logo logo-sm" href="../home/index.html" aria-label="MarceCode — ir al inicio" data-i18n-aria="a11y.logo">
+      <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span><span class="logo-word">MarceCode</span>
+    </a>
+    <p class="footer-meta"><span>2026</span><span class="footer-sep" aria-hidden="true">·</span><span data-i18n="footer.made">Hecho con Vue</span></p>
+  </div>
+</footer>
+
+<script src="../_system/system.js"></script>
+  <script src="page.js"></script>
+</body>
+</html>
