@@ -41,7 +41,7 @@ story_location: "_bmad-output/implementation-artifacts"
 
 development_status:
   # Épica 1: Fundación — identidad visual y preferencias del visitante
-  epic-1: in-progress
+  epic-1: done
   1-1-linea-base-de-dependencias: done
   1-2-tokens-del-sistema-de-diseno-en-runtime: done
   1-3-tipografia-propia-sin-origenes-externos: done
