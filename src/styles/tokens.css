@@ -1,0 +1,121 @@
+/* ============================================================
+   MarceCode — DESIGN SYSTEM · tokens.css
+   UNA fuente de verdad. Ninguna pantalla redefine esto.
+   Extraido de la pantalla tesis (Home) y unificado para las 4.
+   ============================================================ */
+
+/* ---------- 1. Tokens ------------------------------------- */
+
+:root {
+  /* Tema oscuro = default del sistema (sin atributo). */
+  --color-bg:             #0B0D10;
+  --color-surface:        #12151A;
+  --color-surface-raised: #1A1F26;
+  --color-border:         #262C35;
+  --color-text:           #EDEFF2;
+  --color-text-muted:     #98A1AE;
+  --color-accent:         #FF7948;
+  --color-accent-hover:   #FF8F66;
+  --color-accent-soft:    rgba(255, 121, 72, 0.12);
+  --color-focus:          #4CC9F0;
+  /* Acento legible como texto chico (>=4.5:1). En oscuro coincide con el acento. */
+  --color-accent-text:    #FF7948;
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --text-hero: clamp(3rem, 2rem + 7vw, 7.5rem);
+  --text-3xl:  clamp(2.5rem, 1.8rem + 3.5vw, 4.5rem);
+  --text-2xl:  clamp(2rem, 1.6rem + 2vw, 3rem);
+  --text-xl:   clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-lg:   clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --text-sm:   clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
+
+  --space-4: 1rem;
+  --space-8: 2rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  --container-max: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.36);
+  --shadow-accent: 0 12px 40px rgba(255, 121, 72, 0.22);
+
+  --dur-instant: 100ms;
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 600ms;
+  --dur-hero: 900ms;
+  --stagger: 70ms;
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --header-h: 72px;
+  --grain-opacity: 0.03;
+  /* Marcadores de captura (placeholders SVG) */
+  --ph-bg:    #12151A;
+  --ph-panel: #1A1F26;
+  --ph-line:  #262C35;
+  --ph-dim:   #303845;
+}
+
+/* Declarado explicitamente: forzar oscuro desde fuera tiene que funcionar. */
+[data-theme="dark"] {
+  --color-bg:             #0B0D10;
+  --color-surface:        #12151A;
+  --color-surface-raised: #1A1F26;
+  --color-border:         #262C35;
+  --color-text:           #EDEFF2;
+  --color-text-muted:     #98A1AE;
+  --color-accent:         #FF7948;
+  --color-accent-hover:   #FF8F66;
+  --color-accent-soft:    rgba(255, 121, 72, 0.12);
+  --color-focus:          #4CC9F0;
+  --color-accent-text:    #FF7948;
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.36);
+  --shadow-accent: 0 12px 40px rgba(255, 121, 72, 0.22);
+  --grain-opacity: 0.03;
+  color-scheme: dark;
+  /* Marcadores de captura (placeholders SVG) */
+  --ph-bg:    #12151A;
+  --ph-panel: #1A1F26;
+  --ph-line:  #262C35;
+  --ph-dim:   #303845;
+}
+
+[data-theme="light"] {
+  --color-bg:             #FAFAF9;
+  --color-surface:        #FFFFFF;
+  --color-surface-raised: #F4F4F2;
+  --color-border:         #E2E2DF;
+  --color-text:           #14171C;
+  --color-text-muted:     #5A6270;
+  --color-accent:         #E2551F;
+  --color-accent-hover:   #C84615;
+  --color-accent-soft:    rgba(226, 85, 31, 0.10);
+  --color-focus:          #0B7EA3;
+  --color-accent-text:    #A33F14;
+  --shadow-md: 0 8px 24px rgba(20, 23, 28, 0.08);
+  --shadow-lg: 0 24px 64px rgba(20, 23, 28, 0.12);
+  --shadow-accent: 0 12px 40px rgba(226, 85, 31, 0.16);
+  --grain-opacity: 0.022;
+  color-scheme: light;
+  /* Marcadores de captura (placeholders SVG) */
+  --ph-bg:    #F4F4F2;
+  --ph-panel: #E9E9E5;
+  --ph-line:  #D6D6D1;
+  --ph-dim:   #C4C4BE;
+}
+

@@ -31,7 +31,7 @@ const cardWidth = (index) => {
 
 <style scoped>
 .card {
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
   margin: 10px;
   padding: 10px;
 }

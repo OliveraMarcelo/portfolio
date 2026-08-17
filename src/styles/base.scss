@@ -1,0 +1,125 @@
+/* ============================================================
+   MarceCode — base.scss
+   Reset, tipografia base, contenedores y movimiento reducido.
+   Portado de public/ui-generated/_system/components.css (secciones
+   "Base" y "Reduced motion"). No define tokens: los consume.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color var(--dur-base) var(--ease-in-out),
+              color var(--dur-base) var(--ease-in-out);
+}
+
+/* Grano: el negro nunca se ve plano. Sin imagen pesada. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  transition: opacity var(--dur-base) var(--ease-in-out);
+}
+
+img, svg { display: block; max-width: 100%; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+::selection { background: var(--color-accent); color: #0B0D10; }
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container-narrow { max-width: 820px; }
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  z-index: 100;
+  transform: translateY(-140%);
+  padding: 0.75rem 1.25rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-accent);
+  color: #0B0D10;
+  font-weight: 600;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus-visible { transform: translateY(0); }
+
+/* ---------- Movimiento reducido ---------------------------- */
+/* Obligatorio (NFR-07). Los selectores de clase de aca abajo se
+   vuelven efectivos a medida que las historias posteriores crean
+   esas clases; declararlos ahora evita volver a tocar este bloque. */
+
+@media (prefers-reduced-motion: reduce) {
+  /* El `!important` lo pide la historia 2.5: sin el, la regla
+     `html { scroll-behavior: smooth }` de arriba gana por orden si
+     alguien reordena los imports. */
+  html { scroll-behavior: auto !important; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .reveal,
+  .mask-in,
+  .portrait,
+  .project-actions,
+  .scroll-cue {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero-glow { opacity: 0.35 !important; }
+  .timeline-progress { transform: scaleY(1) !important; }
+  .scroll-cue-dot { animation: none; }
+}

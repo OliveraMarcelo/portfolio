@@ -13,8 +13,8 @@
                 </li>
             </ul>
         </div>
-        <div class="lang-switcher" style="position: absolute; top: 10px; right: 20px;">
-            <button @click="switchLang" style="padding: 4px 10px; border-radius: 6px; border: none; background: #222; color: #fff; cursor: pointer;">
+        <div class="lang-switcher">
+            <button class="lang-switcher-btn" @click="switchLang">
                 {{t('langBtn')}}
             </button>
         </div>
@@ -67,4 +67,26 @@ const resetHighlight = () => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+/* Estilos que estaban inline en el template, movidos acá y tokenizados en
+   la historia 1.2. Este componente se reemplaza por AppNav.vue en la 1.5. */
+.lang-switcher {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.lang-switcher-btn {
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.lang-switcher-btn:hover {
+  border-color: var(--color-text-muted);
+}
+</style>

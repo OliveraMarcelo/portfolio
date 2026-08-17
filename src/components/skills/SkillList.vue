@@ -80,7 +80,7 @@ const frontendIcons = ref([
     margin-right: 10px;
     margin-bottom: 10px;
     padding: 5px 10px;
-    background-color: #eee;
+    background-color: var(--color-surface-raised);
     border-radius: 5px;
 }
 

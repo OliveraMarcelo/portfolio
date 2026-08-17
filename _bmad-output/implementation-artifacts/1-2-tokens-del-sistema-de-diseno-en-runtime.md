@@ -1,6 +1,6 @@
 # Story 1.2: Tokens del sistema de diseño en runtime
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -48,35 +48,35 @@ so that perciba una identidad propia en lugar de una plantilla genérica.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Portar los tokens** (AC: #1, #5)
-  - [ ] Copiar `public/ui-generated/_system/tokens.css` → `src/styles/tokens.css`, **sin editar ningún valor**
-  - [ ] Importarlo en `src/main.js` como primera línea de estilos, antes de `main.scss`
-  - [ ] Verificar en el navegador que `getComputedStyle(document.documentElement).getPropertyValue('--color-bg')` devuelve `#0B0D10`
+- [x] **Tarea 1 — Portar los tokens** (AC: #1, #5)
+  - [x] Copiar `public/ui-generated/_system/tokens.css` → `src/styles/tokens.css`, **sin editar ningún valor**
+  - [x] Importarlo en `src/main.js` como primera línea de estilos, antes de `main.scss`
+  - [x] Verificar en el navegador que `getComputedStyle(document.documentElement).getPropertyValue('--color-bg')` devuelve `#0B0D10`
 
-- [ ] **Tarea 2 — Portar los estilos base** (AC: #3)
-  - [ ] Crear `src/styles/base.scss` con las secciones "Base" y "Reduced motion" de `public/ui-generated/_system/components.css` (líneas 7–110 y el bloque `@media (prefers-reduced-motion: reduce)`)
-  - [ ] Incluye: reset de `box-sizing`, `html`, `body`, el grano de `body::before`, `img/svg`, `h1–h3`, `p`, `ul/ol`, `a`, `button`, `:focus-visible`, `::selection`, `.container`, `.container-narrow`, `.skip-link`
-  - [ ] **No** portar todavía las secciones de chasis, primitivas ni animación: eso es 1.4, 1.5 y la 2.7
+- [x] **Tarea 2 — Portar los estilos base** (AC: #3)
+  - [x] Crear `src/styles/base.scss` con las secciones "Base" y "Reduced motion" de `public/ui-generated/_system/components.css` (líneas 7–110 y el bloque `@media (prefers-reduced-motion: reduce)`)
+  - [x] Incluye: reset de `box-sizing`, `html`, `body`, el grano de `body::before`, `img/svg`, `h1–h3`, `p`, `ul/ol`, `a`, `button`, `:focus-visible`, `::selection`, `.container`, `.container-narrow`, `.skip-link`
+  - [x] **No** portar todavía las secciones de chasis, primitivas ni animación: eso es 1.4, 1.5 y la 2.7
 
-- [ ] **Tarea 3 — Convertir los módulos SASS viejos a tokens** (AC: #2, #4)
-  - [ ] Reemplazar en `src/styles/sass/modules/*.scss` cada variable SASS por su custom property equivalente (tabla en §Mapeo de variables)
-  - [ ] Son ~20 sustituciones mecánicas repartidas en cuatro archivos
-  - [ ] **Ojo:** `$fondo` y `$texto` son parámetros locales de mixin, no variables globales. No los toques
+- [x] **Tarea 3 — Convertir los módulos SASS viejos a tokens** (AC: #2, #4)
+  - [x] Reemplazar en `src/styles/sass/modules/*.scss` cada variable SASS por su custom property equivalente (tabla en §Mapeo de variables)
+  - [x] Son ~20 sustituciones mecánicas repartidas en cuatro archivos
+  - [x] **Ojo:** `$fondo` y `$texto` son parámetros locales de mixin, no variables globales. No los toques
 
-- [ ] **Tarea 4 — Eliminar las variables y la cascada de dark mode** (AC: #2)
-  - [ ] Borrar `src/styles/sass/variables/` completa (`_colors.scss`, `_fonts.scss`, `_sizes.scss` — este último está vacío)
-  - [ ] Reescribir `src/styles/sass/main.scss`: quitar los tres `@import 'variables/…'`, quitar el bloque `body { … }` con valores literales y **todo** el bloque `body.dark-mode` con su lista de `!important`
-  - [ ] Lo que queda de `main.scss` son solo los cuatro `@import 'modules/…'`
+- [x] **Tarea 4 — Eliminar las variables y la cascada de dark mode** (AC: #2)
+  - [x] Borrar `src/styles/sass/variables/` completa (`_colors.scss`, `_fonts.scss`, `_sizes.scss` — este último está vacío)
+  - [x] Reescribir `src/styles/sass/main.scss`: quitar los tres `@import 'variables/…'`, quitar el bloque `body { … }` con valores literales y **todo** el bloque `body.dark-mode` con su lista de `!important`
+  - [x] Lo que queda de `main.scss` son solo los cuatro `@import 'modules/…'`
 
-- [ ] **Tarea 5 — Cablear los estilos en `main.js`** (AC: #1, #3)
-  - [ ] Orden de import obligatorio: `tokens.css` → `base.scss` → `main.scss`
-  - [ ] Un orden distinto hace que los estilos base pisen o sean pisados de forma impredecible
+- [x] **Tarea 5 — Cablear los estilos en `main.js`** (AC: #1, #3)
+  - [x] Orden de import obligatorio: `tokens.css` → `base.scss` → `main.scss`
+  - [x] Un orden distinto hace que los estilos base pisen o sean pisados de forma impredecible
 
-- [ ] **Tarea 6 — Verificar** (AC: #1, #2, #4, #5)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Recorrer `/`, `/projects` y `/about`: nada queda sin maquetar
-  - [ ] Los tres `grep` de verificación de la sección §Comandos de verificación no devuelven nada
-  - [ ] Probar los tres estados de tema forzando el atributo a mano desde la consola
+- [x] **Tarea 6 — Verificar** (AC: #1, #2, #4, #5)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Recorrer `/`, `/projects` y `/about`: nada queda sin maquetar
+  - [x] Los tres `grep` de verificación de la sección §Comandos de verificación no devuelven nada
+  - [x] Probar los tres estados de tema forzando el atributo a mano desde la consola
 
 ## Dev Notes
 
@@ -237,8 +237,136 @@ todavía dice en qué historia muere cada parcial.
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**Los cuatro `grep` de verificación** — todos vacíos salvo apariciones dentro de comentarios:
+
+```
+tokens redefinidos en .vue      vacío
+colores literales en .vue       vacío
+variables SASS huérfanas        vacío
+cascada body.dark-mode          vacío
+```
+
+**`npm run lint`** → `DONE No lint errors found!`
+**`npm run build`** → `DONE Build complete`, CSS final `app.6ba09fa2.css`
+
+**Los tres estados de tema, medidos en navegador tras esperar la transición completa:**
+
+| `data-theme` | `--color-bg` | fondo computado del `body` | pares por debajo de AA |
+|---|---|---|---|
+| sin atributo | `#0b0d10` | `rgb(11, 13, 16)` | **0** de 20 |
+| `dark` | `#0b0d10` | `rgb(11, 13, 16)` | **0** de 20 |
+| `light` | `#fafaf9` | `rgb(250, 250, 249)` | **0** de 20 |
+
+**Tokens resueltos:** `--color-accent=#ff7948`, `--dur-base=320ms`, `--space-8=2rem`,
+`--radius-lg=20px`, `--ease-out=cubic-bezier(0.22,1,0.36,1)`, `--color-accent-text=#ff7948`.
+
+**Las tres vistas:** 0 elementos con texto en negro puro, sin scroll horizontal, `body` con
+`background: rgb(11,13,16)`, `color: rgb(237,239,242)` y el grano de `body::before` presente como
+data URI SVG.
+
+**Puente de tema:** el toggle alterna `data-theme` entre `dark` y `light` y el fondo del `body`
+cambia de `rgb(11,13,16)` a `rgb(250,250,249)`. `document.body.className` queda vacío: ya no usa
+`dark-mode`.
 
 ### Completion Notes List
 
+Los cinco criterios se cumplen. Tres cosas salieron distinto de lo que la historia anticipaba, y
+las tres importan.
+
+**1. Dos regresiones visuales reales, encontradas midiendo.**
+
+La historia advertía: *"Si después de borrarlo algún texto queda ilegible en oscuro, la causa es un
+color literal en un `<style scoped>` — arreglalo ahí, no reintroduzcas la cascada."* Pasó, dos veces,
+y en los dos casos el `grep` que la historia daba **no lo detectaba**:
+
+- **`_navbar.scss` tenía `color: black`** en los enlaces del nav. Es un color con **nombre**, no un
+  hex ni un `rgba()`, así que el `grep -rnE "#[0-9a-fA-F]{3,6}|rgba?\("` lo pasaba por alto. Y está
+  en un `.scss`, que el `--include=*.vue` del AC2 tampoco cubre. La cascada `body.dark-mode` con
+  `!important` lo tapaba; al eliminarla, los enlaces "Projects" y "About me" quedaron negros sobre
+  fondo `#0b0d10` — invisibles. Detectado buscando elementos con `color: rgb(0, 0, 0)` computado.
+- **`_navbar.scss` tenía otra cascada `body.dark-mode` completa**, con nueve selectores y
+  `!important`, que la historia no mencionaba: la tarea 4 solo hablaba de la de `main.scss`.
+  Eliminada.
+
+**Recomendación para la historia 7.5:** ampliar el barrido de colores a los **con nombre**
+(`black`, `white`, `red`…), no solo hex y `rgba()`. El comando que los encontró:
+
+```bash
+grep -rniE "(color|background|border)[^:]*: *(black|white|red|blue|green|gray|grey|orange)\b" \
+  src/ --include=*.scss --include=*.vue --include=*.css
+```
+
+**2. El acento como texto necesitaba `--color-accent-text`, y el mapeo de la historia no lo decía.**
+
+La tabla §Mapeo de variables mandaba `$color-terciario` → `var(--color-accent)`. Aplicado
+mecánicamente a `_navbar.scss`, dejó el logo y los enlaces activos con **3.62:1 en tema claro**,
+por debajo del 4.5:1 de AA. `tokens.css` ya trae `--color-accent-text` (`#A33F14` en claro) con el
+comentario *"Acento legible como texto chico (>=4.5:1)"*.
+
+Corregido: los tres usos del acento **como color de texto** en `_navbar.scss` usan
+`--color-accent-text`; los que son borde o fondo siguen con `--color-accent`. Lo mismo se aplicó a
+`_texts.scss` desde el principio. **El mapeo depende del uso, no solo del nombre de la variable.**
+
+Mismo criterio en `_buttons.scss`: la tabla mandaba `$color-primario` → `var(--color-surface)`, pero
+como es el color del **texto sobre el acento**, en claro daría 3.4:1. El design system ya resolvió
+ese par y lo dejó documentado en `.btn-primary`: texto `#0B0D10`, que pasa 5.09:1 en claro y 7.4:1
+en oscuro. Se replicó eso, incluido el `color-mix` del hover en claro.
+
+**3. `App.vue` tuvo que entrar en el alcance, por dos motivos legítimos.**
+
+- Tenía cuatro colores literales (`#222`, `#fff`, `#ff9800`, `rgba(0,0,0,0.12)`) en el `<style>` del
+  botón flotante de tema. El AC2 pide que el `grep` sobre `.vue` salga vacío, así que había que
+  tokenizarlos.
+- Al eliminar la cascada `.dark-mode`, el toggle se quedó **sin CSS al que engancharse**: seguiría
+  agregando una clase que ya no significa nada. Se puenteó a `data-theme` sobre `<html>`, que es el
+  contrato de `tokens.css`, con un comentario `PUENTE TEMPORAL` que la historia 1.6 reemplaza.
+  **No** se implementó nada del alcance de la 1.6: sin `localStorage`, sin script inline, sin
+  `useTheme.js`, sin consultar `prefers-color-scheme`.
+
+También se tokenizaron `#ccc` en `ListProjects.vue`, `#eee` en `SkillList.vue` y los estilos inline
+del botón de idioma en `NavBar.vue`, que el AC2 exigía.
+
+**Un error de medición propio, corregido:** la primera medición de contraste en tema claro reportó
+18 pares por debajo de AA y un fondo de `rgb(156,157,158)`. Ese gris es un punto intermedio: medí a
+los 200 ms cuando la transición del `body` es de `--dur-base` (320 ms). Con 900 ms de espera el
+fondo da `rgb(250,250,249)` y los fallos reales eran 2, no 18. **Al medir color hay que esperar a
+que la transición termine.**
+
+**Fuera de alcance, anotado:** el build reporta tres warnings, los tres preexistentes y ya
+asignados — un `console.warn` en `ItemProject.vue` (componente que muere en la historia 4.2; NFR-18
+se verifica en la 7.8), el límite de tamaño de asset por los PNG de 611 KiB y `certificado.pdf`
+(historias 7.1 y 5.3), y el límite de entrypoint con 260 KiB (historia 7.8). No se tocó ninguno,
+por disciplina de alcance.
+
 ### File List
+
+```
+src/styles/tokens.css                       NUEVO — copia literal de _system/tokens.css (121 líneas)
+src/styles/base.scss                        NUEVO — reset, container, skip-link, foco, grano, reduced-motion
+src/main.js                                 MODIFICADO — orden tokens.css → base.scss → sass/main.scss
+src/App.vue                                 MODIFICADO — tokens en el botón; puente a data-theme
+src/styles/sass/main.scss                   REESCRITO — solo los @import de modules/
+src/styles/sass/modules/_texts.scss         MODIFICADO — tokens, con --color-accent-text para texto
+src/styles/sass/modules/_buttons.scss       REESCRITO — mixins con tokens; par de contraste del sistema
+src/styles/sass/modules/_navbar.scss        MODIFICADO — tokens; se quitan `color: black` y la cascada
+src/styles/sass/modules/_pages.scss         MODIFICADO — tokens
+src/components/layouts/NavBar.vue           MODIFICADO — estilos inline → <style scoped> con tokens
+src/components/projects/ListProjects.vue    MODIFICADO — #ccc → var(--color-border)
+src/components/skills/SkillList.vue         MODIFICADO — #eee → var(--color-surface-raised)
+src/styles/sass/variables/_colors.scss      ELIMINADO
+src/styles/sass/variables/_fonts.scss       ELIMINADO
+src/styles/sass/variables/_sizes.scss       ELIMINADO (estaba vacío)
+```
+
+**Variación respecto de la estructura objetivo, deliberada:** `src/styles/sass/` sigue existiendo
+con sus cuatro parciales de módulo, según la tabla §Por qué los módulos SASS no se borran todavía.
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Tokens portados a runtime como custom properties; variables SASS y cascada `.dark-mode` eliminadas; dos regresiones de contraste encontradas y corregidas. Estado `review`. |

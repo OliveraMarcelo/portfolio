@@ -1,51 +1,12 @@
+/* Módulos heredados del diseño anterior.
+   Cada parcial se elimina cuando su componente se reemplaza:
+     _texts.scss   -> historia 5.5 (SectionHeading)
+     _buttons.scss -> historia 3.2 (AppButton)
+     _navbar.scss  -> historia 1.5 (AppNav)
+     _pages.scss   -> historias 3 a 5, según se reescriben las vistas
+   Cuando queden todos vacíos, este archivo y la carpeta sass/ desaparecen. */
 
-@import 'variables/fonts';
-@import 'variables/sizes';
-@import 'variables/colors';
 @import 'modules/texts';
 @import 'modules/buttons';
 @import 'modules/pages';
 @import 'modules/navbar';
-
-
-
-
-html {
-  box-sizing: border-box;
-}
-/* Make box-sizing predictable across elements */
-*, *::before, *::after { box-sizing: inherit; }
-body {
-  font-family: $primaryFont;
-  margin: 0;
-  padding: 0;
-  background-color: $color-light-bg;
-  color: $color-light-text;
-  transition: background 0.3s, color 0.3s;
-  /* Evita un scroll horizontal inesperado causado por márgenes/anchos en elementos */
-  overflow-x: hidden;
-}
-
-body.dark-mode {
-  background-color: $color-dark-bg;
-  color: $color-dark-text-strong;
-}
-
-body.dark-mode,
-body.dark-mode .title,
-body.dark-mode .main-title,
-body.dark-mode .section-title,
-body.dark-mode .subtitle,
-body.dark-mode .project-title,
-body.dark-mode .about,
-body.dark-mode .projects,
-body.dark-mode .presentation,
-body.dark-mode .presentation-col,
-body.dark-mode .certificate-img,
-body.dark-mode .box-buttons,
-body.dark-mode .SkillList,
-body.dark-mode .MyStory {
-  color: $color-dark-text-strong !important;
-}
-
-

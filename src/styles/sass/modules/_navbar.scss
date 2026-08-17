@@ -1,19 +1,6 @@
-// Dark mode: textos blancos en navbar excepto los naranjas
-body.dark-mode nav,
-body.dark-mode .navigation,
-body.dark-mode .logo,
-body.dark-mode nav a,
-body.dark-mode nav ul li {
-    color: $color-dark-text-strong !important;
-}
-body.dark-mode .logo .fa-code {
-    color: $color-terciario !important;
-}
-body.dark-mode nav .orange-text,
-body.dark-mode .logo,
-body.dark-mode .logo .orange-text {
-    color: $color-terciario !important;
-}
+/* La cascada `body.dark-mode` con !important se elimino en la historia 1.2:
+   el tema ahora lo resuelven los tokens segun [data-theme] en <html>. */
+
 // Centrar logo en mobile
 @media (max-width: 766px) and (min-width: 368px) {
     nav {
@@ -47,7 +34,7 @@ nav {
     flex-direction:row;
     align-content: center;
     align-items: center;
-    color: $color-terciario;
+    color: var(--color-accent-text);
 }
 
 .navigation{
@@ -70,15 +57,18 @@ li {
 
 a {
     text-decoration: none;
-    color: black;
+    /* Era `black`. La cascada `body.dark-mode` con !important lo tapaba en
+       oscuro; al eliminarla en la historia 1.2 los enlaces quedaban negros
+       sobre fondo oscuro. */
+    color: var(--color-text);
     padding: 10px 15px;
-    transition: background-color 0.3s ease;
+    transition: color var(--dur-fast) var(--ease-out);
 }
 
 a:hover {
-    color: $color-terciario;
+    color: var(--color-accent-text);
 }
 
 .active {
-    color: $color-terciario;
+    color: var(--color-accent-text);
 }

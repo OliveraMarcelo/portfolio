@@ -329,10 +329,30 @@ reemplazó por el marcador canónico del design system, `<span class="logo-mark"
 El logo renderiza `</> MarceCode` en color de acento y no quedó ningún `<i class*="fa">` en el
 proyecto.
 
-**AC4 —** Cero errores en consola. Los seis `console.log` de `registerServiceWorker.js` pasan por
-un helper `log()` condicionado a `NODE_ENV !== 'production'`. El `console.error` del handler
-`error()` se dejó incondicional a propósito: un fallo real de registro del service worker no es
-ruido y tiene que verse.
+**AC4 —** Los seis `console.log` de `registerServiceWorker.js` pasan por un helper `log()`
+condicionado a `NODE_ENV !== 'production'`. El `console.error` del handler `error()` se dejó
+incondicional a propósito: un fallo real de registro del service worker no es ruido y tiene que
+verse.
+
+> **CORRECCIÓN (durante la historia 1.2).** Esta nota decía originalmente "cero errores en
+> consola". Es **falso**: hay **dos errores 404 preexistentes** por iconos del PWA que no existen
+> (`/img/icons/favicon.svg` y `/img/icons/android-chrome-192x192.png`). La medición original se
+> tomó demasiado pronto tras la navegación, cuando esas peticiones de baja prioridad todavía no
+> habían fallado.
+>
+> Verificado como preexistente haciendo `git stash` de los cambios de la 1.2 y reconstruyendo:
+> `@vue/cli-plugin-pwa` inyecta seis referencias `img/icons/*` en `dist/index.html` y
+> `public/img/` **no existe desde el primer commit**. Ninguno de los cambios de esta historia lo
+> causa.
+>
+> **Consecuencia:** el AC4 de esta historia se cumple en lo que le corresponde —los `console.log`
+> quedaron condicionados y no se introdujo ningún error nuevo— pero el sitio **no** tiene la
+> consola limpia. La **historia 7.3** tiene que resolverlo para cumplir M7: o se generan los
+> iconos en `public/img/icons/`, o se ajusta `iconPaths` / `manifestOptions` del plugin PWA en
+> `vue.config.js`.
+>
+> **Lección de método:** al medir la consola hay que esperar a que la red se aquiete, no muestrear
+> apenas termina la navegación.
 
 **AC5 —** Sin regresión funcional. Las tres vistas cargan con contenido, el toggle de idioma
 cambia el nav de "Inicio" a "Home" y el de tema aplica `dark-mode` al `body`.
