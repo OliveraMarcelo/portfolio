@@ -56,5 +56,16 @@
       "title": "Sobre mí — Marcelo Olivera",
       "description": "Frontend Developer en EXO S.A. Formación en desarrollo de software, experiencia con Flutter, Riverpod y Vue, y proyectos propios."
     }
+  },
+  "hero": {
+    "kicker": "Hola, soy",
+    "roleAccent": "Frontend",
+    "roleRest": "Developer",
+    "lede": "Construyo interfaces que se sienten tan bien como se ven — web, mobile y escritorio.",
+    "stackAria": "Stack principal",
+    "portraitAlt": "Retrato de Marcelo Olivera",
+    "ctaProjects": "Ver proyectos",
+    "ctaCv": "Descargar CV",
+    "scroll": "desplazá"
   }
 }

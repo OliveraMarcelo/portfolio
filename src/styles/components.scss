@@ -1,0 +1,74 @@
+/* ============================================================
+   MarceCode — components.scss
+   Primitivas canonicas del sistema: botones y chips.
+   Portadas de _system/components.css. La historia 3.2 las consume desde
+   AppButton.vue.
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  transition: transform var(--dur-instant) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.btn:active { transform: scale(0.97); }
+
+/* Texto casi negro sobre naranja en ambos temas: es el unico par que
+   pasa 4.5:1 con el acento de marca en claro (5.09:1) y en oscuro (7.4:1). */
+.btn-primary {
+  background: var(--color-accent);
+  color: #0B0D10;
+  box-shadow: var(--shadow-accent);
+}
+.btn-primary:hover { background: var(--color-accent-hover); }
+/* En claro el token de hover es mas oscuro (#C84615) y bajaria a 3.98:1
+   contra el texto; aclaramos en su lugar para sostener el contraste. */
+[data-theme="light"] .btn-primary:hover {
+  background: color-mix(in srgb, var(--color-accent) 86%, #FFFFFF);
+}
+
+.btn-ghost {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+.btn-ghost:hover { border-color: var(--color-text-muted); background: var(--color-surface); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: var(--space-8);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: transform var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+.chips-sm { margin-top: 0.875rem; }

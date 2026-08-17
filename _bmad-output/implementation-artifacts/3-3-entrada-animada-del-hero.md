@@ -1,6 +1,6 @@
 # Story 3.3: Entrada animada del hero
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -44,34 +44,34 @@ so that perciba de entrada que quien hizo el sitio sabe construir interfaces.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Envolver en máscaras** (AC: #1, #3)
-  - [ ] En `HeroSection.vue`, envolver cada línea del `.hero-title` en un `<span class="mask">` con un `<span class="mask-in">` adentro
-  - [ ] Aplicar el mismo par a `.hero-kicker`, `.hero-role`, `.hero-lede`, `.chips` y `.hero-actions`
-  - [ ] Portar de `home/page.css` el `headroom` de `.hero-title .mask` (ver §El headroom del título)
+- [x] **Tarea 1 — Envolver en máscaras** (AC: #1, #3)
+  - [x] En `HeroSection.vue`, envolver cada línea del `.hero-title` en un `<span class="mask">` con un `<span class="mask-in">` adentro
+  - [x] Aplicar el mismo par a `.hero-kicker`, `.hero-role`, `.hero-lede`, `.chips` y `.hero-actions`
+  - [x] Portar de `home/page.css` el `headroom` de `.hero-title .mask` (ver §El headroom del título)
 
-- [ ] **Tarea 2 — Escalonar** (AC: #1)
-  - [ ] Retardo creciente por elemento, con paso `--stagger` (70 ms)
-  - [ ] Resolverlo con una custom property por elemento (`style="--i: 3"`) y un `transition-delay: calc(var(--i) * var(--stagger))`, no con seis clases distintas
-  - [ ] La suma total —último retardo más `--dur-hero`— no debe superar los 900 ms
+- [x] **Tarea 2 — Escalonar** (AC: #1)
+  - [x] Retardo creciente por elemento, con paso `--stagger` (70 ms)
+  - [x] Resolverlo con una custom property por elemento (`style="--i: 3"`) y un `transition-delay: calc(var(--i) * var(--stagger))`, no con seis clases distintas
+  - [x] La suma total —último retardo más `--dur-hero`— no debe superar los 900 ms
 
-- [ ] **Tarea 3 — El retrato y el halo** (AC: #1)
-  - [ ] `.portrait` y `.hero-glow` ya traen su transición desde la historia 3.1, disparada por `.is-loaded`
-  - [ ] Verificar que el retrato haga `opacity 0 → 1` y `scale(1.04) → 1`, y el halo su fade
-  - [ ] Confirmar que los valores por tema del halo se respetan
+- [x] **Tarea 3 — El retrato y el halo** (AC: #1)
+  - [x] `.portrait` y `.hero-glow` ya traen su transición desde la historia 3.1, disparada por `.is-loaded`
+  - [x] Verificar que el retrato haga `opacity 0 → 1` y `scale(1.04) → 1`, y el halo su fade
+  - [x] Confirmar que los valores por tema del halo se respetan
 
-- [ ] **Tarea 4 — Movimiento reducido** (AC: #4)
-  - [ ] Los estados iniciales ocultos de `.mask-in` tienen que vivir dentro de `@media (prefers-reduced-motion: no-preference)`
-  - [ ] Lo mismo para el estado inicial de `.portrait` y `.hero-glow`
-  - [ ] Con preferencia reducida, el hero completo aparece en su estado final
+- [x] **Tarea 4 — Movimiento reducido** (AC: #4)
+  - [x] Los estados iniciales ocultos de `.mask-in` tienen que vivir dentro de `@media (prefers-reduced-motion: no-preference)`
+  - [x] Lo mismo para el estado inicial de `.portrait` y `.hero-glow`
+  - [x] Con preferencia reducida, el hero completo aparece en su estado final
 
-- [ ] **Tarea 5 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Recargar y ver la entrada completa
-  - [ ] Medir la duración total (ver §Comandos de verificación)
-  - [ ] Confirmar que `.chips` computa `flex`
-  - [ ] Confirmar que los acentos y las mayúsculas del título no quedan recortados
-  - [ ] Con movimiento reducido, confirmar que todo es legible de inmediato
-  - [ ] Probar con JavaScript deshabilitado (ver §Probarlo sin JavaScript)
+- [x] **Tarea 5 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Recargar y ver la entrada completa
+  - [x] Medir la duración total (ver §Comandos de verificación)
+  - [x] Confirmar que `.chips` computa `flex`
+  - [x] Confirmar que los acentos y las mayúsculas del título no quedan recortados
+  - [x] Con movimiento reducido, confirmar que todo es legible de inmediato
+  - [x] Probar con JavaScript deshabilitado (ver §Probarlo sin JavaScript)
 
 ## Dev Notes
 
@@ -266,8 +266,44 @@ Ningún archivo nuevo. El disparador `.is-loaded` ya lo cableó la historia 2.7 
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 — el gesto A1, medido tras el ajuste:**
+
+| Elemento | Retardo + duración | Fin |
+|---|---|---|
+| kicker | 0 + 600 | 600 ms |
+| título, línea 1 | 70 + 600 | 670 ms |
+| título, línea 2 | 140 + 600 | 740 ms |
+| rol | 210 + 600 | **810 ms** |
+| retrato | 180 + 600 | 780 ms |
+| halo | 200 + 600 | 800 ms |
+
+**Total del gesto: 810 ms**, dentro de los 900 que A1 declara.
+
+**AC2 —** `transition-property` de los elementos de A1: `opacity` y `opacity, transform`. Ninguna
+propiedad de layout.
+
+**AC3 —** `.chips` computa **`flex`** y `.hero-title .mask` computa `overflow: hidden`. El defecto del
+prototipo no se repitió.
+
+**AC4 —** con el estado final aplicado, las cuatro máscaras miden `opacity: 1`. El estado oculto vive
+dentro de `@media (prefers-reduced-motion: no-preference)` desde la historia 2.7, así que con
+preferencia reducida el hero es legible sin depender de que nada lo revele.
+
+### El presupuesto de 900 ms no se cumplía, y el prototipo tampoco lo cumplía
+
+La primera medición dio **1110 ms**: el escalonado del prototipo (0/70/140/210 ms) con `--dur-hero`
+(900 ms) por elemento suma 1110 en la última línea. AC1 pide no pasar de 900.
+
+O sea que **el prototipo contradice el número que su propia especificación declara** — A1 dice
+"Duración total: 900 ms" y el token `--dur-hero` vale 900, pero nadie hizo la suma con el escalonado.
+
+Corregido acortando la duración de los elementos de A1 a `--dur-slow` (600 ms) con una regla scopeada
+en el hero. Conserva el escalonado que A1 describe y deja el gesto en 810 ms. **No es una desviación
+del sistema: es alinear el prototipo con su propia especificación**, y por eso va documentado en el
+componente y no silencioso.
 
 ### File List

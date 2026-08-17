@@ -63,15 +63,15 @@ development_status:
   epic-2-retrospective: optional
 
   # Épica 3: Un hero que comunica en tres segundos
-  epic-3: in-progress
-  3-1-hero-con-nombre-rol-propuesta-y-stack: ready-for-dev
-  3-2-accion-primaria-y-descarga-del-cv: ready-for-dev
-  3-3-entrada-animada-del-hero: ready-for-dev
-  3-4-indicador-de-scroll: ready-for-dev
+  epic-3: done
+  3-1-hero-con-nombre-rol-propuesta-y-stack: done
+  3-2-accion-primaria-y-descarga-del-cv: done
+  3-3-entrada-animada-del-hero: done
+  3-4-indicador-de-scroll: done
   epic-3-retrospective: optional
 
   # Épica 4: Proyectos que cuentan lo que resolvieron
-  epic-4: in-progress
+  epic-4: ready-for-dev
   4-1-modulo-unico-de-contenido-de-proyectos: ready-for-dev
   4-2-card-canonica-de-proyecto: ready-for-dev
   4-3-grilla-responsive-de-proyectos: ready-for-dev
@@ -82,7 +82,7 @@ development_status:
   epic-4-retrospective: optional
 
   # Épica 5: Trayectoria y habilidades legibles de un vistazo
-  epic-5: in-progress
+  epic-5: ready-for-dev
   5-1-contenido-de-trayectoria-y-habilidades-en-modulos: ready-for-dev
   5-2-linea-de-tiempo-con-revelado-progresivo: ready-for-dev
   5-3-certificado-ampliable-en-lightbox: ready-for-dev
@@ -91,14 +91,14 @@ development_status:
   epic-5-retrospective: optional
 
   # Épica 6: Contacto a un solo gesto
-  epic-6: in-progress
+  epic-6: ready-for-dev
   6-1-canales-de-contacto-como-datos: ready-for-dev
   6-2-seccion-de-contacto-como-destino: ready-for-dev
   6-3-contacto-alcanzable-desde-cualquier-vista: ready-for-dev
   epic-6-retrospective: optional
 
   # Épica 7: Rápido, accesible y compartible
-  epic-7: in-progress
+  epic-7: ready-for-dev
   7-1-imagenes-en-formato-moderno: ready-for-dev
   7-2-el-sitio-se-ve-bien-cuando-se-comparte: ready-for-dev
   7-3-nadie-se-queda-con-la-version-vieja: ready-for-dev

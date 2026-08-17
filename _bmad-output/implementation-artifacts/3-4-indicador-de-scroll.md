@@ -1,6 +1,6 @@
 # Story 3.4: Indicador de scroll
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -30,34 +30,34 @@ so that no me quede solo con la primera pantalla.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Componente `ScrollCue.vue`** (AC: #1, #3)
-  - [ ] Markup portado de `home/index.html`: `.scroll-cue` con `.scroll-cue-text`, `.scroll-cue-track` y `.scroll-cue-dot`
-  - [ ] Estilos portados de `home/page.css` (sección del hero, clases `.scroll-cue*`)
-  - [ ] `aria-hidden="true"` en el contenedor
-  - [ ] El texto —si lo hay— sale de i18n, no literal
+- [x] **Tarea 1 — Componente `ScrollCue.vue`** (AC: #1, #3)
+  - [x] Markup portado de `home/index.html`: `.scroll-cue` con `.scroll-cue-text`, `.scroll-cue-track` y `.scroll-cue-dot`
+  - [x] Estilos portados de `home/page.css` (sección del hero, clases `.scroll-cue*`)
+  - [x] `aria-hidden="true"` en el contenedor
+  - [x] El texto —si lo hay— sale de i18n, no literal
 
-- [ ] **Tarea 2 — Desaparecer al primer scroll** (AC: #2)
-  - [ ] Estado local `visible`, inicialmente `true`
-  - [ ] Un listener de `scroll` con `{ passive: true }` y `{ once: true }` que lo pone en `false`
-  - [ ] `{ once: true }` es lo que garantiza que no vuelva (ver §`once` en lugar de una bandera)
-  - [ ] Evaluar al montar: si la página ya está scrolleada, el indicador no debe aparecer
+- [x] **Tarea 2 — Desaparecer al primer scroll** (AC: #2)
+  - [x] Estado local `visible`, inicialmente `true`
+  - [x] Un listener de `scroll` con `{ passive: true }` y `{ once: true }` que lo pone en `false`
+  - [x] `{ once: true }` es lo que garantiza que no vuelva (ver §`once` en lugar de una bandera)
+  - [x] Evaluar al montar: si la página ya está scrolleada, el indicador no debe aparecer
 
-- [ ] **Tarea 3 — Transición de salida** (AC: #2)
-  - [ ] Solo `opacity` y, si suma, `transform` (NFR-02)
-  - [ ] Mantener el elemento en el layout mientras se desvanece, o usar `<Transition>` para desmontarlo al terminar
-  - [ ] Con movimiento reducido, desaparece sin transición
+- [x] **Tarea 3 — Transición de salida** (AC: #2)
+  - [x] Solo `opacity` y, si suma, `transform` (NFR-02)
+  - [x] Mantener el elemento en el layout mientras se desvanece, o usar `<Transition>` para desmontarlo al terminar
+  - [x] Con movimiento reducido, desaparece sin transición
 
-- [ ] **Tarea 4 — Montar en el hero** (AC: #1)
-  - [ ] `<ScrollCue />` al pie de `HeroSection.vue`, dentro del `.hero`
-  - [ ] Su aparición se encadena con la entrada de la historia 3.3: retardo posterior al último elemento
+- [x] **Tarea 4 — Montar en el hero** (AC: #1)
+  - [x] `<ScrollCue />` al pie de `HeroSection.vue`, dentro del `.hero`
+  - [x] Su aparición se encadena con la entrada de la historia 3.3: retardo posterior al último elemento
 
-- [ ] **Tarea 5 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Recargar, ver aparecer el indicador, scrollear, ver desaparecer
-  - [ ] Scrollear de vuelta al tope y confirmar que **no** reaparece
-  - [ ] Recargar con la página ya scrolleada y confirmar que no aparece
-  - [ ] Confirmar que no se anuncia por lector de pantalla ni recibe foco
-  - [ ] Verificar en 390 px que no tapa contenido ni desborda la altura del hero
+- [x] **Tarea 5 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Recargar, ver aparecer el indicador, scrollear, ver desaparecer
+  - [x] Scrollear de vuelta al tope y confirmar que **no** reaparece
+  - [x] Recargar con la página ya scrolleada y confirmar que no aparece
+  - [x] Confirmar que no se anuncia por lector de pantalla ni recibe foco
+  - [x] Verificar en 390 px que no tapa contenido ni desborda la altura del hero
 
 ## Dev Notes
 
@@ -187,8 +187,45 @@ Con esta historia la Épica 3 queda cerrada: el hero está completo, animado y c
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC3 — el indicador:**
+
+```
+presente: true      aria-hidden: "true"      enfocables dentro: 0      opacity: 1
+```
+
+**AC2 — desaparece y no vuelve:**
+
+```
+tras window.scrollTo(0, 150)  -> el elemento ya no existe en el DOM
+tras volver a scrollTo(0, 0)  -> sigue sin existir
+```
+
+### `{ once: true }` en lugar de una bandera
+
+El requisito "y no vuelve a aparecer" se implementó con `{ passive: true, once: true }`: el navegador
+desregistra el listener tras la primera ejecución, así que no hay guarda que olvidar ni forma de que
+el indicador reaparezca por error.
+
+### Se desmonta, no se esconde
+
+El `<Transition>` lo saca del DOM al terminar la salida, en lugar de dejarlo en `opacity: 0`. El punto
+del indicador tiene una animación en bucle (`@keyframes cue-slide`), y un elemento invisible que
+sigue animándose consume fotogramas sin que nadie lo vea.
+
+### El caso de la página ya scrolleada
+
+Si el visitante recarga a mitad de camino, el navegador restaura la posición **antes** de que el
+componente monte, y el indicador aparecería en una página ya desplazada. `onMounted` chequea
+`window.scrollY > 0` y arranca oculto.
+
+### El keyframe vino de la historia 3.1
+
+`@keyframes cue-slide` había quedado en el `<style scoped>` de `HeroSection` al extraer el CSS. Se
+movió acá: en un `<style scoped>` los keyframes se renombran con el hash del componente, así que
+declarado en el hero no sería alcanzable desde este.
 
 ### File List

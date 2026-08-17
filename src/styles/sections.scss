@@ -1,0 +1,76 @@
+/* ============================================================
+   MarceCode — sections.scss
+   Primitivas de seccion COMPARTIDAS, portadas de home/page.css.
+
+   En el prototipo vivian en el CSS de la Home, pero las cuatro pantallas
+   las usan: es una consecuencia de que la unificacion extrajo el chasis al
+   sistema y dejo las secciones sin unificar. Aca son globales, y las
+   consumen las historias 4.3, 4.7, 5.2, 5.4, 5.5 y 6.2.
+   ============================================================ */
+
+.section {
+  position: relative;
+  padding-block: var(--space-24);
+}
+
+@media (min-width: 1024px) {
+ .section { padding-block: var(--space-32); }
+}
+
+.section-alt {
+  background: var(--color-surface);
+  border-block: 1px solid var(--color-border);
+  transition: background-color var(--dur-base) var(--ease-in-out),
+              border-color var(--dur-base) var(--ease-in-out);
+}
+
+.section-head { margin-bottom: var(--space-16); }
+
+.section-title {
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+}
+
+.section-title .dot { color: var(--color-accent); }
+
+.section-lede {
+  margin-top: 0.875rem;
+  max-width: 52ch;
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
+.section-foot { margin-top: var(--space-16); }
+
+.link-arrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.link-arrow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  width: calc(100% - 28px);
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.link-arrow:hover::after { transform: scaleX(1); }
+
+.link-arrow .ico { transition: transform var(--dur-base) var(--ease-out); }
+
+.link-arrow:hover .ico { transform: translateX(4px); }

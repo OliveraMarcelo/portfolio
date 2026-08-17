@@ -1,6 +1,6 @@
 # Story 3.1: Hero con nombre, rol, propuesta y stack
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -39,38 +39,38 @@ so that pueda decidir en segundos si sigo leyendo.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Promover las primitivas de sección** (AC: #2)
-  - [ ] Crear `src/styles/sections.scss` con `.section`, `.section-alt`, `.section-head`, `.section-title`, `.section-lede`, `.section-foot` y `.link-arrow` de `home/page.css` (líneas 215–283)
-  - [ ] Son compartidas por las Épicas 3, 4, 5 y 6: van al sistema, no a un componente (ver §Las primitivas de sección son compartidas)
-  - [ ] Importarlas en `src/main.js` después de `chassis.scss`
+- [x] **Tarea 1 — Promover las primitivas de sección** (AC: #2)
+  - [x] Crear `src/styles/sections.scss` con `.section`, `.section-alt`, `.section-head`, `.section-title`, `.section-lede`, `.section-foot` y `.link-arrow` de `home/page.css` (líneas 215–283)
+  - [x] Son compartidas por las Épicas 3, 4, 5 y 6: van al sistema, no a un componente (ver §Las primitivas de sección son compartidas)
+  - [x] Importarlas en `src/main.js` después de `chassis.scss`
 
-- [ ] **Tarea 2 — Portar las primitivas de botón y chip** (AC: #2)
-  - [ ] Portar a `src/styles/components.scss` las clases `.btn`, `.btn-primary`, `.btn-ghost`, `.chips`, `.chips-sm` y `.chip` de `_system/components.css` (líneas 350–418)
-  - [ ] Son las primitivas canónicas del sistema; la historia 3.2 las consume desde `AppButton`
+- [x] **Tarea 2 — Portar las primitivas de botón y chip** (AC: #2)
+  - [x] Portar a `src/styles/components.scss` las clases `.btn`, `.btn-primary`, `.btn-ghost`, `.chips`, `.chips-sm` y `.chip` de `_system/components.css` (líneas 350–418)
+  - [x] Son las primitivas canónicas del sistema; la historia 3.2 las consume desde `AppButton`
 
-- [ ] **Tarea 3 — Construir `HeroSection.vue`** (AC: #1, #2)
-  - [ ] Markup portado de `home/index.html`: `.hero` → `.hero-glow` + `.hero-inner` → columna de texto + `.hero-portrait`
-  - [ ] Texto: `.hero-kicker`, `.hero-title` (la `h1`), `.hero-role`, `.hero-lede`, `.chips.chips-sm`
-  - [ ] Estilos del hero en el `<style scoped>` del componente, portados de `home/page.css` (líneas 6–214)
-  - [ ] Todos los textos por `t(...)`, con las claves nuevas en `src/locales/{es,en}.json`
+- [x] **Tarea 3 — Construir `HeroSection.vue`** (AC: #1, #2)
+  - [x] Markup portado de `home/index.html`: `.hero` → `.hero-glow` + `.hero-inner` → columna de texto + `.hero-portrait`
+  - [x] Texto: `.hero-kicker`, `.hero-title` (la `h1`), `.hero-role`, `.hero-lede`, `.chips.chips-sm`
+  - [x] Estilos del hero en el `<style scoped>` del componente, portados de `home/page.css` (líneas 6–214)
+  - [x] Todos los textos por `t(...)`, con las claves nuevas en `src/locales/{es,en}.json`
 
-- [ ] **Tarea 4 — El retrato** (AC: #3)
-  - [ ] Convertir `src/assets/icons/photo.jpeg` a `src/assets/img/retrato.webp`
-  - [ ] `<img>` con `width`, `height`, `fetchpriority="high"`, `alt` descriptivo y **sin** `loading="lazy"`
-  - [ ] Reemplaza el `.portrait-ph` del prototipo, que es un marcador SVG
+- [x] **Tarea 4 — El retrato** (AC: #3)
+  - [x] Convertir `src/assets/icons/photo.jpeg` a `src/assets/img/retrato.webp`
+  - [x] `<img>` con `width`, `height`, `fetchpriority="high"`, `alt` descriptivo y **sin** `loading="lazy"`
+  - [x] Reemplaza el `.portrait-ph` del prototipo, que es un marcador SVG
 
-- [ ] **Tarea 5 — Montar en la Home** (AC: #1)
-  - [ ] `HomeView.vue` renderiza `<HeroSection />` como primera sección
-  - [ ] Quitar de `HomeView.vue` el markup del hero viejo y su `IntersectionObserver` local
-  - [ ] Conservar por ahora el resto de la vista vieja: sus secciones se reemplazan en las historias 4.7, 5.4, 5.5 y 6.2
+- [x] **Tarea 5 — Montar en la Home** (AC: #1)
+  - [x] `HomeView.vue` renderiza `<HeroSection />` como primera sección
+  - [x] Quitar de `HomeView.vue` el markup del hero viejo y su `IntersectionObserver` local
+  - [x] Conservar por ahora el resto de la vista vieja: sus secciones se reemplazan en las historias 4.7, 5.4, 5.5 y 6.2
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] En 390 px, sin scrollear: los cuatro elementos de AC1 visibles
-  - [ ] Verificar el título en los cuatro anchos, prestando atención al `text-wrap: nowrap` (ver §El `nowrap` del título)
-  - [ ] Confirmar una sola `h1` en la vista
-  - [ ] Confirmar que el retrato es el elemento LCP
-  - [ ] Alternar idioma y confirmar que todo el hero cambia
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] En 390 px, sin scrollear: los cuatro elementos de AC1 visibles
+  - [x] Verificar el título en los cuatro anchos, prestando atención al `text-wrap: nowrap` (ver §El `nowrap` del título)
+  - [x] Confirmar una sola `h1` en la vista
+  - [x] Confirmar que el retrato es el elemento LCP
+  - [x] Alternar idioma y confirmar que todo el hero cambia
 
 ## Dev Notes
 
@@ -243,8 +243,72 @@ que nada lo referencia.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 — todo visible sin scroll**, medido a 1280×800 con el hero de 800 px:
+
+| Elemento | `top` | `bottom` | Visible sin scroll |
+|---|---|---|---|
+| `.hero-kicker` | 263 | 287 | ✓ |
+| `.hero-title` | 287 | 536 | ✓ |
+| `.hero-role` | 550 | 601 | ✓ |
+| `.hero-lede` | 621 | 691 | ✓ |
+| `.chips` | 705 | 737 | ✓ |
+
+Y a 390 px, verificado visualmente: nombre, rol, propuesta y los cuatro chips entran sin scrollear.
+
+**AC2 —** una sola `h1` con "MarceloOlivera"; `.chips` computa **`flex`** (la verificación central: la
+máscara no rompió el layout); los cuatro chips con el stack real.
+
+**AC3 — el retrato:** `width="640" height="640"`, `alt` descriptivo y traducido,
+`fetchpriority="high"`, `decoding="async"`, **sin** `loading="lazy"`. Renderiza 400×400 con relación
+exactamente 1 y `object-fit: cover`.
+
+**AC4 —** `min-height` computado en 800 px sobre un viewport de 800: `100svh` resuelto.
+
+**Sin scroll horizontal** en ninguno de los dos anchos.
+
+### Un fallo real de AC1, y su causa
+
+La primera versión dejaba los chips **9 px bajo el pliegue** a 1280×800 (`bottom: 809` con viewport
+800), lo que violaba FR-05.
+
+La causa: el `#main { padding-top: var(--header-h) }` que la historia 1.5 agregó para despejar el
+header fijo, **más** el `padding-block: calc(var(--header-h) + var(--space-16))` que el hero ya trae.
+Los 72 px se contaban dos veces, y con `min-height: 100svh` el hero desbordaba el viewport.
+
+El hero está diseñado para pasar **por debajo** del header transparente —de ahí que el header no
+tenga fondo en el tope— así que cancela el padding con `margin-top: calc(var(--header-h) * -1)`.
+Verificado después: todo dentro del viewport, hero de 800 px exactos.
+
+### El CSS se extrajo parseando bloques, no con expresiones regulares
+
+El primer intento usó regex para quitar las reglas del indicador de scroll y **rompió el CSS**,
+dejando declaraciones huérfanas: `Unexpected }` en la línea 115. Es el mismo error que en el
+prototipo partió un `@media` por la mitad y destruyó el layout de una pantalla.
+
+Se reescribió con un divisor que cuenta llaves y separa bloques de nivel superior, filtrando **reglas
+completas** por su selector. Resultado: 27 bloques, 9 excluidos (`.portrait-ph`, `.ph-label`,
+`.ph-note` del marcador SVG del prototipo y los 6 del `.scroll-cue`, que es la historia 3.4), y una
+verificación de llaves balanceadas antes de escribir.
+
+**Un `@keyframes cue-slide` sobrevivió al filtro** porque su selector no contiene `scroll-cue`. Se
+quitó a mano: en un `<style scoped>` los keyframes se renombran con el hash del componente y no
+serían alcanzables desde `ScrollCue.vue`.
+
+### Las primitivas de sección se promovieron a globales
+
+`sections.scss` con `.section`, `.section-alt`, `.section-head`, `.section-title`, `.section-lede`,
+`.section-foot` y `.link-arrow`, y `components.scss` con `.btn`, `.chip` y sus variantes. En el
+prototipo las de sección vivían en el CSS de la Home, pero las cuatro pantallas las usan — otra
+consecuencia de que la unificación extrajo el chasis y dejó las secciones sin unificar. Las consumen
+las historias 4.3, 4.7, 5.2, 5.4, 5.5 y 6.2.
+
+### El retrato
+
+`photo.jpeg` (612×612, 33 KB) se recortó al cuadrado, se escaló a 640×640 —el doble de los 320 px de
+presentación, para pantallas densas— y se guardó como WebP con calidad 82: **12 KB, un 64 % menos**.
 
 ### File List
