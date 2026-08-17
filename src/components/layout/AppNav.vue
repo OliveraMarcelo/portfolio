@@ -31,10 +31,39 @@
       <div class="header-actions">
         <ThemeToggle />
         <LangToggle />
-        <!-- El boton de menu mobile lo agrega la historia 2.4. -->
+        <button
+          ref="botonMenuRef"
+          class="icon-btn menu-btn"
+          type="button"
+          :aria-expanded="String(menuAbierto)"
+          aria-controls="mobile-menu"
+          :aria-label="menuAbierto ? t('menu.close') : t('menu.open')"
+          @click="alternarMenu"
+        >
+          <AppIcon class="ico-menu" name="menu" />
+          <AppIcon class="ico-close" name="close" />
+        </button>
       </div>
     </div>
+
+    <div id="mobile-menu" ref="panelRef" class="mobile-menu" :class="{ 'is-open': menuAbierto }">
+      <ul class="mobile-list">
+        <li v-for="item in items" :key="item.name">
+          <RouterLink
+            class="mobile-link"
+            :class="{ 'is-active': esActiva(item.name) }"
+            :to="item.path"
+            :aria-current="esActiva(item.name) ? 'page' : null"
+            @click="cerrarMenu"
+          >{{ t(item.clave) }}</RouterLink>
+        </li>
+      </ul>
+    </div>
   </header>
+
+  <!-- El velo va FUERA del header: dentro heredaria su contexto de
+       apilamiento y el z-index: 90 dejaria de compararse con el del panel. -->
+  <div class="nav-scrim" :class="{ 'is-visible': menuAbierto }" aria-hidden="true" @click="cerrarMenu"></div>
 </template>
 
 <script setup>
@@ -43,6 +72,8 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import ThemeToggle from '@/components/ui/ThemeToggle.vue';
 import LangToggle from '@/components/ui/LangToggle.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
+import { useFocusTrap } from '@/composables/useFocusTrap';
 import { useLocale } from '@/composables/useLocale';
 
 const { t } = useI18n();
@@ -95,6 +126,43 @@ async function reposicionar() {
 watch(() => route.name, reposicionar);
 watch(locale, reposicionar);
 
+/* Menu mobile (FR-03). El apilamiento vive en chassis.scss: velo 90 <
+   header 100 < panel 105. Sin eso el velo se pinta encima del panel y se
+   come los clicks de los enlaces — el defecto que en el prototipo pasó
+   desapercibido en dos de cuatro pantallas. */
+const menuAbierto = ref(false);
+const panelRef = ref(null);
+const botonMenuRef = ref(null);
+const { abrir, cerrar, alPresionarTab } = useFocusTrap();
+
+function cerrarMenu() {
+  if (!menuAbierto.value) return;
+  menuAbierto.value = false;
+  document.body.style.overflow = '';
+  cerrar();
+}
+
+async function alternarMenu() {
+  menuAbierto.value = !menuAbierto.value;
+  if (menuAbierto.value) {
+    document.body.style.overflow = 'hidden';
+    await nextTick();
+    abrir(panelRef.value, botonMenuRef.value);
+  } else {
+    document.body.style.overflow = '';
+    cerrar();
+  }
+}
+
+function alPresionarTecla(e) {
+  if (!menuAbierto.value) return;
+  if (e.key === 'Escape') { cerrarMenu(); return; }
+  alPresionarTab(e, panelRef.value);
+}
+
+/* Cerrar al cambiar de ruta, por si la navegacion viene de otro lado. */
+watch(() => route.name, cerrarMenu);
+
 /* Header en scroll (A4). El handler solo lee window.scrollY y hace un
    classList.toggle idempotente: no mide nada del DOM, asi que no produce
    layout thrashing. `passive: true` es obligatorio — sin el, el navegador
@@ -107,6 +175,7 @@ onMounted(() => {
   reposicionar();
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('keydown', alPresionarTecla);
   window.addEventListener('resize', volverAlActivo);
   if (document.fonts?.ready) {
     document.fonts.ready.then(volverAlActivo).catch(() => { /* noop */ });
@@ -118,6 +187,10 @@ onMounted(() => {
 watch(() => route.name, onScroll);
 
 onUnmounted(() => {
+  /* Si el componente se desmonta con el menu abierto, el body quedaria
+     bloqueado y la pagina no scrollearia. Pasa en el HMR de desarrollo. */
+  document.body.style.overflow = '';
+  document.removeEventListener('keydown', alPresionarTecla);
   window.removeEventListener('scroll', onScroll);
   window.removeEventListener('resize', volverAlActivo);
 });

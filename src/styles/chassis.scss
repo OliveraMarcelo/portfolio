@@ -63,32 +63,8 @@
 }
 .logo:hover .logo-mark { transform: translateX(2px); }
 
-/* TEMPORAL — historia 1.5. El sistema declara `.nav { display: none }` y lo
-   muestra desde 768px, porque en mobile la navegacion vive en el
-   .mobile-menu. Ese menu es la historia 2.4, asi que esconder el nav ahora
-   dejaria el sitio sin navegacion en mobile.
+.nav { position: relative; display: none; }
 
-   La 2.4 restaura el comportamiento canonico:
-
-       .nav { position: relative; display: none; }
-       @media (min-width: 768px) {
-         .nav { display: block; }
-         .menu-btn, .mobile-menu { display: none; }
-       }
-*/
-.nav { position: relative; display: block; }
-
-/* Consecuencia de la excepcion anterior: con el nav visible en mobile no
-   queda lugar en la fila para el boton de idioma, que se iba fuera del
-   viewport (medido: left 406px con un viewport de 390px, o sea invisible).
-   Se permite que el header envuelva y el nav baje a una segunda linea.
-   La historia 2.4 borra este bloque junto con la excepcion. */
-@media (max-width: 767px) {
-  .header-inner { flex-wrap: wrap; row-gap: 0.25rem; }
-  .nav { order: 3; width: 100%; }
-  .nav-list { justify-content: center; }
-
-}
 .nav-list { display: flex; gap: 0.25rem; }
 
 .nav-link {
@@ -203,9 +179,80 @@
 }
 .footer-sep { opacity: 0.6; }
 
-/* Apilamiento del chasis. El velo y el panel los suma la historia 2.4:
-   velo 90 < header 100 < panel 105. */
-.site-header { z-index: 100; }
+/* ---------- Menu movil (historia 2.4) --------------------- */
+
+.menu-btn .ico-close { opacity: 0; transform: rotate(-90deg) scale(0.7); }
+.menu-btn[aria-expanded="true"] .ico-menu { opacity: 0; transform: rotate(90deg) scale(0.7); }
+.menu-btn[aria-expanded="true"] .ico-close { opacity: 1; transform: none; }
+
+.mobile-menu {
+  position: absolute;
+  inset: 100% 0 auto 0;
+  max-height: calc(100svh - var(--header-h));
+  overflow-y: auto;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility 0s linear var(--dur-base);
+}
+.mobile-menu.is-open {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility 0s;
+}
+.mobile-list { padding: 0.5rem var(--gutter) 1rem; }
+.mobile-link {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.mobile-link:hover { color: var(--color-text); }
+.mobile-link.is-active { color: var(--color-text); }
+.mobile-link.is-active::before {
+  content: "";
+  width: 10px;
+  height: 2px;
+  margin-right: 0.625rem;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+}
+
+@media (min-width: 768px) {
+  .nav { display: block; }
+  .menu-btn, .mobile-menu { display: none; }
+}
+
+/* ---------- Chasis: velo del menu movil ------------------- */
+/* z-index explicito en las tres capas: scrim < header < panel.
+   Con los tres en `auto` el scrim se pinta encima del panel y se
+   come los clicks de los enlaces. */
+.nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.44);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-base) var(--ease-out), visibility var(--dur-base);
+}
+.nav-scrim.is-visible { opacity: 1; visibility: visible; }
+.site-header  { z-index: 100; }
+.mobile-menu  { z-index: 105; }
 
 /* El header es `position: fixed`, así que el contenido necesita despejarlo.
    La regla vive acá y no en App.vue: depende de --header-h, que es del
@@ -213,9 +260,3 @@
    temporal puede pisarla sin depender del orden de imports. */
 #main { padding-top: var(--header-h); }
 
-/* TEMPORAL — historia 1.5, va junto con la excepcion del .nav.
-   Al envolver, el header pasa de 72px a ~129px y tapaba 25px del contenido.
-   Se despeja la altura real de las dos filas. La 2.4 borra este bloque. */
-@media (max-width: 767px) {
-  #main { padding-top: calc(var(--header-h) + 3.5rem); }
-}

@@ -1,6 +1,6 @@
 # Story 2.4: Menú mobile en overlay
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -50,40 +50,40 @@ so that el sitio me sirva igual que en la computadora.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Portar el markup y los estilos** (AC: #1, #4)
-  - [ ] Sumar a `AppNav.vue` el `.mobile-menu` con su `.mobile-list` y los tres `.mobile-link`, y el botón `.icon-btn.menu-btn` con los íconos `i-menu` e `i-close`
-  - [ ] Agregar el `.nav-scrim` **después** del `</header>`, no dentro
-  - [ ] Portar a `chassis.scss` las secciones de menú mobile y velo de `_system/components.css` (líneas 291–348 y 481–496), **incluidas las tres reglas de `z-index`**
-  - [ ] **Revertir la excepción de la historia 1.5:** `.nav` vuelve al `display: none` canónico con su media query, y el `.menu-btn` se oculta desde el breakpoint de escritorio
+- [x] **Tarea 1 — Portar el markup y los estilos** (AC: #1, #4)
+  - [x] Sumar a `AppNav.vue` el `.mobile-menu` con su `.mobile-list` y los tres `.mobile-link`, y el botón `.icon-btn.menu-btn` con los íconos `i-menu` e `i-close`
+  - [x] Agregar el `.nav-scrim` **después** del `</header>`, no dentro
+  - [x] Portar a `chassis.scss` las secciones de menú mobile y velo de `_system/components.css` (líneas 291–348 y 481–496), **incluidas las tres reglas de `z-index`**
+  - [x] **Revertir la excepción de la historia 1.5:** `.nav` vuelve al `display: none` canónico con su media query, y el `.menu-btn` se oculta desde el breakpoint de escritorio
 
-- [ ] **Tarea 2 — Abrir y cerrar** (AC: #1, #2, #3)
-  - [ ] Estado local `abierto` en `AppNav.vue`
-  - [ ] El botón alterna; `aria-expanded` refleja el estado
-  - [ ] Clic en un `.mobile-link` cierra
-  - [ ] Clic en el velo cierra
-  - [ ] `Escape` cierra y devuelve el foco al botón
-  - [ ] Cerrar también al cambiar de ruta, por si la navegación viene de otro lado
+- [x] **Tarea 2 — Abrir y cerrar** (AC: #1, #2, #3)
+  - [x] Estado local `abierto` en `AppNav.vue`
+  - [x] El botón alterna; `aria-expanded` refleja el estado
+  - [x] Clic en un `.mobile-link` cierra
+  - [x] Clic en el velo cierra
+  - [x] `Escape` cierra y devuelve el foco al botón
+  - [x] Cerrar también al cambiar de ruta, por si la navegación viene de otro lado
 
-- [ ] **Tarea 3 — Bloquear el scroll del fondo** (AC: #1)
-  - [ ] Con el menú abierto, `document.body.style.overflow = 'hidden'`
-  - [ ] Restaurarlo al cerrar, y también en `onUnmounted` (ver §No dejes el body bloqueado)
+- [x] **Tarea 3 — Bloquear el scroll del fondo** (AC: #1)
+  - [x] Con el menú abierto, `document.body.style.overflow = 'hidden'`
+  - [x] Restaurarlo al cerrar, y también en `onUnmounted` (ver §No dejes el body bloqueado)
 
-- [ ] **Tarea 4 — Contener el foco** (AC: #5)
-  - [ ] Al abrir, mover el foco al primer enlace del panel
-  - [ ] `Tab` en el último elemento vuelve al primero; `Shift+Tab` en el primero va al último
-  - [ ] Al cerrar, devolver el foco al botón
-  - [ ] **Esto no está en el prototipo:** hay que escribirlo (ver §El foco atrapado hay que escribirlo)
+- [x] **Tarea 4 — Contener el foco** (AC: #5)
+  - [x] Al abrir, mover el foco al primer enlace del panel
+  - [x] `Tab` en el último elemento vuelve al primero; `Shift+Tab` en el primero va al último
+  - [x] Al cerrar, devolver el foco al botón
+  - [x] **Esto no está en el prototipo:** hay que escribirlo (ver §El foco atrapado hay que escribirlo)
 
-- [ ] **Tarea 5 — Etiqueta accesible** (AC: #1)
-  - [ ] `aria-label` del botón alterna entre `menu.open` y `menu.close`, claves que la historia 1.7 ya dejó en los locales
-  - [ ] `aria-controls` apuntando al `id` del panel
+- [x] **Tarea 5 — Etiqueta accesible** (AC: #1)
+  - [x] `aria-label` del botón alterna entre `menu.open` y `menu.close`, claves que la historia 1.7 ya dejó en los locales
+  - [x] `aria-controls` apuntando al `id` del panel
 
-- [ ] **Tarea 6 — Verificar en las cuatro vistas** (AC: #4, #6)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] En 390 px, y **en cada una de las vistas**: abrir, tocar un enlace, navegar, cerrar
-  - [ ] Correr la prueba de `elementFromPoint` en cada vista
-  - [ ] `Escape`, tap fuera, y recorrido con `Tab`
-  - [ ] En 1280 px: el botón de menú no se ve y el `.nav` sí
+- [x] **Tarea 6 — Verificar en las cuatro vistas** (AC: #4, #6)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] En 390 px, y **en cada una de las vistas**: abrir, tocar un enlace, navegar, cerrar
+  - [x] Correr la prueba de `elementFromPoint` en cada vista
+  - [x] `Escape`, tap fuera, y recorrido con `Tab`
+  - [x] En 1280 px: el botón de menú no se ve y el `.nav` sí
 
 ## Dev Notes
 
@@ -262,8 +262,107 @@ src/composables/useFocusTrap.js    NUEVO (opcional) — si se extrae para reusar
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**Las tres desviaciones de la historia 1.5, revertidas.** No queda ningún marcador `TEMPORAL` en
+`src/styles/`:
+
+```
+.nav display computado    -> none      (canónico, oculto en mobile)
+.menu-btn display         -> grid      (visible en mobile)
+altura del header         -> 81 px     (una sola fila, ya no envuelve)
+#main padding-top         -> 72 px     (era 128 px con el envoltorio)
+@media (min-width: 768px) { .nav { display: block } .menu-btn, .mobile-menu { display: none } }
+```
+
+**AC4 — el contrato de apilamiento:**
+
+```
+.nav-scrim    z-index 90
+.site-header  z-index 100
+.mobile-menu  z-index 105
+```
+
+**AC4/AC6 — `elementFromPoint` sobre cada enlace, en las TRES vistas.** Es la prueba que en el
+prototipo destapó que el velo se comía los clics, y la que mirar la pantalla no da:
+
+| Vista | Home | Projects | About me | Todos reciben el clic |
+|---|---|---|---|---|
+| `/` | `A.mobile-link` | `A.mobile-link` | `A.mobile-link` | ✓ |
+| `/projects` | `A.mobile-link` | `A.mobile-link` | `A.mobile-link` | ✓ |
+| `/about` | `A.mobile-link` | `A.mobile-link` | `A.mobile-link` | ✓ |
+
+En las tres: `aria-expanded="true"`, panel con `.is-open`, velo con `.is-visible`,
+`body.style.overflow === 'hidden'` y el foco dentro del panel.
+
+**AC5 — foco contenido en los dos sentidos:**
+
+```
+al abrir            -> foco en "Home" (primer enlace del panel)
+Tab en el ultimo    -> vuelve a "Home"       volvioAlPrimero: true
+Shift+Tab en el 1º  -> va a "About me"       fueAlUltimo: true
+```
+
+**AC3 — las tres vías de cierre, todas con retorno de foco:**
+
+| Vía | Cerró | Foco volvió al botón | `body` liberado |
+|---|---|---|---|
+| `Escape` | ✓ | ✓ | ✓ |
+| Clic en el velo | ✓ | ✓ | ✓ |
+| Clic en un enlace (navega a `/projects`) | ✓ | — | ✓ |
 
 ### Completion Notes List
 
+Los seis criterios se cumplen.
+
+**Un defecto real, encontrado midiendo: el foco no volvía al botón.** La primera versión de
+`useFocusTrap` guardaba el disparador leyendo `document.activeElement` al abrir. La medición dio
+`focoVolvioAlBoton: false` en las tres vistas.
+
+La causa inmediata es que un `.click()` programático **no mueve el foco**, así que
+`document.activeElement` era el `<body>`. Pero al mirarlo de cerca el problema es más de fondo:
+**Safari no enfoca los `<button>` al hacer clic**, así que en un navegador real el mismo defecto
+aparecería sin necesidad de un clic sintético.
+
+Corregido pasando el disparador **explícito**:
+
+```js
+abrir(panelRef.value, botonMenuRef.value);
+```
+
+Verificado después: `focoVolvioAlBoton: true` por `Escape` y por clic en el velo.
+
+**El velo va fuera del `<header>`.** Dentro heredaría su contexto de apilamiento y el `z-index: 90`
+dejaría de compararse con el `105` del panel. El markup canónico lo pone después del `</header>` por
+ese motivo, y acá se respetó.
+
+**El foco atrapado se escribió, no se portó.** Es la única parte de esta historia que el prototipo no
+tenía: cierra con `Escape` y devuelve el foco, pero deja que `Tab` salga del panel hacia el contenido
+tapado por el velo — un fallo directo de NFR-08. Se extrajo a `src/composables/useFocusTrap.js`
+porque la historia 5.3 lo necesita para el lightbox, y dos implementaciones distintas del mismo
+comportamiento accesible es como aparecen inconsistencias que solo salen en auditoría.
+
+**`body.style.overflow` se restaura en tres lugares**, no solo al cerrar: en `cerrarMenu`, en el
+`watch` de la ruta y en `onUnmounted`. El último importa en el HMR de desarrollo, donde el componente
+se desmonta con el menú abierto y la página quedaría sin scroll.
+
+**El escalonado de los ítems** lo resuelve el CSS del sistema; no hizo falta JavaScript. Con
+movimiento reducido los tres enlaces miden `opacity: 1` de entrada, así que ninguno depende de su
+animación para ser alcanzable.
+
 ### File List
+
+```
+src/components/layout/AppNav.vue        MODIFICADO — botón, panel, velo y comportamiento
+src/styles/chassis.scss                 MODIFICADO — se revierten las 3 desviaciones; se suma
+                                          el menú móvil, el velo, el apilamiento y la media query
+src/composables/useFocusTrap.js         NUEVO — se reusa en la historia 5.3
+```
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Menú mobile en overlay con foco contenido y las tres vías de cierre. Se revierten las tres desviaciones temporales de la historia 1.5. Estado `done`. |

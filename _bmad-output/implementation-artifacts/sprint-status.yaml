@@ -56,8 +56,8 @@ development_status:
   2-1-rutas-con-titulo-y-descripcion-propios: done
   2-2-indicador-animado-de-la-ruta-activa: done
   2-3-encabezado-que-reacciona-al-scroll: done
-  2-4-menu-mobile-en-overlay: ready-for-dev
-  2-5-posicion-de-scroll-coherente-al-navegar: ready-for-dev
+  2-4-menu-mobile-en-overlay: done
+  2-5-posicion-de-scroll-coherente-al-navegar: in-progress
   2-6-transicion-animada-entre-vistas: ready-for-dev
   2-7-revelado-de-contenido-al-scroll: done
   epic-2-retrospective: optional
