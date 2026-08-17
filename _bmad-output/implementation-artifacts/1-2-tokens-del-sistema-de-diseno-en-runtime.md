@@ -1,6 +1,6 @@
 # Story 1.2: Tokens del sistema de diseño en runtime
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -370,3 +370,141 @@ con sus cuatro parciales de módulo, según la tabla §Por qué los módulos SAS
 | Fecha | Cambio |
 |---|---|
 | 2026-08-17 | Tokens portados a runtime como custom properties; variables SASS y cascada `.dark-mode` eliminadas; dos regresiones de contraste encontradas y corregidas. Estado `review`. |
+| 2026-08-17 | Code review: 1 hallazgo alto y 2 medios corregidos. Estado `done`. |
+
+## Senior Developer Review (AI)
+
+**Fecha:** 2026-08-17
+**Revisor:** claude-opus-5, pasada adversarial
+**Resultado:** **Changes Requested → corregido y aprobado**
+
+**Contraste File List vs git:** los 15 archivos que declara la historia coinciden exactamente con
+`git diff --name-only HEAD~1 HEAD -- src/ public/`. Sin discrepancias.
+
+### 🔴 Alto — 1 hallazgo, corregido
+
+**H1 — `_pages.scss` tenía cuatro colores literales, y uno dejaba el hero de la Home ilegible en
+mobile.** `src/styles/sass/modules/_pages.scss:52`
+
+El AC4 pide que *"los colores que usan provienen de los tokens nuevos, no de valores literales"*.
+La tarea 3 se cumplió sobre las **variables SASS**, pero `_pages.scss` tenía además cuatro colores
+que **nunca fueron variables** —siempre fueron hex literal— así que el script de sustitución no los
+tocó y la historia no los mencionaba.
+
+El grave es este, dentro de un `@media (max-width: 766px)`:
+
+```scss
+.presentation-col .subtitle,
+.presentation-col .title,
+.presentation-col .main-title {
+    color: #222 !important;
+}
+```
+
+Antes de esta historia, la cascada `body.dark-mode` lo tapaba por **especificidad**:
+`body.dark-mode .subtitle` es (0,2,1) contra (0,2,0) de `.presentation-col .subtitle`, y ambas
+llevaban `!important`. Al eliminar la cascada, `#222` ganó.
+
+Medido a 390 px sobre fondo `rgb(11,13,16)`:
+
+| Elemento | Contraste | Mínimo AA |
+|---|---|---|
+| `.presentation-col .subtitle` — "Hola soy Marcelo Olivera!" | **1.22:1** | 4.5:1 |
+| `.presentation-col .title` — "Front Developer" | **1.22:1** | 3:1 |
+| `.presentation-col .subtitle` — la bajada del hero | **1.22:1** | 4.5:1 |
+
+O sea: **el hero entero era invisible en mobile.** Es exactamente el modo de falla que la propia
+historia advertía, y se escapó de la verificación por dos motivos acumulados: la regla vive en una
+media query de mobile y se midió a ancho de escritorio, y `#222` no es negro puro, así que el
+detector de `color: rgb(0, 0, 0)` no lo veía.
+
+**Corregido:** los nueve literales de `_pages.scss` pasan a tokens — `#222` → `var(--color-text)`,
+`#ff9800` → `var(--color-accent)`, `#ddd` y `#ccc` → `var(--color-border)`, las cuatro sombras
+`rgba(0,0,0,…)` → `var(--shadow-md)` / `var(--shadow-lg)`, y el `text-shadow` negro sobre texto
+claro se elimina porque no aportaba nada.
+
+**Verificado tras el arreglo**, con el fondo efectivo resuelto subiendo el árbol y esperando el fin
+de la transición:
+
+| Ruta | Tema | Medidos | Por debajo de AA |
+|---|---|---|---|
+| `/` | dark / light | 45 | **0 / 0** |
+| `/projects` | dark / light | 21 | **0 / 0** |
+| `/about` | dark / light | 28 | **0 / 0** |
+
+A 390 px: 41 elementos, 0 fallos en ambos temas. El peor par en claro es el botón primario con
+**5.15:1**, que confirma el 5.09:1 que el design system había medido y documentado.
+
+### 🟡 Medio — 2 hallazgos, corregidos
+
+**M1 — El `<style>` global de `App.vue` se emitía antes de `tokens.css`.** `src/main.js`
+
+El AC1 pide importar los tokens *"antes que cualquier otro estilo"*. `main.js` tenía
+`import App from './App.vue'` en la línea 2, antes de los imports de estilo, y `App.vue` tiene un
+bloque `<style lang="scss">` **no scoped**. Webpack emite el CSS en el orden en que resuelve los
+imports, así que en el bundle quedaba:
+
+```
+posición    654  App.vue (.toggle-mode-btn)
+posición   1155  tokens (:root)
+```
+
+Hoy no rompe nada, porque `var()` se resuelve en tiempo de valor computado y no de parseo. Pero el
+primer componente que necesite pisar una regla de `base.scss` iba a perder sin motivo aparente.
+
+**Corregido:** `App.vue` se importa después de los tres archivos de estilo. Orden verificado en el
+bundle: tokens en 0, base en 2609, módulos en 4900, `App.vue` en 13691.
+
+**M2 — Cuatro sombras con `rgba(0,0,0,…)` sin tokenizar.** `_pages.scss:54,72,84,105`
+
+El sistema tiene `--shadow-md` y `--shadow-lg`, que además son *theme-aware*: en claro usan
+`rgba(20,23,28,…)` y en oscuro `rgba(0,0,0,…)` con otra opacidad. Una sombra negra fija al 8 % es
+invisible en tema oscuro y demasiado dura en claro. **Corregido junto con H1.**
+
+### 🟢 Bajo — 4 hallazgos, aceptados sin cambio
+
+**L1 — `base.scss` se desvía del original al agregar `!important` a `scroll-behavior: auto`.**
+El bloque fuente de `components.css` no lo lleva; funciona por orden de cascada. Se agregó porque la
+historia 2.5 lo exige explícitamente y porque protege si alguien reordena los imports. Deliberado y
+comentado en el archivo.
+
+**L2 — `base.scss` incluye anulaciones de movimiento reducido para clases que todavía no existen**
+(`.reveal`, `.mask-in`, `.portrait`, `.project-actions`, `.scroll-cue`, `.hero-glow`,
+`.timeline-progress`, `.scroll-cue-dot`). Roza el guardarraíl de no portar utilidades de animación,
+pero solo las **anula**, no las define, y traerlas ahora evita volver a editar el bloque en las
+historias 2.7, 3.3 y 3.4. Comentado en el archivo.
+
+**L3 — No hay token para "texto sobre acento".** `_buttons.scss:28` y `base.scss:68,89` cargan
+`#0B0D10` literal. El propio design system lo hace en `.btn-primary` y `::selection`, así que es
+consistente con la fuente. **Recomendación para la historia 3.2:** al construir `AppButton`, evaluar
+agregar `--color-on-accent: #0B0D10` a `tokens.css` y usarlo en los tres lugares. No se hizo acá
+porque el AC1 exige que `tokens.css` sea copia literal.
+
+**L4 — `.lang-switcher` usa `position: absolute` y `nav` no es `position: relative`**, así que se
+ancla al bloque contenedor inicial. Es el comportamiento que ya tenía con el estilo inline, así que
+no es regresión. El componente muere en la historia 1.5.
+
+### Errores de medición propios, detectados durante el review
+
+Tres mediciones dieron falsos positivos. Valen como método para las historias 7.5 y 7.7:
+
+1. **Medir color a mitad de transición.** La primera pasada reportó 18 pares por debajo de AA en
+   tema claro y un fondo de `rgb(156,157,158)` — un gris intermedio. Medí a los 200 ms cuando el
+   `body` transiciona en `--dur-base` (320 ms). **Hay que esperar a que la transición termine.**
+2. **Comparar contra el fondo del `body` en lugar del fondo propio.** Reportó 5 fallos en botones
+   que en realidad pasan: el texto `#0B0D10` estaba siendo comparado contra el fondo oscuro de la
+   página en lugar del naranja del botón. **Hay que resolver el fondo efectivo subiendo el árbol.**
+3. **Buscar un selector con las comillas puestas.** `grep 'data-theme="light"'` no encontró nada en
+   el bundle y por un momento pareció que Sass había perdido el prefijo del selector anidado. El
+   minificador quita las comillas: `[data-theme=light]`. El selector estaba perfecto.
+
+Las tres se corrigieron antes de reportar. La lección común: **una medición que da un resultado
+alarmante hay que verificarla antes de actuar sobre ella.**
+
+### Action Items
+
+- [x] [AI-Review][Alto] Tokenizar los cuatro colores literales de `_pages.scss`; `color: #222 !important` dejaba el hero a 1.22:1 en mobile [_pages.scss:52,71,85,106]
+- [x] [AI-Review][Medio] Importar `App.vue` después de los estilos en `main.js` para que los tokens se emitan primero [main.js:2]
+- [x] [AI-Review][Medio] Tokenizar las cuatro sombras `rgba(0,0,0,…)` con `--shadow-md`/`--shadow-lg` [_pages.scss:54,72,84,105]
+- [ ] [AI-Review][Bajo] Evaluar agregar `--color-on-accent` a `tokens.css` al construir `AppButton` — **historia 3.2**
+- [ ] [AI-Review][Bajo] Ampliar el barrido de contraste a colores con **nombre** (`black`, `white`…), no solo hex y `rgba()` — **historia 7.5**

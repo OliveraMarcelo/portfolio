@@ -49,9 +49,11 @@
     .presentation-col .subtitle,
     .presentation-col .title,
     .presentation-col .main-title {
-        color: #222 !important;
+        /* Era #222. La cascada body.dark-mode lo tapaba por especificidad
+           (0,2,1 contra 0,2,0); al eliminarla en la historia 1.2 el hero
+           quedaba a 1.22:1 sobre fondo oscuro en mobile. */
+        color: var(--color-text) !important;
         font-weight: 700 !important;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.08);
         letter-spacing: 0.5px;
     }
     .presentation-col .subtitle {
@@ -68,8 +70,8 @@
     }
     .presentation-col .photo {
         margin: 0.5rem 0;
-        border: 3px solid #ff9800;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+        border: 3px solid var(--color-accent);
+        box-shadow: var(--shadow-md);
     }
 }
   .certificate-container {
@@ -81,8 +83,8 @@
     max-width: 100%;
     height: auto;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border: 2px solid #ddd;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--color-border);
     transition: transform 0.3s ease;
 
     &:hover {
@@ -102,8 +104,8 @@
       width: 100%;
       height: auto;
       border-radius: 8px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-      border: 1px solid #ccc;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--color-border);
     }
   }
 
@@ -291,7 +293,7 @@
 
 .bordeline-photo:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    box-shadow: var(--shadow-lg);
 }
 
 .bordeline-photo:hover .photo {
