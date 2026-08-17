@@ -1,0 +1,50 @@
+code: danflow
+name: "DanFlow"
+description: "Método propio basado en BMAD v6.0.4, especializado en arquitectura de microservicios event-driven (Go + NATS: EDA + Outbox + CQRS-ish, multitenancy por RLS) y diseño UI de alta fidelidad con Open Design."
+default_selected: false # módulo propio; se selecciona explícitamente al instalar
+
+# Variables heredadas del Core Config:
+## user_name
+## communication_language
+## document_output_language
+## output_folder
+
+project_name:
+  prompt: "¿Cómo se llama tu proyecto?"
+  default: "{directory_name}"
+  result: "{value}"
+
+user_skill_level:
+  prompt:
+    - "¿Cuál es tu nivel de experiencia en desarrollo?"
+    - "Afecta cómo los agentes explican los conceptos."
+  default: "intermediate"
+  result: "{value}"
+  single-select:
+    - value: "beginner"
+      label: "Principiante - Explicá con claridad"
+    - value: "intermediate"
+      label: "Intermedio - Balance entre detalle y velocidad"
+    - value: "expert"
+      label: "Experto - Directo y técnico"
+
+planning_artifacts: # Artefactos de Fases 1-3
+  prompt: "¿Dónde se guardan los artefactos de planning? (Briefs, PRDs, UX, Arquitectura, Epics, Event Storming)"
+  default: "{output_folder}/planning-artifacts"
+  result: "{project-root}/{value}"
+
+implementation_artifacts: # Artefactos de Fase 4
+  prompt: "¿Dónde se guardan los artefactos de implementación? (Sprint status, stories, reviews)"
+  default: "{output_folder}/implementation-artifacts"
+  result: "{project-root}/{value}"
+
+project_knowledge: # Conocimiento de largo plazo
+  prompt: "¿Dónde se guarda el conocimiento del proyecto? (docs, research, referencias)"
+  default: "docs"
+  result: "{project-root}/{value}"
+
+# Directorios creados en la instalación (declarativo)
+directories:
+  - "{planning_artifacts}"
+  - "{implementation_artifacts}"
+  - "{project_knowledge}"

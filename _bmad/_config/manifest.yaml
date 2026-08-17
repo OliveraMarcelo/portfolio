@@ -1,0 +1,28 @@
+installation:
+  version: 6.0.4
+  installDate: 2026-08-07T03:15:11.728Z
+  lastUpdated: 2026-08-10T01:22:57.146Z
+modules:
+  - name: core
+    version: 6.0.4
+    installDate: 2026-08-07T03:15:11.725Z
+    lastUpdated: 2026-08-10T01:22:57.145Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmm
+    version: 6.0.4
+    installDate: 2026-08-07T03:15:11.671Z
+    lastUpdated: 2026-08-10T01:22:57.145Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: danflow
+    version: null
+    installDate: 2026-08-07T03:15:11.691Z
+    lastUpdated: 2026-08-10T01:22:57.146Z
+    source: custom
+    npmPackage: null
+    repoUrl: null
+ides:
+  - claude-code
