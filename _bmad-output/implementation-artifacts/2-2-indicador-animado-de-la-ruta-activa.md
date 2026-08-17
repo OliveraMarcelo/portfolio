@@ -1,6 +1,6 @@
 # Story 2.2: Indicador animado de la ruta activa
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -43,36 +43,36 @@ so that no me pierda dentro del sitio.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Marcar el estado activo** (AC: #1)
-  - [ ] `<RouterLink>` ya aporta `router-link-active`; agregar `.is-active` con `:class` según `route.name` para no depender del nombre de clase que genera el router
-  - [ ] `aria-current="page"` en el enlace de la ruta activa
+- [x] **Tarea 1 — Marcar el estado activo** (AC: #1)
+  - [x] `<RouterLink>` ya aporta `router-link-active`; agregar `.is-active` con `:class` según `route.name` para no depender del nombre de clase que genera el router
+  - [x] `aria-current="page"` en el enlace de la ruta activa
 
-- [ ] **Tarea 2 — Posicionar el indicador** (AC: #1, #2)
-  - [ ] Función que recibe el elemento destino y le asigna al indicador `width = target.offsetWidth` y `transform = translateX(target.offsetLeft)`
-  - [ ] Agregar `.is-ready` al indicador la primera vez, para que deje de estar invisible
-  - [ ] Llamarla al montar y en cada cambio de `route.name`, dentro de `nextTick`
+- [x] **Tarea 2 — Posicionar el indicador** (AC: #1, #2)
+  - [x] Función que recibe el elemento destino y le asigna al indicador `width = target.offsetWidth` y `transform = translateX(target.offsetLeft)`
+  - [x] Agregar `.is-ready` al indicador la primera vez, para que deje de estar invisible
+  - [x] Llamarla al montar y en cada cambio de `route.name`, dentro de `nextTick`
 
-- [ ] **Tarea 3 — Hover y foco** (AC: #3)
-  - [ ] `mouseenter` y `focus` en cada `.nav-link` mueven el indicador a ese enlace
-  - [ ] `mouseleave` en el `.nav-list` —no en cada enlace— devuelve el indicador al activo
+- [x] **Tarea 3 — Hover y foco** (AC: #3)
+  - [x] `mouseenter` y `focus` en cada `.nav-link` mueven el indicador a ese enlace
+  - [x] `mouseleave` en el `.nav-list` —no en cada enlace— devuelve el indicador al activo
 
-- [ ] **Tarea 4 — Recalcular cuando cambia la métrica** (AC: #4)
-  - [ ] En cambio de idioma: observar el `locale` de `useLocale` y reposicionar
-  - [ ] En `resize` de la ventana
-  - [ ] Cuando terminan de cargar las fuentes: `document.fonts.ready`
-  - [ ] Limpiar todos los listeners en `onUnmounted`
+- [x] **Tarea 4 — Recalcular cuando cambia la métrica** (AC: #4)
+  - [x] En cambio de idioma: observar el `locale` de `useLocale` y reposicionar
+  - [x] En `resize` de la ventana
+  - [x] Cuando terminan de cargar las fuentes: `document.fonts.ready`
+  - [x] Limpiar todos los listeners en `onUnmounted`
 
-- [ ] **Tarea 5 — Movimiento reducido** (AC: #5)
-  - [ ] El bloque global `@media (prefers-reduced-motion: reduce)` de `base.scss` ya anula la transición
-  - [ ] Verificar que el indicador igual aparece en la posición correcta, no que desaparece
+- [x] **Tarea 5 — Movimiento reducido** (AC: #5)
+  - [x] El bloque global `@media (prefers-reduced-motion: reduce)` de `base.scss` ya anula la transición
+  - [x] Verificar que el indicador igual aparece en la posición correcta, no que desaparece
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Navegar entre las tres rutas y ver el desplazamiento
-  - [ ] Hover sobre los tres enlaces y confirmar el retorno al activo
-  - [ ] Alternar idioma y medir la alineación (ver §Comandos de verificación)
-  - [ ] Redimensionar la ventana y confirmar que sigue alineado
-  - [ ] Recargar con caché deshabilitada y confirmar que no queda desalineado por las fuentes
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Navegar entre las tres rutas y ver el desplazamiento
+  - [x] Hover sobre los tres enlaces y confirmar el retorno al activo
+  - [x] Alternar idioma y medir la alineación (ver §Comandos de verificación)
+  - [x] Redimensionar la ventana y confirmar que sigue alineado
+  - [x] Recargar con caché deshabilitada y confirmar que no queda desalineado por las fuentes
 
 ## Dev Notes
 
@@ -204,8 +204,80 @@ Ningún archivo nuevo. El markup y los estilos ya los dejó la historia 1.5.
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**Alineación medida por ruta** (`left` y ancho del indicador contra el enlace activo):
+
+| Ruta | Activo | Indicador `left` / ancho | Enlace `left` / ancho | Alineado |
+|---|---|---|---|---|
+| `/` | Home | 792.6 / 70.0 | 792.6 / 70.2 | ✓ |
+| `/projects` | Projects | 866.6 / 86.0 | 866.8 / 86.3 | ✓ |
+| `/about` | About me | 957.6 / 97.0 | 957.1 / 97.0 | ✓ |
+
+`is-ready` aplicado en las tres.
+
+**AC3 — hover:** en el activo `left: 792.6` → tras hover en el tercer enlace `957.6` → tras
+`mouseleave` en la lista, vuelve a `792.6`.
+
+**AC4 — realineación al cambiar de idioma**, la causa que la historia marcaba como la que se olvida:
+
+```
+"About me"  ancho 97.0   indicador left 957.6
+"Sobre mí"  ancho 91.2   indicador left 963.1   alineado: true
+```
+
+El ancho del enlace cambió y el indicador se reajustó.
+
+**NFR-02:** `transition-property` del indicador es `transform, opacity`. Ninguna propiedad de
+layout.
 
 ### Completion Notes List
 
+Los cinco criterios se cumplen.
+
+**El CSS del sistema ya estaba pensado para animar solo `transform`,** más de lo que la historia
+suponía. En lugar de asignar `width` directamente, el indicador tiene 1 px de ancho base y se
+posiciona con:
+
+```css
+transform: translateX(var(--nav-x, 0px)) scaleX(var(--nav-w, 0));
+```
+
+Así que el JavaScript escribe dos custom properties —`--nav-x` con el offset en px y `--nav-w` con
+el ancho como **factor de escala**— y no toca ninguna propiedad de layout. Es una solución mejor que
+la que la historia describía y no hubo que inventarla: estaba en el sistema.
+
+**Las cuatro causas de desalineación, cada una con su reposicionamiento:** cambio de ruta (`watch`
+sobre `route.name`), cambio de idioma (`watch` sobre `locale` de `useLocale`), carga de fuentes
+(`document.fonts.ready`) y `resize`.
+
+**`mouseleave` va en la lista, no en cada enlace.** Con el listener por enlace, mover el cursor de
+uno al de al lado dispara un `mouseleave` seguido de un `mouseenter` y el indicador rebota al activo
+y vuelve a salir — un temblor. Escuchándolo una sola vez en el `.nav-list`, el retorno ocurre solo
+al salir del grupo.
+
+**`focus` además de `mouseenter`.** Que el indicador siga también al foco de teclado le da a quien
+navega con `Tab` la misma información espacial que recibe quien usa mouse (NFR-08).
+
+**Medir después del render.** `offsetLeft` y `offsetWidth` devuelven 0 si el elemento no está en el
+layout, así que el reposicionamiento espera un `nextTick()` antes de medir.
+
+**Los listeners se limpian en `onUnmounted`.** `AppNav` vive todo el ciclo de vida de la aplicación
+y en la práctica no se desmonta, pero registrar sin limpiar es el patrón que en el HMR de desarrollo
+va acumulando handlers hasta que el comportamiento se vuelve errático.
+
 ### File List
+
+```
+src/components/layout/AppNav.vue    MODIFICADO — lógica del indicador y sus cuatro reposicionamientos
+```
+
+Ningún archivo nuevo: el markup y los estilos los dejó la historia 1.5.
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Indicador animado con `--nav-x` / `--nav-w`, reposicionado por ruta, idioma, fuentes y resize. Estado `done`. |

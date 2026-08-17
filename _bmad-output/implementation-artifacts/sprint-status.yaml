@@ -54,12 +54,12 @@ development_status:
   # Épica 2: Navegación fluida entre secciones
   epic-2: in-progress
   2-1-rutas-con-titulo-y-descripcion-propios: done
-  2-2-indicador-animado-de-la-ruta-activa: in-progress
-  2-3-encabezado-que-reacciona-al-scroll: ready-for-dev
+  2-2-indicador-animado-de-la-ruta-activa: done
+  2-3-encabezado-que-reacciona-al-scroll: in-progress
   2-4-menu-mobile-en-overlay: ready-for-dev
   2-5-posicion-de-scroll-coherente-al-navegar: ready-for-dev
   2-6-transicion-animada-entre-vistas: ready-for-dev
-  2-7-revelado-de-contenido-al-scroll: ready-for-dev
+  2-7-revelado-de-contenido-al-scroll: in-progress
   epic-2-retrospective: optional
 
   # Épica 3: Un hero que comunica en tres segundos

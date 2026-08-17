@@ -12,20 +12,20 @@
         </a>
       </RouterLink>
 
-      <nav class="nav" :aria-label="t('nav.aria')">
-        <ul class="nav-list">
+      <nav ref="navRef" class="nav" :aria-label="t('nav.aria')">
+        <ul ref="listaRef" class="nav-list" @mouseleave="volverAlActivo">
           <li v-for="item in items" :key="item.name">
             <RouterLink
               class="nav-link"
               :class="{ 'is-active': esActiva(item.name) }"
               :to="item.path"
               :aria-current="esActiva(item.name) ? 'page' : null"
+              @mouseenter="moverA($event.currentTarget)"
+              @focus="moverA($event.currentTarget)"
             >{{ t(item.clave) }}</RouterLink>
           </li>
         </ul>
-        <!-- El indicador se anima en la historia 2.2. Va en el markup ahora
-             para no tocar el chasis dos veces; sin `.is-ready` es invisible. -->
-        <span class="nav-indicator" aria-hidden="true"></span>
+        <span ref="indicadorRef" class="nav-indicator" aria-hidden="true"></span>
       </nav>
 
       <div class="header-actions">
@@ -38,13 +38,20 @@
 </template>
 
 <script setup>
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import ThemeToggle from '@/components/ui/ThemeToggle.vue';
 import LangToggle from '@/components/ui/LangToggle.vue';
+import { useLocale } from '@/composables/useLocale';
 
 const { t } = useI18n();
 const route = useRoute();
+const { locale } = useLocale();
+
+const navRef = ref(null);
+const listaRef = ref(null);
+const indicadorRef = ref(null);
 
 const items = [
   { name: 'home', path: '/', clave: 'nav.home' },
@@ -54,4 +61,49 @@ const items = [
 
 const esActiva = (name) => route.name === name;
 
+/* Indicador animado (A3). El CSS del sistema lo posiciona con
+   `translateX(var(--nav-x)) scaleX(var(--nav-w))` sobre una base de 1px de
+   ancho, así que solo se anima `transform` (NFR-02): --nav-x es el offset en
+   px y --nav-w el ancho como factor de escala. */
+function moverA(destino) {
+  const ind = indicadorRef.value;
+  if (!ind || !destino) return;
+  ind.style.setProperty('--nav-x', `${destino.offsetLeft}px`);
+  ind.style.setProperty('--nav-w', String(destino.offsetWidth));
+  ind.classList.add('is-ready');
+}
+
+function volverAlActivo() {
+  moverA(navRef.value?.querySelector('.nav-link.is-active'));
+}
+
+/* Medir DESPUÉS del render: offsetLeft y offsetWidth devuelven 0 si el
+   elemento todavía no está en el layout. */
+async function reposicionar() {
+  await nextTick();
+  volverAlActivo();
+}
+
+/* Las tres causas de desalineación, cada una con su reposicionamiento:
+
+   1. Cambio de ruta — cambia cuál es el activo.
+   2. Cambio de IDIOMA — "Sobre mí" y "About me" no miden lo mismo. Es la que
+      se olvida, porque no se te ocurre probarla.
+   3. Carga de fuentes — con `font-display: swap` el nav se pinta primero con
+      el respaldo y el ancho de las etiquetas cambia cuando llega la real.
+   Más el `resize`, porque el .nav-list es flex. */
+watch(() => route.name, reposicionar);
+watch(locale, reposicionar);
+
+onMounted(() => {
+  reposicionar();
+  window.addEventListener('resize', volverAlActivo);
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(volverAlActivo).catch(() => { /* noop */ });
+  }
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', volverAlActivo);
+});
 </script>
