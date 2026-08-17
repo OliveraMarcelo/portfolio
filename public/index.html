@@ -4,6 +4,27 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- Tema antes del primer pintado. Va ANTES de toda hoja de estilo y sin
+         defer ni async: tiene que bloquear. Si el tema se aplicara al montar
+         la app, todo visitante con preferencia clara veria un destello oscuro,
+         y ese destello cuenta como cambio de layout percibido.
+
+         El try/catch no es decorativo: en modo privado de Safari el mero
+         acceso a localStorage LANZA, y una excepcion en un script bloqueante
+         dejaria la pagina sin tema y sin aplicacion.
+
+         La clave `mc-theme` tiene que ser identica a la de useTheme.js. -->
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem('mc-theme'); } catch (e) { /* noop */ }
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+
     <link rel="icon" type="image/svg+xml" href="<%= BASE_URL %>favicon.svg">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
 

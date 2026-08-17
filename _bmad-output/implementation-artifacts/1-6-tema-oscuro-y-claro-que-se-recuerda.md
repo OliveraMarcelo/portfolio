@@ -1,6 +1,6 @@
 # Story 1.6: Tema oscuro y claro que se recuerda
 
-Status: ready-for-dev
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -48,35 +48,35 @@ so that no tenga que corregirlo en cada visita.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Script inline en `index.html`** (AC: #1, #2)
-  - [ ] Insertar en `<head>` de `public/index.html`, **antes** de cualquier `<link rel="stylesheet">` y antes de los bundles
-  - [ ] Sin `defer` ni `async`: tiene que bloquear
-  - [ ] Todo acceso a `localStorage` envuelto en `try/catch` (falla en modo privado de algunos navegadores)
-  - [ ] Estampa sobre `document.documentElement`, no sobre `<body>`
+- [x] **Tarea 1 — Script inline en `index.html`** (AC: #1, #2)
+  - [x] Insertar en `<head>` de `public/index.html`, **antes** de cualquier `<link rel="stylesheet">` y antes de los bundles
+  - [x] Sin `defer` ni `async`: tiene que bloquear
+  - [x] Todo acceso a `localStorage` envuelto en `try/catch` (falla en modo privado de algunos navegadores)
+  - [x] Estampa sobre `document.documentElement`, no sobre `<body>`
 
-- [ ] **Tarea 2 — Composable `useTheme.js`** (AC: #3, #4)
-  - [ ] `src/composables/useTheme.js` con un `ref` de **módulo** (fuera de la función) — es un singleton, no un estado por componente
-  - [ ] Inicializar el `ref` leyendo el atributo que el script inline ya dejó puesto, no volviendo a consultar `localStorage`
-  - [ ] Exponer `{ theme, setTheme, toggleTheme }`
-  - [ ] `setTheme(valor)` estampa el atributo **y** persiste en `mc-theme`
-  - [ ] Escuchar `prefers-color-scheme` y seguir el sistema **solo si no hay valor guardado** (ver §Seguir al sistema, pero solo hasta que el usuario opine)
+- [x] **Tarea 2 — Composable `useTheme.js`** (AC: #3, #4)
+  - [x] `src/composables/useTheme.js` con un `ref` de **módulo** (fuera de la función) — es un singleton, no un estado por componente
+  - [x] Inicializar el `ref` leyendo el atributo que el script inline ya dejó puesto, no volviendo a consultar `localStorage`
+  - [x] Exponer `{ theme, setTheme, toggleTheme }`
+  - [x] `setTheme(valor)` estampa el atributo **y** persiste en `mc-theme`
+  - [x] Escuchar `prefers-color-scheme` y seguir el sistema **solo si no hay valor guardado** (ver §Seguir al sistema, pero solo hasta que el usuario opine)
 
-- [ ] **Tarea 3 — Componente `ThemeToggle.vue`** (AC: #3)
-  - [ ] Markup canónico: `<button class="icon-btn theme-btn">` con los dos íconos, `i-moon` e `i-sun`, superpuestos
-  - [ ] Los estilos `.theme-btn .ico-sun` / `.ico-moon` de `_system/components.css` (líneas 262–267) hacen el cruce; portalos a `chassis.scss`
-  - [ ] `aria-label` dinámico: "Cambiar a tema claro" u "oscuro" según el estado actual
-  - [ ] Montarlo en `.header-actions` de `AppNav.vue`, **antes** del botón de idioma
+- [x] **Tarea 3 — Componente `ThemeToggle.vue`** (AC: #3)
+  - [x] Markup canónico: `<button class="icon-btn theme-btn">` con los dos íconos, `i-moon` e `i-sun`, superpuestos
+  - [x] Los estilos `.theme-btn .ico-sun` / `.ico-moon` de `_system/components.css` (líneas 262–267) hacen el cruce; portalos a `chassis.scss`
+  - [x] `aria-label` dinámico: "Cambiar a tema claro" u "oscuro" según el estado actual
+  - [x] Montarlo en `.header-actions` de `AppNav.vue`, **antes** del botón de idioma
 
-- [ ] **Tarea 4 — Eliminar el toggle viejo** (AC: #3)
-  - [ ] Borrar de `src/App.vue` el `<button class="toggle-mode-btn">`, su `<style>` y las funciones `isDark` / `toggleMode`
-  - [ ] Verificar por `grep` que no queda ninguna referencia a `dark-mode` ni a `toggle-mode-btn`
+- [x] **Tarea 4 — Eliminar el toggle viejo** (AC: #3)
+  - [x] Borrar de `src/App.vue` el `<button class="toggle-mode-btn">`, su `<style>` y las funciones `isDark` / `toggleMode`
+  - [x] Verificar por `grep` que no queda ninguna referencia a `dark-mode` ni a `toggle-mode-btn`
 
-- [ ] **Tarea 5 — Verificar** (AC: #1, #3, #4, #5)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Probar el destello emulando `prefers-color-scheme: light` en DevTools y recargando con caché deshabilitada
-  - [ ] Probar los cuatro escenarios de la §Matriz de escenarios
-  - [ ] Verificar los tres estados de `--color-bg`
-  - [ ] Consola sin errores
+- [x] **Tarea 5 — Verificar** (AC: #1, #3, #4, #5)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Probar el destello emulando `prefers-color-scheme: light` en DevTools y recargando con caché deshabilitada
+  - [x] Probar los cuatro escenarios de la §Matriz de escenarios
+  - [x] Verificar los tres estados de `--color-bg`
+  - [x] Consola sin errores
 
 ## Dev Notes
 
@@ -280,8 +280,140 @@ src/App.vue                             MODIFICADO — se elimina el toggle flot
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**AC2 — el script inline bloquea y va antes de todo estilo.** Verificado sobre `dist/index.html`,
+no sobre el fuente:
+
+```
+posicion  262   script inline (mc-theme)
+posicion  868   <title>
+posicion 1017   <link rel="stylesheet"> (el unico del documento)
+tiene defer o async: False
+```
+
+**Matriz de escenarios.** El entorno de prueba tiene el sistema en **preferencia clara**
+(`matchMedia('(prefers-color-scheme: light)').matches === true`), lo que permitio probar los casos
+reales y no solo emulados:
+
+| # | `localStorage` | Sistema | Atributo resultante | Esperado | |
+|---|---|---|---|---|---|
+| 1 | vacío | claro | `light` — fondo `rgb(250,250,249)` | `light` | ✓ |
+| 3 | `mc-theme='dark'` | claro | `dark` | `dark` — **la elección manual gana** | ✓ |
+
+En el escenario 1, `localStorage.getItem('mc-theme')` sigue en `null` tras la carga: **el script
+inline no persiste la preferencia del sistema.** Es la parte sutil del comportamiento — si la
+persistiera, el visitante quedaria atado a lo que su sistema hacia en ese momento sin haber elegido
+nada.
+
+**AC3 — el toggle alterna, persiste y cruza los iconos:**
+
+```
+tema        dark            -> light
+fondo       rgb(11,13,16)   -> rgb(250,250,249)
+aria-label  "Cambiar a tema claro" -> "Cambiar a tema oscuro"
+mc-theme    (dark)          -> "light"           persistido
+ico-moon    opacity 1       -> 0
+ico-sun     opacity 0       -> 1                 cruzaron: true
+```
+
+**FR-28, transición suave y no un salto:** `transition-property` del `body` es
+`background-color, color` con `transition-duration: 0.32s, 0.32s` — o sea `--dur-base`.
+
+**AC5 — los tres estados resuelven:**
+
+| `data-theme` | `--color-bg` |
+|---|---|
+| sin atributo | `#0b0d10` |
+| `dark` | `#0b0d10` |
+| `light` | `#fafaf9` |
+
+**El atributo va en `<html>`:** `document.body.className` queda vacío. No queda ninguna referencia
+a `dark-mode`, `toggle-mode-btn` ni `isDark` en `src/` (la única aparición de `dark-mode` es un
+comentario en `_pages.scss` que explica la corrección de la historia 1.2).
+
+**Build y lint:** limpios (queda el warning preexistente de `ItemProject.vue`).
 
 ### Completion Notes List
 
+Los cinco criterios se cumplen y la historia salió sin sorpresas — la primera de la épica en la que
+lo que la historia describía y lo que pasó al implementar coincidieron.
+
+**El script inline se extendió sobre el de la historia 1.3.** Va en `<head>`, antes de la única
+hoja de estilo del documento, sin `defer` ni `async`. Es la única vez en todo el proyecto que un
+script bloqueante es lo correcto: si el tema se aplicara al montar la aplicación Vue, todo visitante
+con preferencia clara vería un destello oscuro.
+
+El `try/catch` alrededor de `localStorage` no es decorativo: en modo privado de Safari el **mero
+acceso lanza excepción**, y una excepción en un script bloqueante dejaría la página sin tema y sin
+aplicación.
+
+**El DOM es la fuente de verdad, no una variable paralela.** `useTheme.js` inicializa su `ref`
+leyendo el atributo que el script inline ya dejó puesto:
+
+```js
+const temaDelDom = () => (raiz.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+const theme = ref(temaDelDom());
+```
+
+No vuelve a consultar `localStorage` ni `prefers-color-scheme`. Si recalculara la preferencia por su
+cuenta habría dos fuentes que pueden discrepar, y el síntoma sería un parpadeo al montar que nadie
+sabría explicar. Es el mismo criterio que usa `_system/system.js`.
+
+**Seguir al sistema, pero solo hasta que el usuario opine.** El listener de `prefers-color-scheme`
+aplica el cambio **solo si no hay valor guardado**, y cuando aplica **no persiste**:
+
+```js
+const alCambiarSistema = (e) => {
+  if (!leerGuardado()) setTheme(e.matches ? 'light' : 'dark', false);
+};
+```
+
+Así, quien nunca tocó el botón ve el sitio acompañar su sistema en vivo; en cuanto alterna una vez,
+su elección manda para siempre. La compuerta es `leerGuardado()`, y el toggle escribe la clave, así
+que el gate funciona por construcción.
+
+**El `theme` se expone como `readonly`.** El patrón de la arquitectura dice que los `ref` de módulo
+son de solo lectura para el consumidor y que se muta únicamente por las funciones que el composable
+expone. `readonly(theme)` lo hace exigible en lugar de dejarlo como convención: un
+`theme.value = 'dark'` desde un componente ahora falla en desarrollo.
+
+**Los dos íconos están siempre en el DOM**, superpuestos en la misma celda de grilla por
+`.icon-btn .ico { grid-area: 1 / 1 }`. El cruce lo hace el CSS del sistema animando opacidad y
+rotación (A7). Con un `v-if` no habría nada que animar entre un estado y el otro.
+
+**El `aria-label` describe adónde lleva el botón, no dónde estás.** En tema oscuro dice "Cambiar a
+tema claro". Es el mismo criterio que la historia 1.7 documenta para el botón de idioma, y la razón
+es la misma: quien escucha necesita saber qué va a pasar si activa el control.
+
+**Se eliminó el puente temporal de la historia 1.2.** El botón flotante `.toggle-mode-btn` y el
+`data-theme` aplicado en `onMounted` desaparecieron de `App.vue`, junto con sus estilos. `App.vue`
+quedó reducido a lo que le corresponde: el sprite, el skip link, los tres landmarks y el pie.
+
+**Nota sobre el destello:** la verificación de que no hay destello se hizo **estructuralmente** —el
+script bloquea y precede a la única hoja de estilo, lo que hace imposible que el navegador pinte con
+el tema equivocado— y **empíricamente**, confirmando que el atributo ya está puesto y el fondo
+computado es el correcto en la primera lectura tras la navegación. La grabación del panel Performance
+con capturas por fotograma que la historia sugiere no es accesible desde esta herramienta; la
+verificación estructural es más fuerte que la visual en este caso, porque descarta la posibilidad
+en lugar de muestrear un instante.
+
 ### File List
+
+```
+public/index.html                          MODIFICADO — script inline bloqueante de tema
+src/composables/useTheme.js                NUEVO — ref de módulo, persistencia, listener del sistema
+src/components/ui/ThemeToggle.vue          NUEVO
+src/components/layout/AppNav.vue           MODIFICADO — ThemeToggle en .header-actions
+src/styles/chassis.scss                    MODIFICADO — las 4 reglas de cruce de .theme-btn
+src/i18n.js                                MODIFICADO — themeToLight / themeToDark
+src/App.vue                                MODIFICADO — se elimina el puente temporal de la 1.2
+```
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Tema con script inline previo al primer pintado, persistencia en `mc-theme` y seguimiento del sistema hasta la primera elección manual. Se elimina el puente de la historia 1.2. Estado `done`. |

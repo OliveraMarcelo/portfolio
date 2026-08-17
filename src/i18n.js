@@ -27,6 +27,8 @@ const messages = {
     footerWhatsapp: 'Escribime por WhatsApp',
     footerEmail: 'Escribime un email',
     footerLinkedin: 'Ver mi perfil de LinkedIn',
+    themeToLight: 'Cambiar a tema claro',
+    themeToDark: 'Cambiar a tema oscuro',
   },
   en: {
     welcome: 'Welcome to my portfolio',
@@ -54,6 +56,8 @@ const messages = {
     footerWhatsapp: 'Message me on WhatsApp',
     footerEmail: 'Send me an email',
     footerLinkedin: 'View my LinkedIn profile',
+    themeToLight: 'Switch to light theme',
+    themeToDark: 'Switch to dark theme',
   },
 };
 

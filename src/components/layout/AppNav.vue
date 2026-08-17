@@ -29,8 +29,8 @@
       </nav>
 
       <div class="header-actions">
-        <!-- El toggle de tema lo agrega la historia 1.6 y el de menu mobile
-             la 2.4. Un boton que no hace nada es peor que uno ausente. -->
+        <ThemeToggle />
+        <!-- El boton de menu mobile lo agrega la historia 2.4. -->
         <button class="lang-btn" type="button" :aria-label="t('langAria')" @click="alternarIdioma">
           <span class="lang-current">{{ idioma.toUpperCase() }}</span>
           <span class="lang-sep" aria-hidden="true">/</span>
@@ -45,6 +45,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import ThemeToggle from '@/components/ui/ThemeToggle.vue';
 
 /* Comportamiento provisorio del idioma: alterna el locale de vue-i18n, igual
    que hacia NavBar.vue. La persistencia, el composable useLocale y el script

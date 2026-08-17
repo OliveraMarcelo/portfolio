@@ -144,6 +144,14 @@
 .icon-btn .ico { grid-area: 1 / 1; transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-fast) var(--ease-out); }
 
 
+
+/* Cruce de los iconos sol/luna del toggle de tema (A7). Los dos estan en
+   el DOM y comparten celda de grilla; se anima opacidad y rotacion. */
+.theme-btn .ico-sun { opacity: 0; transform: rotate(-180deg) scale(0.6); }
+.theme-btn .ico-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+[data-theme="light"] .theme-btn .ico-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+[data-theme="light"] .theme-btn .ico-moon { opacity: 0; transform: rotate(180deg) scale(0.6); }
+
 .lang-btn {
   min-width: 60px;
   height: 44px;
