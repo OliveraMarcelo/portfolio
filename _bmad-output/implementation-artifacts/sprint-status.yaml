@@ -1,0 +1,110 @@
+# generated: 16-08-2026
+# project: portfolio
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog -> in-progress: Automatically when first story is created (via create-story)
+#   - in-progress -> done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 16-08-2026
+project: portfolio
+project_key: NOKEY
+tracking_system: file-system
+story_location: "_bmad-output/implementation-artifacts"
+
+development_status:
+  # Épica 1: Fundación — identidad visual y preferencias del visitante
+  epic-1: in-progress
+  1-1-linea-base-de-dependencias: ready-for-dev
+  1-2-tokens-del-sistema-de-diseno-en-runtime: ready-for-dev
+  1-3-tipografia-propia-sin-origenes-externos: ready-for-dev
+  1-4-iconos-como-sprite-svg: ready-for-dev
+  1-5-chasis-persistente-header-y-pie-de-pagina: ready-for-dev
+  1-6-tema-oscuro-y-claro-que-se-recuerda: ready-for-dev
+  1-7-idioma-que-se-recuerda-y-cambia-toda-la-interfaz: ready-for-dev
+  epic-1-retrospective: optional
+
+  # Épica 2: Navegación fluida entre secciones
+  epic-2: in-progress
+  2-1-rutas-con-titulo-y-descripcion-propios: ready-for-dev
+  2-2-indicador-animado-de-la-ruta-activa: ready-for-dev
+  2-3-encabezado-que-reacciona-al-scroll: ready-for-dev
+  2-4-menu-mobile-en-overlay: ready-for-dev
+  2-5-posicion-de-scroll-coherente-al-navegar: ready-for-dev
+  2-6-transicion-animada-entre-vistas: ready-for-dev
+  2-7-revelado-de-contenido-al-scroll: ready-for-dev
+  epic-2-retrospective: optional
+
+  # Épica 3: Un hero que comunica en tres segundos
+  epic-3: in-progress
+  3-1-hero-con-nombre-rol-propuesta-y-stack: ready-for-dev
+  3-2-accion-primaria-y-descarga-del-cv: ready-for-dev
+  3-3-entrada-animada-del-hero: ready-for-dev
+  3-4-indicador-de-scroll: ready-for-dev
+  epic-3-retrospective: optional
+
+  # Épica 4: Proyectos que cuentan lo que resolvieron
+  epic-4: in-progress
+  4-1-modulo-unico-de-contenido-de-proyectos: ready-for-dev
+  4-2-card-canonica-de-proyecto: ready-for-dev
+  4-3-grilla-responsive-de-proyectos: ready-for-dev
+  4-4-la-card-responde-al-cursor: ready-for-dev
+  4-5-vista-de-detalle-de-proyecto: ready-for-dev
+  4-6-transicion-continua-de-la-card-al-detalle: ready-for-dev
+  4-7-proyectos-destacados-en-la-home: ready-for-dev
+  epic-4-retrospective: optional
+
+  # Épica 5: Trayectoria y habilidades legibles de un vistazo
+  epic-5: in-progress
+  5-1-contenido-de-trayectoria-y-habilidades-en-modulos: ready-for-dev
+  5-2-linea-de-tiempo-con-revelado-progresivo: ready-for-dev
+  5-3-certificado-ampliable-en-lightbox: ready-for-dev
+  5-4-habilidades-agrupadas-por-categoria: ready-for-dev
+  5-5-resumen-de-trayectoria-y-cv-en-la-home: ready-for-dev
+  epic-5-retrospective: optional
+
+  # Épica 6: Contacto a un solo gesto
+  epic-6: in-progress
+  6-1-canales-de-contacto-como-datos: ready-for-dev
+  6-2-seccion-de-contacto-como-destino: ready-for-dev
+  6-3-contacto-alcanzable-desde-cualquier-vista: ready-for-dev
+  epic-6-retrospective: optional
+
+  # Épica 7: Rápido, accesible y compartible
+  epic-7: in-progress
+  7-1-imagenes-en-formato-moderno: ready-for-dev
+  7-2-el-sitio-se-ve-bien-cuando-se-comparte: ready-for-dev
+  7-3-nadie-se-queda-con-la-version-vieja: ready-for-dev
+  7-4-bilinguismo-completo-verificado: ready-for-dev
+  7-5-accesible-con-teclado-y-con-lector-de-pantalla: ready-for-dev
+  7-6-usable-y-quieto-con-movimiento-reducido: ready-for-dev
+  7-7-verificado-en-los-cuatro-anchos: ready-for-dev
+  7-8-rapido-de-verdad-medido: ready-for-dev
+  epic-7-retrospective: optional
