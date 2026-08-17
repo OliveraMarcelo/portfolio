@@ -13,6 +13,7 @@ import router from './router'
    componente que necesite pisar algo de base.scss perdería sin motivo
    aparente. */
 import './styles/tokens.css'
+import './styles/fonts.scss'
 import './styles/base.scss'
 import './styles/sass/main.scss'
 

@@ -6,7 +6,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="<%= BASE_URL %>favicon.svg">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Fuentes del hero, precargadas. `crossorigin` es obligatorio aunque
+         sean del mismo origen: las fuentes se piden siempre en modo CORS
+         anonimo, y sin el atributo el navegador las descarga dos veces.
+         JetBrains Mono NO se precarga: solo la usa el kicker, texto chico
+         que puede esperar el swap. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="<%= require('@/assets/fonts/space-grotesk-variable.woff2') %>">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="<%= require('@/assets/fonts/inter-variable.woff2') %>">
+
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>

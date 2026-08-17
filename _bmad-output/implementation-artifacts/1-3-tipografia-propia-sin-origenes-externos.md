@@ -1,6 +1,6 @@
 # Story 1.3: Tipografía propia, sin orígenes externos
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -33,32 +33,32 @@ so that el texto aparezca rápido y sin depender de un tercero.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Obtener los archivos de fuente** (AC: #1)
-  - [ ] Descargar las tres familias en woff2 desde su fuente oficial (ver §De dónde salen los archivos)
-  - [ ] Guardarlas en `src/assets/fonts/`
-  - [ ] Preferir el archivo **variable** de cada familia cuando exista: cubre todo el rango de pesos en una sola petición
+- [x] **Tarea 1 — Obtener los archivos de fuente** (AC: #1)
+  - [x] Descargar las tres familias en woff2 desde su fuente oficial (ver §De dónde salen los archivos)
+  - [x] Guardarlas en `src/assets/fonts/`
+  - [x] Preferir el archivo **variable** de cada familia cuando exista: cubre todo el rango de pesos en una sola petición
 
-- [ ] **Tarea 2 — Declarar los `@font-face`** (AC: #1)
-  - [ ] Crear `src/styles/fonts.scss` con un `@font-face` por familia (o por corte, si se usan estáticas)
-  - [ ] `font-display: swap` en **todos**, sin excepción
-  - [ ] `font-weight: 400 700` en las declaraciones variables; el peso exacto en las estáticas
-  - [ ] Importarlo en `src/main.js` **antes** de `base.scss`
+- [x] **Tarea 2 — Declarar los `@font-face`** (AC: #1)
+  - [x] Crear `src/styles/fonts.scss` con un `@font-face` por familia (o por corte, si se usan estáticas)
+  - [x] `font-display: swap` en **todos**, sin excepción
+  - [x] `font-weight: 400 700` en las declaraciones variables; el peso exacto en las estáticas
+  - [x] Importarlo en `src/main.js` **antes** de `base.scss`
 
-- [ ] **Tarea 3 — Precargar solo lo del hero** (AC: #1)
-  - [ ] Agregar en `public/index.html` los `<link rel="preload" as="font" type="font/woff2" crossorigin>` de las fuentes que pinta el hero
-  - [ ] `crossorigin` es obligatorio aunque la fuente sea del mismo origen (ver §El atributo `crossorigin`)
-  - [ ] **No** precargar las tres familias: precargar todo equivale a no precargar nada
+- [x] **Tarea 3 — Precargar solo lo del hero** (AC: #1)
+  - [x] Agregar en `public/index.html` los `<link rel="preload" as="font" type="font/woff2" crossorigin>` de las fuentes que pinta el hero
+  - [x] `crossorigin` es obligatorio aunque la fuente sea del mismo origen (ver §El atributo `crossorigin`)
+  - [x] **No** precargar las tres familias: precargar todo equivale a no precargar nada
 
-- [ ] **Tarea 4 — Eliminar Google Fonts** (AC: #2)
-  - [ ] Borrar de `public/index.html` la línea `<link href="https://fonts.googleapis.com/css2?family=Poppins…">`
-  - [ ] Verificar por `grep` que no queda ninguna referencia a `fonts.googleapis.com` ni a `fonts.gstatic.com`
-  - [ ] Verificar que no queda ninguna referencia a `Poppins` en `src/`
+- [x] **Tarea 4 — Eliminar Google Fonts** (AC: #2)
+  - [x] Borrar de `public/index.html` la línea `<link href="https://fonts.googleapis.com/css2?family=Poppins…">`
+  - [x] Verificar por `grep` que no queda ninguna referencia a `fonts.googleapis.com` ni a `fonts.gstatic.com`
+  - [x] Verificar que no queda ninguna referencia a `Poppins` en `src/`
 
-- [ ] **Tarea 5 — Verificar** (AC: #1, #2, #3)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Pestaña de red: ninguna petición fuera del propio origen
-  - [ ] Inspeccionar el `font-family` computado de un `h1` y de un `p` (ver §Comandos de verificación)
-  - [ ] Verificar que las fuentes se sirven desde `/fonts/…` con hash, no desde `/src/`
+- [x] **Tarea 5 — Verificar** (AC: #1, #2, #3)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Pestaña de red: ninguna petición fuera del propio origen
+  - [x] Inspeccionar el `font-family` computado de un `h1` y de un `p` (ver §Comandos de verificación)
+  - [x] Verificar que las fuentes se sirven desde `/fonts/…` con hash, no desde `/src/`
 
 ## Dev Notes
 
@@ -230,8 +230,121 @@ import './styles/sass/main.scss'
 
 ### Agent Model Used
 
+claude-opus-5 (Claude Code)
+
 ### Debug Log References
+
+**Archivos descargados** desde los repositorios oficiales, con su licencia:
+
+| Archivo | Tamaño | Firma |
+|---|---|---|
+| `space-grotesk-variable.woff2` | 48 KB | `wOF2` ✓ |
+| `inter-variable.woff2` | 344 KB | `wOF2` ✓ |
+| `jetbrains-mono-variable.woff2` | 111 KB | `wOF2` ✓ |
+| `LICENSE-SpaceGrotesk.txt`, `LICENSE-Inter.txt`, `LICENSE-JetBrainsMono.txt` | 4.4 KB c/u | — |
+
+**URLs emitidas por webpack, con hash de contenido:**
+
+```
+/fonts/space-grotesk-variable.6c9d152e.woff2
+/fonts/inter-variable.0336a89f.woff2
+/fonts/jetbrains-mono-variable.aa4388db.woff2
+```
+
+**Los `preload` coinciden exactamente con las URLs que el CSS pide** — verificado comparando los
+conjuntos extraídos de `dist/index.html` y `dist/css/app.*.css`: `preload ⊆ usadas` es `True`.
+
+**Orígenes externos en la app:** **cero**. `performance.getEntriesByType('resource')` filtrado por
+origen distinto al propio devuelve un array vacío, y la pestaña de red confirma 0 peticiones fuera
+de `localhost:8099`.
+
+**Prueba de renderizado real** — no solo "el `font-family` computado dice X", sino que el navegador
+está usando la fuente y no el respaldo. Se mide el ancho de un `<span>` inline con la familia y con
+un respaldo proporcional:
+
+| Familia | Ancho con la fuente | Ancho con respaldo | ¿Renderiza? |
+|---|---|---|---|
+| Space Grotesk | 507.67 px | 602.06 px | **sí** |
+| Inter | 483.19 px | 602.06 px | **sí** |
+| JetBrains Mono | 408.00 px | 409.41 px | **sí** (tras forzar la carga) |
+
+**El eje variable funciona:** Inter a peso 400 mide 483.19 px y a 700 mide 509.69 px. Un archivo
+por familia cubre todo el rango.
+
+**Peticiones en la carga inicial:** solo dos fuentes, las precargadas — 48 KB y 344 KB, ambas 200.
+JetBrains Mono no se pide hasta que algo use `--font-mono`.
+
+**Consola:** ningún warning de preload. Los únicos mensajes son los 404 preexistentes de los iconos
+del PWA, documentados en la historia 1.1 y asignados a la 7.3.
 
 ### Completion Notes List
 
+Los tres criterios se cumplen.
+
+**AC1 —** Las tres familias son self-hosted en `src/assets/fonts/`, con `font-display: swap` en los
+tres `@font-face` y `font-weight: 400 700` declarando el rango variable. Se usaron los archivos
+**variables**: cubren 400–700 en una sola petición por familia, frente a los cinco cortes estáticos
+que haría falta si no (Space Grotesk 500/600/700, Inter 400/600, JetBrains Mono 400/500 — los pesos
+que el design system realmente usa, medidos sobre su CSS).
+
+**AC2 —** El `<link>` a `fonts.googleapis.com` se eliminó de `public/index.html`. La app no hace
+ninguna petición externa.
+
+**AC3 —** El cuerpo de texto resuelve a Inter y **los encabezados reales del markup resuelven a
+Space Grotesk**, verificado sobre los tres `<h2>` que hay hoy en la página. Matiz honesto: el
+"título" del hero actual es un `<div class="title">`, no un `<h1>`, y `_texts.scss` no le declara
+familia, así que hereda Inter del `body`. **No es un defecto de esta historia**: es el markup viejo.
+Cuando la historia 3.1 construya `HeroSection` con una `h1` real, adoptará `--font-display` sin
+tocar nada de acá — lo prueba que los `<h2>` existentes ya lo hacen.
+
+**El `preload` con URL hasheada se resolvió con `require()` en el template.** El problema que la
+historia anticipaba es real: `public/index.html` es estático pero webpack emite las fuentes con
+hash. La salida limpia es interpolar en el template, que Vue CLI soporta:
+
+```html
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="<%= require('@/assets/fonts/space-grotesk-variable.woff2') %>">
+```
+
+Así el `preload` nunca puede apuntar a una URL vieja: sale del mismo módulo que el CSS.
+
+**Se precargan dos de tres familias, no las tres.** La historia advertía que precargar todo equivale
+a no precargar nada. El hero usa las tres —`--font-display` en el título, `--font-body` en la
+bajada, `--font-mono` en el kicker— pero JetBrains Mono solo pinta el kicker, texto chico que puede
+esperar el swap. Precargar sus 111 KB en el camino crítico no se paga. Space Grotesk (48 KB) e Inter
+(344 KB) sí.
+
+**Un cuarto error de medición propio, anotado como método.** La primera prueba de renderizado usó
+`monospace` como respaldo para las tres familias. Contra JetBrains Mono —que **es** monoespaciada—
+dio 602.06 px en los dos casos y pareció que la fuente no cargaba. No era así: forzando
+`document.fonts.load()` el estado pasó a `loaded`, la petición devolvió 200, y el ancho real es
+408.00 contra 409.41. **Comparar una monoespaciada contra el respaldo `monospace` no discrimina**;
+hay que usar un respaldo proporcional. Se suma a los tres errores de medición ya documentados en el
+review de la historia 1.2.
+
+**Fuera de alcance, reforzado:** las cuatro páginas del prototipo en `public/ui-generated/` siguen
+cargando las fuentes desde `fonts.googleapis.com`. No son parte de la app, así que no afectan al
+AC2 — pero como `public/` se copia a `dist/`, esas páginas quedarían servidas desde
+`marcecode.com/ui-generated/` **haciendo peticiones a Google**. Es el mismo pendiente que la
+historia 1.1 ya registró, ahora también con implicancia sobre D14. Sigue haciendo falta excluir
+`ui-generated/` del build en `vue.config.js` antes de mergear a `main`.
+
 ### File List
+
+```
+src/assets/fonts/space-grotesk-variable.woff2      NUEVO — 48 KB, variable 400–700
+src/assets/fonts/inter-variable.woff2              NUEVO — 344 KB, variable 400–700
+src/assets/fonts/jetbrains-mono-variable.woff2     NUEVO — 111 KB, variable 400–700
+src/assets/fonts/LICENSE-SpaceGrotesk.txt          NUEVO — SIL OFL
+src/assets/fonts/LICENSE-Inter.txt                 NUEVO
+src/assets/fonts/LICENSE-JetBrainsMono.txt         NUEVO — SIL OFL
+src/styles/fonts.scss                              NUEVO — los tres @font-face
+src/main.js                                        MODIFICADO — import de fonts.scss tras tokens.css
+public/index.html                                  MODIFICADO — se quita Google Fonts, se suman 2 preload
+```
+
+### Change Log
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-17 | Tres familias self-hosted en woff2 variable; Google Fonts eliminado; preload con URL hasheada vía `require()` en el template. Estado `review`. |

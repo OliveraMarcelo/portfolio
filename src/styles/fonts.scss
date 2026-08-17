@@ -1,0 +1,34 @@
+/* ============================================================
+   MarceCode — fonts.scss
+   Tipografía self-hosted. Ningún origen externo (D8, D14).
+
+   Se usan los archivos VARIABLES de cada familia: cubren todo el rango
+   400–700 en una sola petición, en lugar de cinco cortes estáticos.
+   Los pesos que el design system realmente usa son 400, 500, 600 y 700.
+
+   Licencias en este mismo directorio (SIL Open Font License / Inter).
+   ============================================================ */
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('~@/assets/fonts/space-grotesk-variable.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('~@/assets/fonts/inter-variable.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('~@/assets/fonts/jetbrains-mono-variable.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
