@@ -18,7 +18,15 @@ const messages = {
   onlineStoreDesc: 'E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.',
   pokemonGameTitle: 'Pokemon Game',
   pokemonGameDesc: '¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI. Desarrollado con TypeScript y Vue.',
-  // Agrega aquí más textos según los que encuentres en la app
+    // Chasis (historia 1.5). La 1.7 mueve todo esto a src/locales/es.json
+    navAria: 'Navegación principal',
+    logoAria: 'MarceCode — ir al inicio',
+    skipLink: 'Saltar al contenido',
+    langAria: 'Switch site language to English',
+    footerMade: 'Hecho con Vue',
+    footerWhatsapp: 'Escribime por WhatsApp',
+    footerEmail: 'Escribime un email',
+    footerLinkedin: 'Ver mi perfil de LinkedIn',
   },
   en: {
     welcome: 'Welcome to my portfolio',
@@ -37,7 +45,15 @@ const messages = {
   onlineStoreDesc: 'E-commerce with product catalog, shopping cart and order management. Built with Node.js and Vue.',
   pokemonGameTitle: 'Pokemon Game',
   pokemonGameDesc: 'Who is that Pokémon? Guessing game with silhouettes using the PokéAPI. Built with TypeScript and Vue.',
-  // Add more translations as needed
+    // Chasis (historia 1.5). La 1.7 mueve todo esto a src/locales/en.json
+    navAria: 'Main navigation',
+    logoAria: 'MarceCode — go to home',
+    skipLink: 'Skip to content',
+    langAria: 'Cambiar el idioma del sitio a español',
+    footerMade: 'Built with Vue',
+    footerWhatsapp: 'Message me on WhatsApp',
+    footerEmail: 'Send me an email',
+    footerLinkedin: 'View my LinkedIn profile',
   },
 };
 

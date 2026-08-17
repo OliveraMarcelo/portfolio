@@ -1,8 +1,19 @@
 <template>
   <AppSprite />
-  <NavBar />
-  <router-view />
-  <Footer/>
+
+  <!-- Primer elemento enfocable, ANTES del header: si fuera después, quien
+       navega por teclado tendría que atravesar todo el nav para encontrar el
+       atajo que existe justamente para evitarlo. -->
+  <a class="skip-link" href="#main">{{ t('skipLink') }}</a>
+
+  <AppNav />
+
+  <main id="main">
+    <router-view />
+  </main>
+
+  <AppFooter />
+
   <button class="toggle-mode-btn" @click="toggleMode">
     {{ isDark ? '☀️ Light' : '🌙 Dark' }}
   </button>
@@ -34,9 +45,12 @@
 </style>
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import AppSprite from '@/components/layout/AppSprite.vue';
-import NavBar from './components/layouts/NavBar.vue';
-import Footer from '@/components/layouts/FooterPage.vue';
+import AppNav from '@/components/layout/AppNav.vue';
+import AppFooter from '@/components/layout/AppFooter.vue';
+
+const { t } = useI18n();
 
 /* PUENTE TEMPORAL — historia 1.2.
    La cascada `body.dark-mode` con !important se eliminó al portar los

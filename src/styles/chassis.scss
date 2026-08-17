@@ -1,0 +1,213 @@
+/* ============================================================
+   MarceCode — chassis.scss
+   Header, nav y pie CANONICOS, portados de
+   public/ui-generated/_system/components.css.
+
+   NO incluye:
+     - .theme-btn (cruce de iconos sol/luna)  -> historia 1.6
+     - .menu-btn, .mobile-menu, .nav-scrim    -> historia 2.4
+   ============================================================ */
+
+/* ---------- 4. Header / nav ------------------------------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              backdrop-filter var(--dur-base) var(--ease-out);
+}
+.site-header.is-scrolled {
+  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  border-bottom-color: var(--color-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  /* Unica propiedad de layout animada del sitio: vive en un elemento
+     fixed, fuera de flujo, asi que no reflowea el contenido de la pagina. */
+  padding-block: 1.125rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: padding-block var(--dur-base) var(--ease-out);
+}
+.site-header.is-scrolled .header-inner { padding-block: 0.625rem; }
+
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  margin-right: auto;
+  min-height: 44px;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.logo-mark {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  color: var(--color-accent-text);
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+.logo:hover .logo-mark { transform: translateX(2px); }
+
+/* TEMPORAL — historia 1.5. El sistema declara `.nav { display: none }` y lo
+   muestra desde 768px, porque en mobile la navegacion vive en el
+   .mobile-menu. Ese menu es la historia 2.4, asi que esconder el nav ahora
+   dejaria el sitio sin navegacion en mobile.
+
+   La 2.4 restaura el comportamiento canonico:
+
+       .nav { position: relative; display: none; }
+       @media (min-width: 768px) {
+         .nav { display: block; }
+         .menu-btn, .mobile-menu { display: none; }
+       }
+*/
+.nav { position: relative; display: block; }
+
+/* Consecuencia de la excepcion anterior: con el nav visible en mobile no
+   queda lugar en la fila para el boton de idioma, que se iba fuera del
+   viewport (medido: left 406px con un viewport de 390px, o sea invisible).
+   Se permite que el header envuelva y el nav baje a una segunda linea.
+   La historia 2.4 borra este bloque junto con la excepcion. */
+@media (max-width: 767px) {
+  .header-inner { flex-wrap: wrap; row-gap: 0.25rem; }
+  .nav { order: 3; width: 100%; }
+  .nav-list { justify-content: center; }
+
+}
+.nav-list { display: flex; gap: 0.25rem; }
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.875rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover, .nav-link.is-active { color: var(--color-text); }
+
+/* Indicador: ancho base 1px + scaleX, para animar solo transform. */
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 1px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  transform-origin: left center;
+  transform: translateX(var(--nav-x, 0px)) scaleX(var(--nav-w, 0));
+  opacity: 0;
+  transition: transform var(--dur-base) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out);
+}
+.nav-indicator.is-ready { opacity: 1; }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.icon-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-instant) var(--ease-out);
+}
+.icon-btn:hover { color: var(--color-text); background: var(--color-surface-raised); }
+.icon-btn:active { transform: scale(0.94); }
+.icon-btn .ico { grid-area: 1 / 1; transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-fast) var(--ease-out); }
+
+
+.lang-btn {
+  min-width: 60px;
+  height: 44px;
+  padding-inline: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-instant) var(--ease-out);
+}
+.lang-btn:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+.lang-btn:active { transform: scale(0.96); }
+.lang-current { color: var(--color-text); }
+.lang-sep { opacity: 0.5; }
+
+
+/* Panel absoluto bajo el header fijo: se anima con transform + opacity,
+   sin tocar la altura de nada. */
+
+/* ---------- 11. Footer ------------------------------------ */
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: var(--space-8);
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.logo-sm { font-size: 0.9375rem; margin-right: 0; }
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+.footer-sep { opacity: 0.6; }
+
+/* Apilamiento del chasis. El velo y el panel los suma la historia 2.4:
+   velo 90 < header 100 < panel 105. */
+.site-header { z-index: 100; }
+
+/* El header es `position: fixed`, así que el contenido necesita despejarlo.
+   La regla vive acá y no en App.vue: depende de --header-h, que es del
+   chasis, y estando en el mismo archivo la media query de la excepcion
+   temporal puede pisarla sin depender del orden de imports. */
+#main { padding-top: var(--header-h); }
+
+/* TEMPORAL — historia 1.5, va junto con la excepcion del .nav.
+   Al envolver, el header pasa de 72px a ~129px y tapaba 25px del contenido.
+   Se despeja la altura real de las dos filas. La 2.4 borra este bloque. */
+@media (max-width: 767px) {
+  #main { padding-top: calc(var(--header-h) + 3.5rem); }
+}

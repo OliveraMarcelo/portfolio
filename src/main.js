@@ -15,6 +15,7 @@ import router from './router'
 import './styles/tokens.css'
 import './styles/fonts.scss'
 import './styles/base.scss'
+import './styles/chassis.scss'
 import './styles/sass/main.scss'
 
 import App from './App.vue'
