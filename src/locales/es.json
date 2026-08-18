@@ -21,10 +21,7 @@
     "close": "Cerrar menú"
   },
   "footer": {
-    "made": "Hecho con Vue",
-    "whatsapp": "Escribime por WhatsApp",
-    "email": "Escribime un email",
-    "linkedin": "Ver mi perfil de LinkedIn"
+    "made": "Hecho con Vue"
   },
   "ui": {
     "welcome": "Bienvenido a mi portafolio",
@@ -108,5 +105,9 @@
     "nota": "El programa completo: fundamentos de la web, JavaScript, back-end con Node.js y Express, React y bases de datos. Ampliá la imagen para verlo en detalle.",
     "pie": "Digital House · Full Stack Developer",
     "alt": "Certificado Full Stack Developer — Digital House"
+  },
+  "contacto": {
+    "titulo": "Hablemos",
+    "lede": "Estoy abierto a propuestas de trabajo, colaboraciones y proyectos. Escribime por donde te quede más cómodo."
   }
 }

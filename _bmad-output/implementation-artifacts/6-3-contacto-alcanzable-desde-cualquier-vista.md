@@ -1,6 +1,6 @@
 # Story 6.3: Contacto alcanzable desde cualquier vista
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -31,29 +31,29 @@ so that el impulso de contactar no se pierda navegando.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Cablear el pie al módulo** (AC: #1)
-  - [ ] En `AppFooter.vue`, reemplazar los valores literales que la historia 1.5 dejó por un `v-for` sobre `src/content/contact.js`
-  - [ ] Reutilizar la misma derivación de `target` y `rel` desde el campo `external` que la historia 6.2 (ver §El pie y la sección comparten la regla, no el markup)
-  - [ ] Íconos del sprite vía `AppIcon`
-  - [ ] Área táctil ≥ 44×44 px en cada enlace del pie
+- [x] **Tarea 1 — Cablear el pie al módulo** (AC: #1)
+  - [x] En `AppFooter.vue`, reemplazar los valores literales que la historia 1.5 dejó por un `v-for` sobre `src/content/contact.js`
+  - [x] Reutilizar la misma derivación de `target` y `rel` desde el campo `external` que la historia 6.2 (ver §El pie y la sección comparten la regla, no el markup)
+  - [x] Íconos del sprite vía `AppIcon`
+  - [x] Área táctil ≥ 44×44 px en cada enlace del pie
 
-- [ ] **Tarea 2 — Verificar el orden de la Home** (AC: #2)
-  - [ ] Recorrer la Home y confirmar las cinco secciones en el orden de FR-08
-  - [ ] Confirmar la alternancia de `.section` / `.section-alt` entre secciones consecutivas
-  - [ ] Confirmar que ninguna sección quedó duplicada al haberse construido en épicas distintas
+- [x] **Tarea 2 — Verificar el orden de la Home** (AC: #2)
+  - [x] Recorrer la Home y confirmar las cinco secciones en el orden de FR-08
+  - [x] Confirmar la alternancia de `.section` / `.section-alt` entre secciones consecutivas
+  - [x] Confirmar que ninguna sección quedó duplicada al haberse construido en épicas distintas
 
-- [ ] **Tarea 3 — Auditar la distancia al contacto** (AC: #3)
-  - [ ] En cada una de las cuatro vistas, y con la página en el tope y en el fondo, confirmar que hay un canal a un gesto
-  - [ ] Documentar el resultado (ver §Qué significa "un gesto")
+- [x] **Tarea 3 — Auditar la distancia al contacto** (AC: #3)
+  - [x] En cada una de las cuatro vistas, y con la página en el tope y en el fondo, confirmar que hay un canal a un gesto
+  - [x] Documentar el resultado (ver §Qué significa "un gesto")
 
-- [ ] **Tarea 4 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Los tres canales del pie funcionan en las cuatro vistas
-  - [ ] El orden de la Home es el de FR-08
-  - [ ] Medir las áreas táctiles del pie
-  - [ ] Recorrer el pie con `Tab` en las cuatro vistas
-  - [ ] Verificar en 390 px y 1280 px, en los tres estados de tema
-  - [ ] Alternar idioma y confirmar que las etiquetas del pie cambian
+- [x] **Tarea 4 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Los tres canales del pie funcionan en las cuatro vistas
+  - [x] El orden de la Home es el de FR-08
+  - [x] Medir las áreas táctiles del pie
+  - [x] Recorrer el pie con `Tab` en las cuatro vistas
+  - [x] Verificar en 390 px y 1280 px, en los tres estados de tema
+  - [x] Alternar idioma y confirmar que las etiquetas del pie cambian
 
 ## Dev Notes
 
@@ -205,8 +205,62 @@ Ningún archivo nuevo. Con esta historia los 30 FRs quedan implementados.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 — el pie en las cuatro vistas**, medido en cada una:
+
+| Vista | Canales | Áreas | `mailto:` sin `target` | Externos con `rel` |
+|---|---|---|---|---|
+| `/` | 3 | 44×44 ×3 | ✓ | ✓ |
+| `/projects` | 3 | 44×44 ×3 | ✓ | ✓ |
+| `/about` | 3 | 44×44 ×3 | ✓ | ✓ |
+| `/projects/pokemon-game` | 3 | 44×44 ×3 | ✓ | ✓ |
+
+Las áreas de 44×44 vienen del `.icon-btn` del chasis, no del tamaño del ícono: el `.ico` mide 20 px y un
+`<a>` sin padding mediría 20. El `FooterPage.vue` original usaba PNG de **30×30**, por debajo de NFR-11.
+
+Y las etiquetas accesibles cambian de idioma:
+
+```
+EN: Message me on WhatsApp · Send me an email · See my LinkedIn profile
+ES: Escribime por WhatsApp · Escribime un email · Ver mi perfil de LinkedIn
+```
+
+**AC2 — el orden de la Home, listado del DOM y no leído del template:**
+
+```
+(hero)        —
+proyectos     section
+stack         section section-alt
+trayectoria   section
+contacto      section section-alt
+```
+
+Es exactamente el orden de FR-08, sin secciones duplicadas —la Home se construyó en cuatro épicas
+distintas, cada una sin ver a las otras— y con la alternancia de fondo intacta: ninguna pareja
+consecutiva comparte clase.
+
+**AC3 — la auditoría de "un gesto":** en las cuatro vistas y en cualquier posición de scroll, el canal
+más cercano está a un scroll al pie. Lo que lo garantiza es que el pie con los tres canales está en las
+cuatro vistas; la sección de contacto de la Home no lo reemplaza, es un destino con jerarquía propia
+(FR-23).
+
+### El pie y la sección comparten la regla, no el markup
+
+Son dos presentaciones genuinamente distintas del mismo dato: la sección es un destino con encabezado y
+cards de 104 px; el pie es compacto, tres íconos de 44 px. Forzar `ContactSection` dentro del pie con
+una `variant` daría un componente con dos layouts que no comparten casi nada.
+
+Lo que **sí** se comparte es `atributosDeEnlace(canal)`, exportada desde `contact.js`. Si el pie
+derivara `target` y `rel` por su cuenta, el `mailto:` terminaría abriendo una pestaña en blanco en un
+lugar y no en el otro — y ese es justo el tipo de inconsistencia que solo aparece cuando alguien la
+prueba.
+
+### Con esta historia cierra el alcance funcional
+
+Los 30 FRs del PRD están implementados. Lo que queda es la Épica 7, que no agrega funcionalidad:
+verifica midiendo que los 21 NFRs y las ocho métricas se alcanzan.
 
 ### File List

@@ -59,7 +59,7 @@
       </div>
     </section>
 
-    <!-- El contacto llega en la historia 6.2 y es la ultima seccion. -->
+    <ContactSection :channels="contact" />
   </div>
 </template>
 
@@ -73,9 +73,11 @@ import AppIcon from '@/components/ui/AppIcon.vue';
 import SkillGrid from '@/components/sections/SkillGrid.vue';
 import SectionHeading from '@/components/ui/SectionHeading.vue';
 import TimelineItem from '@/components/sections/TimelineItem.vue';
+import ContactSection from '@/components/sections/ContactSection.vue';
 import { projects } from '@/content/projects';
 import { skills } from '@/content/skills';
 import { timeline } from '@/content/timeline';
+import { contact } from '@/content/contact';
 
 /* El IntersectionObserver local que agregaba `.loaded` se elimino: lo
    reemplaza la directiva v-reveal de la historia 2.7. Dos observers

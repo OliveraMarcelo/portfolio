@@ -1,6 +1,6 @@
 # Story 6.2: Sección de contacto como destino
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -37,35 +37,35 @@ so that no tenga que buscar entre íconos chiquitos al pie.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Construir `ContactSection.vue`** (AC: #1)
-  - [ ] Prop `channels` (Array): los canales de `src/content/contact.js`
-  - [ ] Estructura: `.section` → `SectionHeading` → `.contact-list` → un `.contact-card` por canal
-  - [ ] Cada card con `.contact-label`, `.contact-value` y `.contact-arrow`
-  - [ ] Estilos portados de `home/page.css` (sección 10, líneas 586 en adelante)
+- [x] **Tarea 1 — Construir `ContactSection.vue`** (AC: #1)
+  - [x] Prop `channels` (Array): los canales de `src/content/contact.js`
+  - [x] Estructura: `.section` → `SectionHeading` → `.contact-list` → un `.contact-card` por canal
+  - [x] Cada card con `.contact-label`, `.contact-value` y `.contact-arrow`
+  - [x] Estilos portados de `home/page.css` (sección 10, líneas 586 en adelante)
 
-- [ ] **Tarea 2 — Los enlaces** (AC: #2, #3)
-  - [ ] Cada card es un `<a>` completo, no un contenedor con un enlace chico adentro (ver §La card entera es el enlace)
-  - [ ] `target` y `rel` derivados del campo `external` del módulo, no decididos en el template
-  - [ ] Ícono del sprite vía `AppIcon`, con el nombre que trae el dato
-  - [ ] Área táctil ≥ 44×44 px en cada card
+- [x] **Tarea 2 — Los enlaces** (AC: #2, #3)
+  - [x] Cada card es un `<a>` completo, no un contenedor con un enlace chico adentro (ver §La card entera es el enlace)
+  - [x] `target` y `rel` derivados del campo `external` del módulo, no decididos en el template
+  - [x] Ícono del sprite vía `AppIcon`, con el nombre que trae el dato
+  - [x] Área táctil ≥ 44×44 px en cada card
 
-- [ ] **Tarea 3 — Revelado** (AC: #4)
-  - [ ] `v-reveal` en la sección, con escalonado en las cards
-  - [ ] Mismo mecanismo de custom property que las historias 3.3, 4.7 y 5.4
-  - [ ] Con movimiento reducido, visibles de inmediato
+- [x] **Tarea 3 — Revelado** (AC: #4)
+  - [x] `v-reveal` en la sección, con escalonado en las cards
+  - [x] Mismo mecanismo de custom property que las historias 3.3, 4.7 y 5.4
+  - [x] Con movimiento reducido, visibles de inmediato
 
-- [ ] **Tarea 4 — Montar en la Home** (AC: #1)
-  - [ ] `HomeView.vue` renderiza `<ContactSection :channels="contact" />` como **última** sección
-  - [ ] Con esto queda completo el orden de FR-08
+- [x] **Tarea 4 — Montar en la Home** (AC: #1)
+  - [x] `HomeView.vue` renderiza `<ContactSection :channels="contact" />` como **última** sección
+  - [x] Con esto queda completo el orden de FR-08
 
-- [ ] **Tarea 5 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Los tres canales abren su destino correcto
-  - [ ] Confirmar que el `mailto:` no deja una pestaña en blanco
-  - [ ] Medir las áreas táctiles de las tres cards
-  - [ ] Recorrer con `Tab` y confirmar foco visible en las tres
-  - [ ] Verificar en 390 px y 1280 px, en los tres estados de tema
-  - [ ] Con movimiento reducido: visibles y quietas
+- [x] **Tarea 5 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Los tres canales abren su destino correcto
+  - [x] Confirmar que el `mailto:` no deja una pestaña en blanco
+  - [x] Medir las áreas táctiles de las tres cards
+  - [x] Recorrer con `Tab` y confirmar foco visible en las tres
+  - [x] Verificar en 390 px y 1280 px, en los tres estados de tema
+  - [x] Con movimiento reducido: visibles y quietas
 
 ## Dev Notes
 
@@ -237,8 +237,42 @@ src/locales/{es,en}.json                      MODIFICADO — título y bajada de
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2/AC3 — los tres canales, medidos en la Home:**
+
+| Etiqueta | Valor | href | target | rel | Área |
+|---|---|---|---|---|---|
+| WHATSAPP | +54 11 3432-3271 | `wa.me/541134323271` | `_blank` | noopener noreferrer | 357×104 |
+| EMAIL | olivera.m.et13@gmail.com | `mailto:…` | **ninguno** | ninguno | 357×104 |
+| LINKEDIN | in/marcelodanielolivera | linkedin.com/in/… | `_blank` | noopener noreferrer | 357×104 |
+
+Las tres cards son un `<a>` completo, no un contenedor con un enlace chico adentro. **Formularios en el
+documento: 0.**
+
+**AC4 —** revelado con `v-reveal` escalonado a 70 ms, el mismo mecanismo de las historias 3.3, 4.7 y 5.4.
+
+### La card entera es el enlace, y eso es medible
+
+Con un `<a>` chico adentro, el visitante ve una card de 104 px de alto que invita al clic y descubre que
+solo funciona sobre el texto — y el objetivo táctil pasa a ser la altura de una línea, muy por debajo de
+los 44 px de NFR-11. Un `<a>` puede contener elementos de bloque en HTML5, así que envolver la card
+entera es válido y es lo correcto.
+
+`laCardEnteraEsEnlace: true` en las tres, con área de **357×104**.
+
+### Sin formulario, y es una decisión de alcance
+
+FR-24 pide enlaces directos sin formulario intermedio, y el PRD excluye del alcance el backend. Un
+formulario sin backend necesitaría un servicio de terceros —Formspree, EmailJS— que además contradice
+D14. Si en algún momento parece que "quedaría más profesional", es una conversación de alcance, no una
+decisión de implementación.
+
+### El `aria-label` sale del dato
+
+Un enlace cuyo texto visible es "+54 11 3432-3271" se anuncia como ese número, sin decir qué hace. Los
+tres llevan la etiqueta accesible del canal, y cambian de idioma con el sitio.
 
 ### File List

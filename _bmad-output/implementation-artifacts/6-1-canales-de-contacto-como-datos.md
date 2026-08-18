@@ -1,6 +1,6 @@
 # Story 6.1: Canales de contacto como datos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -25,28 +25,28 @@ so that cambiar un número no implique buscarlo por todo el código.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Crear el módulo** (AC: #1)
-  - [ ] `src/content/contact.js` exportando un array ordenado de canales
-  - [ ] Campos por canal: `id`, `href`, `icon`, `value` (lo que se muestra) y `i18n` con la etiqueta por idioma
-  - [ ] Los íconos son `i-whatsapp`, `i-mail` e `i-linkedin`, ya en el sprite desde la historia 1.4
-  - [ ] El orden del array **es** el orden de presentación
+- [x] **Tarea 1 — Crear el módulo** (AC: #1)
+  - [x] `src/content/contact.js` exportando un array ordenado de canales
+  - [x] Campos por canal: `id`, `href`, `icon`, `value` (lo que se muestra) y `i18n` con la etiqueta por idioma
+  - [x] Los íconos son `i-whatsapp`, `i-mail` e `i-linkedin`, ya en el sprite desde la historia 1.4
+  - [x] El orden del array **es** el orden de presentación
 
-- [ ] **Tarea 2 — Construir los `href` correctamente** (AC: #1)
-  - [ ] WhatsApp: `https://wa.me/541134323271` — solo dígitos, sin `+`, sin espacios ni guiones
-  - [ ] Email: `mailto:olivera.m.et13@gmail.com`
-  - [ ] LinkedIn: `https://www.linkedin.com/in/marcelodanielolivera/`
-  - [ ] Declarar por canal si es externo, para que el componente decida el `target` (ver §`mailto:` no es un enlace externo)
+- [x] **Tarea 2 — Construir los `href` correctamente** (AC: #1)
+  - [x] WhatsApp: `https://wa.me/541134323271` — solo dígitos, sin `+`, sin espacios ni guiones
+  - [x] Email: `mailto:olivera.m.et13@gmail.com`
+  - [x] LinkedIn: `https://www.linkedin.com/in/marcelodanielolivera/`
+  - [x] Declarar por canal si es externo, para que el componente decida el `target` (ver §`mailto:` no es un enlace externo)
 
-- [ ] **Tarea 3 — Barrer los duplicados** (AC: #2)
-  - [ ] Buscar y eliminar los valores literales que quedaron en componentes
-  - [ ] `AppFooter.vue` los tiene literales desde la historia 1.5: apuntarlos a este módulo
-  - [ ] Verificar por `grep` que no quedan en ningún otro lado
+- [x] **Tarea 3 — Barrer los duplicados** (AC: #2)
+  - [x] Buscar y eliminar los valores literales que quedaron en componentes
+  - [x] `AppFooter.vue` los tiene literales desde la historia 1.5: apuntarlos a este módulo
+  - [x] Verificar por `grep` que no quedan en ningún otro lado
 
-- [ ] **Tarea 4 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Los tres canales aparecen una sola vez en el código
-  - [ ] Abrir los tres destinos y confirmar que funcionan
-  - [ ] Paridad ES/EN en las etiquetas
+- [x] **Tarea 4 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Los tres canales aparecen una sola vez en el código
+  - [x] Abrir los tres destinos y confirmar que funcionan
+  - [x] Paridad ES/EN en las etiquetas
 
 ## Dev Notes
 
@@ -198,8 +198,41 @@ Con esta historia `src/content/` queda completo: `projects.js`, `timeline.js`, `
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2 — el módulo y su unicidad:**
+
+```
+canales: whatsapp · email · linkedin        paridad ES/EN en label y aria: sí
+grep de wa.me / olivera.m.et13 / marcelodanielolivera fuera de contact.js: sin resultados
+```
+
+Los tres valores aparecían literales en `AppFooter.vue` desde la historia 1.5, que los dejó ahí a
+propósito para no perder FR-25 antes de que existiera `src/content/`. Este módulo cierra ese préstamo;
+el cableado del pie es la 6.3.
+
+### El número de WhatsApp se guarda dos veces, y está bien
+
+`href: 'https://wa.me/541134323271'` y `value: '+54 11 3432-3271'`. `wa.me` acepta solo dígitos con
+código de país y sin `+`; el otro es el formato legible. **Derivar uno del otro con un `replace` sería
+lógica en el lugar equivocado**, y se rompe con el primer número que tenga otro formato.
+
+### `mailto:` lleva `external: false`
+
+No es un descuido: `mailto:` no abre un sitio, entrega el enlace al cliente de correo. Con
+`target="_blank"` algunos navegadores dejan una pestaña en blanco huérfana, que el visitante lee como un
+error del sitio.
+
+El campo está en el dato para que **el componente derive** `target` y `rel` en lugar de decidirlos por
+canal — así la regla se aplica una vez y no se puede olvidar en el próximo canal.
+
+### El email está expuesto a propósito
+
+Es un portfolio: la dirección está publicada para que la usen. Un `mailto:` en texto plano es cosechable
+por bots y ese costo se acepta —el PRD elige enlaces directos sin formulario (FR-24) y excluye el
+backend—. **No se ofusca con JavaScript:** rompe el enlace para quien tenga JS deshabilitado, complica el
+markup, y los cosechadores actuales ejecutan JS igual. No compra nada real.
 
 ### File List

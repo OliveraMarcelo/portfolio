@@ -91,10 +91,10 @@ development_status:
   epic-5-retrospective: optional
 
   # Épica 6: Contacto a un solo gesto
-  epic-6: ready-for-dev
-  6-1-canales-de-contacto-como-datos: ready-for-dev
-  6-2-seccion-de-contacto-como-destino: ready-for-dev
-  6-3-contacto-alcanzable-desde-cualquier-vista: ready-for-dev
+  epic-6: done
+  6-1-canales-de-contacto-como-datos: done
+  6-2-seccion-de-contacto-como-destino: done
+  6-3-contacto-alcanzable-desde-cualquier-vista: done
   epic-6-retrospective: optional
 
   # Épica 7: Rápido, accesible y compartible

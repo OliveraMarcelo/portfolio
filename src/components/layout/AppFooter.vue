@@ -10,19 +10,20 @@
         </a>
       </RouterLink>
 
-      <!-- Los canales se conservan acá para no perder FR-25 mientras la
-           seccion de contacto no existe. La historia 6.1 crea
-           src/content/contact.js y la 6.3 los cablea a ese modulo. -->
+      <!-- FR-25: los tres canales al pie de las cuatro vistas, asi el
+           contacto nunca esta a mas de un gesto. Los datos salen del modulo
+           y los atributos del enlace de la misma funcion que usa la seccion
+           de contacto: si el pie los derivara por su cuenta, el mailto:
+           abriria una pestaña en blanco en un lugar y no en el otro. -->
       <ul class="footer-canales">
-        <li v-for="c in canales" :key="c.id">
+        <li v-for="canal in contact" :key="canal.id">
           <a
             class="icon-btn"
-            :href="c.href"
-            :target="c.externo ? '_blank' : null"
-            :rel="c.externo ? 'noopener noreferrer' : null"
-            :aria-label="t(c.clave)"
+            :href="canal.href"
+            v-bind="atributosDeEnlace(canal)"
+            :aria-label="textos(canal).aria"
           >
-            <AppIcon :name="c.icono" />
+            <AppIcon :name="canal.icon" />
           </a>
         </li>
       </ul>
@@ -39,18 +40,11 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 import AppIcon from '@/components/ui/AppIcon.vue';
+import { contact, atributosDeEnlace } from '@/content/contact';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
-/* Valores literales por ahora: la historia 6.1 los mueve a
-   src/content/contact.js y la 6.3 hace que este componente los lea de ahí.
-   `externo: false` en el email a proposito: mailto: no abre una pestaña, y
-   con target="_blank" quedaria una en blanco huerfana. */
-const canales = [
-  { id: 'whatsapp', href: 'https://wa.me/541134323271', externo: true, icono: 'whatsapp', clave: 'footer.whatsapp' },
-  { id: 'email', href: 'mailto:olivera.m.et13@gmail.com', externo: false, icono: 'mail', clave: 'footer.email' },
-  { id: 'linkedin', href: 'https://www.linkedin.com/in/marcelodanielolivera/', externo: true, icono: 'linkedin', clave: 'footer.linkedin' },
-];
+const textos = (canal) => canal.i18n[locale.value] ?? canal.i18n.es;
 </script>
 
 <style scoped>
