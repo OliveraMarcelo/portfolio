@@ -94,6 +94,24 @@ jobs:
             echo "──── estado antes del deploy ────"
             docker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
 
+            # Se lee ANTES de recrear el container: despues su log esta vacio
+            # por construccion, y leerlo ahi no dice nada.
+            #
+            # Si Cloudflare estuviera enviando el trafico de marcecode.com a
+            # ESTE servidor, su log de acceso tendria las peticiones. Si no
+            # aparecen, el origen configurado en Cloudflare es otra maquina, y
+            # por eso el sitio publico no cambia aunque el deploy salga verde.
+            #
+            # No se imprime ninguna IP del servidor: solo se clasifica lo que
+            # entra, para no exponer el origen en un log publico.
+            echo "──── trafico que recibio el servidor ────"
+            LOG=$(docker compose -f docker-compose.prod.yml logs --tail 400 --no-log-prefix portfolio 2>/dev/null || true)
+            printf "  lineas de acceso: %s\n" "$(printf '%s' "$LOG" | grep -cE '"(GET|HEAD|POST)' || true)"
+            printf "  con el marcador de diagnostico: %s\n" "$(printf '%s' "$LOG" | grep -c 'diagnostico-cf' || true)"
+            printf "  origenes distintos: %s\n" "$(printf '%s' "$LOG" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -u | wc -l)"
+            printf "  ultimas rutas pedidas:\n"
+            printf '%s' "$LOG" | grep -oE '"(GET|HEAD) [^ ]+' | tail -8 | sed 's/^/    /' || true
+
             docker compose -f docker-compose.prod.yml pull portfolio
 
             # `--remove-orphans` no es cosmetico. El compose anterior tenia un
@@ -114,19 +132,6 @@ jobs:
             # El deploy no puede darse por bueno sin comprobar que el sitio
             # responde con la version que se acaba de publicar. Antes decia
             # "Deploy exitoso" sin verificar nada.
-            echo "──── quien le esta pegando al servidor ────"
-            # Si Cloudflare estuviera enviando el trafico de marcecode.com a
-            # ESTE servidor, su log de acceso tendria peticiones recientes desde
-            # rangos de Cloudflare. Si solo aparece trafico local, entonces el
-            # origen configurado en Cloudflare es otra maquina y por eso el
-            # sitio publico no cambia aunque el deploy salga bien.
-            #
-            # No se imprime ninguna IP del servidor: solo se cuenta y se
-            # clasifica lo que llega.
-            docker compose -f docker-compose.prod.yml logs --tail 200 --no-log-prefix portfolio 2>/dev/null \
-              | grep -E '^[0-9]+\.' | awk '{print $1}' | sort | uniq -c | sort -rn | head -10 \
-              | awk '{ printf "  %6d peticiones desde %s\n", $1, $2 }' || echo "  (sin log de acceso todavia)"
-
             echo "──── que devuelve el dominio publico vs este servidor ────"
             printf "  desde este servidor:  %s\n" "$(curl -sk https://localhost/ -H 'Host: marcecode.com' | grep -o '<title>[^<]*</title>' || echo '(sin respuesta)')"
             printf "  desde el dominio:     %s\n" "$(curl -s https://marcecode.com/ | grep -o '<title>[^<]*</title>' || echo '(sin respuesta)')"
