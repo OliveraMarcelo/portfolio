@@ -102,12 +102,16 @@ jobs:
             # aparecen, el origen configurado en Cloudflare es otra maquina, y
             # por eso el sitio publico no cambia aunque el deploy salga verde.
             #
+            # Fue exactamente lo que paso el 2026-08-18: se pidieron cinco URLs
+            # marcadas contra el dominio publico y NINGUNA llego a este
+            # servidor. El container solo vio las dos peticiones que hace este
+            # propio script.
+            #
             # No se imprime ninguna IP del servidor: solo se clasifica lo que
             # entra, para no exponer el origen en un log publico.
             echo "──── trafico que recibio el servidor ────"
             LOG=$(docker compose -f docker-compose.prod.yml logs --tail 400 --no-log-prefix portfolio 2>/dev/null || true)
             printf "  lineas de acceso: %s\n" "$(printf '%s' "$LOG" | grep -cE '"(GET|HEAD|POST)' || true)"
-            printf "  con el marcador de diagnostico: %s\n" "$(printf '%s' "$LOG" | grep -c 'diagnostico-cf' || true)"
             printf "  origenes distintos: %s\n" "$(printf '%s' "$LOG" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -u | wc -l)"
             printf "  ultimas rutas pedidas:\n"
             printf '%s' "$LOG" | grep -oE '"(GET|HEAD) [^ ]+' | tail -8 | sed 's/^/    /' || true
