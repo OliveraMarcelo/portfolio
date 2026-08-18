@@ -17,7 +17,7 @@
           <li v-for="item in items" :key="item.name">
             <RouterLink
               class="nav-link"
-              :class="{ 'is-active': esActiva(item.name) }"
+              :class="{ 'is-active': esSeccionActiva(item) }"
               :to="item.path"
               :aria-current="esActiva(item.name) ? 'page' : null"
               @mouseenter="moverA($event.currentTarget)"
@@ -51,7 +51,7 @@
         <li v-for="item in items" :key="item.name">
           <RouterLink
             class="mobile-link"
-            :class="{ 'is-active': esActiva(item.name) }"
+            :class="{ 'is-active': esSeccionActiva(item) }"
             :to="item.path"
             :aria-current="esActiva(item.name) ? 'page' : null"
             @click="cerrarMenu"
@@ -90,7 +90,21 @@ const items = [
   { name: 'about', path: '/about', clave: 'nav.about' },
 ];
 
+/* Dos nociones distintas de "activo", y separarlas importa:
+
+   - `esActiva` es exacta y gobierna el `aria-current="page"`. En
+     /projects/tienda-jedami NINGUN item del nav es la pagina actual, y
+     decir lo contrario le miente al lector de pantalla.
+   - `esSeccionActiva` incluye las rutas hijas y gobierna el estado VISUAL.
+     Sin ella, al abrir el detalle de un proyecto el visitante pierde toda
+     referencia de donde esta. */
 const esActiva = (name) => route.name === name;
+
+const esSeccionActiva = (item) => (
+  item.path === '/'
+    ? route.path === '/'
+    : route.path === item.path || route.path.startsWith(`${item.path}/`)
+);
 
 /* Indicador animado (A3). El CSS del sistema lo posiciona con
    `translateX(var(--nav-x)) scaleX(var(--nav-w))` sobre una base de 1px de
@@ -105,7 +119,15 @@ function moverA(destino) {
 }
 
 function volverAlActivo() {
-  moverA(navRef.value?.querySelector('.nav-link.is-active'));
+  const activo = navRef.value?.querySelector('.nav-link.is-active');
+  /* Sin destino el indicador se OCULTA en lugar de quedarse donde estaba:
+     antes de esto, en una ruta sin item de nav senalaba el ultimo que hubiera
+     tocado — que es peor que no senalar nada. */
+  if (!activo) {
+    indicadorRef.value?.classList.remove('is-ready');
+    return;
+  }
+  moverA(activo);
 }
 
 /* Medir DESPUÉS del render: offsetLeft y offsetWidth devuelven 0 si el
@@ -123,7 +145,9 @@ async function reposicionar() {
    3. Carga de fuentes — con `font-display: swap` el nav se pinta primero con
       el respaldo y el ancho de las etiquetas cambia cuando llega la real.
    Más el `resize`, porque el .nav-list es flex. */
-watch(() => route.name, reposicionar);
+/* `route.path` y no `route.name`: entre dos detalles de proyecto el nombre de
+   ruta no cambia, y el indicador tiene que reevaluarse igual. */
+watch(() => route.path, reposicionar);
 watch(locale, reposicionar);
 
 /* Menu mobile (FR-03). El apilamiento vive en chassis.scss: velo 90 <

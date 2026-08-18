@@ -35,14 +35,6 @@
     "aboutMeDesc": "I am a passionate web developer with experience in front-end and back-end. I love creating amazing web applications and solving challenging problems.",
     "downloadCV": "Download CV"
   },
-  "proyectosLegacy": {
-    "realtimeMessagingTitle": "Real-time Messaging",
-    "realtimeMessagingDesc": "Do you want to send real-time messages and chat with your friends? Then this project will interest you!",
-    "onlineStoreTitle": "Jedami Store",
-    "onlineStoreDesc": "E-commerce with product catalog, shopping cart and order management. Built with Node.js and Vue.",
-    "pokemonGameTitle": "Pokemon Game",
-    "pokemonGameDesc": "Who is that Pokémon? Guessing game with silhouettes using the PokéAPI. Built with TypeScript and Vue."
-  },
   "meta": {
     "home": {
       "title": "Marcelo Olivera — Frontend Developer",
@@ -67,5 +59,25 @@
     "ctaProjects": "View projects",
     "ctaCv": "Download CV",
     "scroll": "scroll"
+  },
+  "proyectos": {
+    "titulo": "My Projects",
+    "lede": "Applications I built solving real problems. Each one is in production or has its code open.",
+    "gridAria": "Project catalog",
+    "stackDe": "{proyecto} stack",
+    "verEnVivo": "View live",
+    "verCodigo": "View code",
+    "sinCaptura": "Screenshot pending"
+  },
+  "detalle": {
+    "problema": "The problem",
+    "solucion": "The solution",
+    "rol": "My role",
+    "stackAria": "Full project stack"
+  },
+  "home": {
+    "destacadosTitulo": "Projects",
+    "destacadosLede": "Three things that are actually running, not course exercises.",
+    "verTodos": "See all projects"
   }
 }

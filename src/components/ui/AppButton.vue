@@ -17,7 +17,7 @@ import { RouterLink } from 'vue-router';
    una decision visual; que sean el mismo elemento no lo es. */
 
 const props = defineProps({
-  variant: { type: String, default: 'primary', validator: (v) => ['primary', 'ghost'].includes(v) },
+  variant: { type: String, default: 'primary', validator: (v) => ['primary', 'ghost', 'quiet'].includes(v) },
   to: { type: [String, Object], default: null },
   href: { type: String, default: null },
   download: { type: Boolean, default: false },

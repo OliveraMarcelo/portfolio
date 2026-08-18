@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { ref, nextTick } from 'vue'
 import i18n from '@/i18n'
 import { movimientoReducido } from '@/composables/useReducedMotion'
+import { bySlug } from '@/content/projects'
 
 /* Los metadatos van por ruta y los aplica un guard `afterEach` (D11): en un
    solo lugar, en lugar de dispersarse como un `onMounted` en cuatro vistas.
@@ -26,6 +27,27 @@ const routes = [
     name: 'projects',
     component: () => import('../views/ProjectsView.vue'),
     meta: { titleKey: 'meta.projects.title', descriptionKey: 'meta.projects.description' },
+  },
+  {
+    /* La resolucion slug -> proyecto ocurre EXCLUSIVAMENTE aca (D5): el
+       proyecto llega a la vista como prop, no como parametro de ruta.
+       El `beforeEnter` ataja el slug inexistente antes de montar nada, asi
+       que la vista no necesita un estado de "no encontrado". */
+    path: '/projects/:slug',
+    name: 'project-detail',
+    component: () => import('../views/ProjectDetailView.vue'),
+    props: (route) => ({ project: bySlug(route.params.slug) }),
+    beforeEnter: (to) => (bySlug(to.params.slug) ? true : { name: 'projects' }),
+    meta: {
+      /* Estos metadatos dependen del dato, no de la ruta: el titulo lleva el
+         nombre del proyecto. Por eso son funciones, y el guard sabe
+         invocarlas. */
+      title: (ruta) => {
+        const p = bySlug(ruta.params.slug)
+        return p ? `${p.i18n[i18n.global.locale.value].title} — Marcelo Olivera` : null
+      },
+      description: (ruta) => bySlug(ruta.params.slug)?.i18n[i18n.global.locale.value].summary ?? null,
+    },
   },
 ]
 
@@ -92,8 +114,22 @@ function setMeta(name, content) {
    corre dentro del setup() de un componente. */
 export function aplicarMetadatos(ruta = router.currentRoute.value) {
   const t = i18n.global.t
-  if (ruta.meta?.titleKey) document.title = t(ruta.meta.titleKey)
-  if (ruta.meta?.descriptionKey) setMeta('description', t(ruta.meta.descriptionKey))
+
+  /* Dos formas de declarar metadatos, porque hay dos casos reales: las rutas
+     estaticas los tienen en una clave de i18n, y la de detalle los deriva del
+     proyecto abierto. El guard resuelve las dos en lugar de tener un `if
+     (to.name === 'project-detail')` que habria que ampliar en la proxima ruta
+     dinamica. */
+  const titulo = typeof ruta.meta?.title === 'function'
+    ? ruta.meta.title(ruta)
+    : (ruta.meta?.titleKey ? t(ruta.meta.titleKey) : null)
+
+  const descripcion = typeof ruta.meta?.description === 'function'
+    ? ruta.meta.description(ruta)
+    : (ruta.meta?.descriptionKey ? t(ruta.meta.descriptionKey) : null)
+
+  if (titulo) document.title = titulo
+  if (descripcion) setMeta('description', descripcion)
 }
 
 /* `afterEach` y no `beforeEach`: si otro guard cancelara la navegación, con

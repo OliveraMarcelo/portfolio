@@ -1,6 +1,6 @@
 # Story 4.1: Módulo único de contenido de proyectos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -37,32 +37,32 @@ so that agregar uno nuevo no me obligue a tocar tres vistas y olvidarme del ingl
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Crear el módulo** (AC: #1)
-  - [ ] `src/content/projects.js` con el array `projects` y la función `bySlug`
-  - [ ] Campos en `camelCase` (`liveUrl`, no `live_url`)
-  - [ ] El orden del array **es** el orden de presentación: ninguna vista reordena
-  - [ ] `bySlug` devuelve `null` cuando no encuentra, no `undefined`
+- [x] **Tarea 1 — Crear el módulo** (AC: #1)
+  - [x] `src/content/projects.js` con el array `projects` y la función `bySlug`
+  - [x] Campos en `camelCase` (`liveUrl`, no `live_url`)
+  - [x] El orden del array **es** el orden de presentación: ninguna vista reordena
+  - [x] `bySlug` devuelve `null` cuando no encuentra, no `undefined`
 
-- [ ] **Tarea 2 — Cargar los tres proyectos** (AC: #2, #3)
-  - [ ] Datos reales de la tabla del PRD §7.3 (ver §Los tres proyectos)
-  - [ ] `featured: true` en los que van a la Home (máximo 3, así que los tres califican)
-  - [ ] `liveUrl: null` y `repoUrl: null` en `chat-tiempo-real`
+- [x] **Tarea 2 — Cargar los tres proyectos** (AC: #2, #3)
+  - [x] Datos reales de la tabla del PRD §7.3 (ver §Los tres proyectos)
+  - [x] `featured: true` en los que van a la Home (máximo 3, así que los tres califican)
+  - [x] `liveUrl: null` y `repoUrl: null` en `chat-tiempo-real`
 
-- [ ] **Tarea 3 — Migrar los textos desde i18n** (AC: #1, #4)
-  - [ ] Mover a la clave `i18n` de cada proyecto los textos que hoy están en `src/i18n.js`: `onlineStoreTitle`, `onlineStoreDesc`, `pokemonGameTitle`, `pokemonGameDesc`, `realtimeMessagingTitle`, `realtimeMessagingDesc`
-  - [ ] Escribir además `problem`, `solution` y `role` de cada proyecto, en ES y EN (los necesita la historia 4.5)
-  - [ ] Borrar esas claves de `src/i18n.js` y de los locales
+- [x] **Tarea 3 — Migrar los textos desde i18n** (AC: #1, #4)
+  - [x] Mover a la clave `i18n` de cada proyecto los textos que hoy están en `src/i18n.js`: `onlineStoreTitle`, `onlineStoreDesc`, `pokemonGameTitle`, `pokemonGameDesc`, `realtimeMessagingTitle`, `realtimeMessagingDesc`
+  - [x] Escribir además `problem`, `solution` y `role` de cada proyecto, en ES y EN (los necesita la historia 4.5)
+  - [x] Borrar esas claves de `src/i18n.js` y de los locales
 
-- [ ] **Tarea 4 — Consumir desde las vistas** (AC: #4)
-  - [ ] `ProjectsView.vue` importa `projects` y lo recorre
-  - [ ] `HomeView.vue` importa `projects` y filtra por `featured`
-  - [ ] Eliminar de ambas cualquier array local de proyectos
+- [x] **Tarea 4 — Consumir desde las vistas** (AC: #4)
+  - [x] `ProjectsView.vue` importa `projects` y lo recorre
+  - [x] `HomeView.vue` importa `projects` y filtra por `featured`
+  - [x] Eliminar de ambas cualquier array local de proyectos
 
-- [ ] **Tarea 5 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] `bySlug` con un slug válido y con uno inválido (ver §Comandos de verificación)
-  - [ ] Confirmar paridad ES/EN en los tres proyectos
-  - [ ] Confirmar que las dos vistas siguen mostrando los tres proyectos
+- [x] **Tarea 5 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] `bySlug` con un slug válido y con uno inválido (ver §Comandos de verificación)
+  - [x] Confirmar paridad ES/EN en los tres proyectos
+  - [x] Confirmar que las dos vistas siguen mostrando los tres proyectos
 
 ## Dev Notes
 
@@ -250,8 +250,54 @@ Se crea `src/content/`. Los módulos `skills.js`, `timeline.js` y `contact.js` l
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2/AC3 — el módulo, medido en Node:**
+
+```
+total: 3                       slugs: tienda-jedami, pokemon-game, chat-tiempo-real
+bySlug('tienda-jedami').slug   -> 'tienda-jedami'
+bySlug('no-existe')            -> null      (=== null, no undefined)
+featured                       -> 3
+paridad ES/EN en los 5 campos  -> true
+chat-tiempo-real.liveUrl       -> null      .repoUrl -> null
+```
+
+**AC4 —** ninguna vista define su propia lista, verificado por `grep`. Y las claves
+`onlineStore*`, `pokemonGame*`, `realtimeMessaging*` ya no existen en `src/`.
+
+En el navegador, `/projects` pasó de mostrar **2 proyectos a mostrar 3**: el de mensajería no estaba en
+ninguna de las dos listas locales. Al alternar idioma los tres títulos cambian
+(`Tienda Jedami → Jedami Store`, `Mensajería en tiempo real → Real-time Messaging`).
+
+### Los tres campos que no existían
+
+`title` y `summary` se reusaron de los locales. `problem`, `solution` y `role` **no existían** y se
+escribieron para los tres proyectos en los dos idiomas, con lo que se sabe de cada uno y sin inventar
+un rol ni un problema que no se pueda sostener.
+
+### El resolvedor de imágenes es un mapa, no un `require` dinámico
+
+`project.image` es un nombre base (`'jedami-preview'`), y `src/utils/assets.js` lo traduce al asset.
+Se eligió el mapa explícito sobre `require(\`@/assets/img/${nombre}.webp\`)` por una razón concreta:
+webpack resuelve el require dinámico **generando un contexto con todo el directorio**, lo que mete en
+el bundle imágenes que nadie usa y falla en tiempo de ejecución —no de compilación— cuando el archivo
+no existe. Con un mapa, el que falta se ve leyendo el archivo.
+
+Y falta uno: `chat-preview`. `imagenDeProyecto()` devuelve `null` y quien la consume renderiza el caso
+sin imagen. No apunta a `image.png` —que es la captura del certificado— porque pasaría por captura de
+proyecto y sería contenido falso.
+
+### Las capturas se convirtieron a WebP
+
+| Origen | Destino | |
+|---|---|---|
+| `jedami-preview.png` 611 KB | `jedami-preview.webp` 40 KB | **−93 %** |
+| `pokemon-preview.png` 30 KB | `pokemon-preview.webp` 8 KB | **−73 %** |
+
+Recortadas a 16/10 —la relación que la card declara— y escaladas a 1200×750, el doble de los ~600 px
+que ocupan en la grilla de dos columnas.
 
 ### File List

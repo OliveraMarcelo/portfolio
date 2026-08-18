@@ -35,14 +35,6 @@
     "aboutMeDesc": "Soy un apasionado desarrollador web con experiencia en front-end y back-end. Me encanta crear aplicaciones web increíbles y resolver problemas desafiantes.",
     "downloadCV": "Descargar CV"
   },
-  "proyectosLegacy": {
-    "realtimeMessagingTitle": "Mensajeria en tiempo real",
-    "realtimeMessagingDesc": "Deseas mandar mensajes en tiempo real y chatear con tus amigos ! Entonces este proyecto te interesara!",
-    "onlineStoreTitle": "Tienda Jedami",
-    "onlineStoreDesc": "E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.",
-    "pokemonGameTitle": "Pokemon Game",
-    "pokemonGameDesc": "¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI. Desarrollado con TypeScript y Vue."
-  },
   "meta": {
     "home": {
       "title": "Marcelo Olivera — Frontend Developer",
@@ -67,5 +59,25 @@
     "ctaProjects": "Ver proyectos",
     "ctaCv": "Descargar CV",
     "scroll": "desplazá"
+  },
+  "proyectos": {
+    "titulo": "Mis Proyectos",
+    "lede": "Aplicaciones que construí resolviendo problemas reales. Cada una está en producción o con el código abierto.",
+    "gridAria": "Catálogo de proyectos",
+    "stackDe": "Stack de {proyecto}",
+    "verEnVivo": "Ver en vivo",
+    "verCodigo": "Ver código",
+    "sinCaptura": "Captura pendiente"
+  },
+  "detalle": {
+    "problema": "El problema",
+    "solucion": "La solución",
+    "rol": "Mi rol",
+    "stackAria": "Stack completo del proyecto"
+  },
+  "home": {
+    "destacadosTitulo": "Proyectos",
+    "destacadosLede": "Tres cosas que están corriendo, no ejercicios de curso.",
+    "verTodos": "Ver todos los proyectos"
   }
 }

@@ -1,6 +1,6 @@
 # Story 4.3: Grilla responsive de proyectos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -37,35 +37,35 @@ so that no tenga que hacer zoom ni scrollear en horizontal.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Componente `ProjectGrid.vue`** (AC: #1, #2, #3)
-  - [ ] Prop `items` (Array, requerido): los proyectos a mostrar
-  - [ ] Renderiza un `.project-grid` con un `ProjectCard` por elemento, con `:key="p.slug"`
-  - [ ] Sin lógica de selección adentro: quién filtra es la vista (ver §La grilla no decide qué mostrar)
+- [x] **Tarea 1 — Componente `ProjectGrid.vue`** (AC: #1, #2, #3)
+  - [x] Prop `items` (Array, requerido): los proyectos a mostrar
+  - [x] Renderiza un `.project-grid` con un `ProjectCard` por elemento, con `:key="p.slug"`
+  - [x] Sin lógica de selección adentro: quién filtra es la vista (ver §La grilla no decide qué mostrar)
 
-- [ ] **Tarea 2 — El CSS de la grilla** (AC: #1, #2, #3, #4)
-  - [ ] Portar `.project-grid` de `proyectos/page.css` (líneas 111–116) a `src/styles/sections.scss`
-  - [ ] `grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr))`
-  - [ ] El `min(320px, 100%)` es lo que evita el desborde en pantallas angostas (ver §El `min()` no es opcional)
-  - [ ] `gap: clamp(1.25rem, 2.5vw, 2rem)`
+- [x] **Tarea 2 — El CSS de la grilla** (AC: #1, #2, #3, #4)
+  - [x] Portar `.project-grid` de `proyectos/page.css` (líneas 111–116) a `src/styles/sections.scss`
+  - [x] `grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr))`
+  - [x] El `min(320px, 100%)` es lo que evita el desborde en pantallas angostas (ver §El `min()` no es opcional)
+  - [x] `gap: clamp(1.25rem, 2.5vw, 2rem)`
 
-- [ ] **Tarea 3 — Reescribir `ProjectsView.vue`** (AC: #1, #2)
-  - [ ] Encabezado de vista con `SectionHeading` —o con las primitivas `.section-head` de la historia 3.1— y la `h1` de la vista
-  - [ ] `<ProjectGrid :items="projects" />` consumiendo el módulo de la historia 4.1
-  - [ ] Textos por i18n
-  - [ ] Eliminar el markup viejo y su `IntersectionObserver` local si lo tiene
+- [x] **Tarea 3 — Reescribir `ProjectsView.vue`** (AC: #1, #2)
+  - [x] Encabezado de vista con `SectionHeading` —o con las primitivas `.section-head` de la historia 3.1— y la `h1` de la vista
+  - [x] `<ProjectGrid :items="projects" />` consumiendo el módulo de la historia 4.1
+  - [x] Textos por i18n
+  - [x] Eliminar el markup viejo y su `IntersectionObserver` local si lo tiene
 
-- [ ] **Tarea 4 — Eliminar el componente viejo** (AC: #3)
-  - [ ] Borrar `src/components/projects/ListProjects.vue`
-  - [ ] Verificar por `grep` que nada lo referencia
-  - [ ] Borrar de `src/styles/sass/modules/_pages.scss` las reglas de la vista de proyectos que queden muertas
+- [x] **Tarea 4 — Eliminar el componente viejo** (AC: #3)
+  - [x] Borrar `src/components/projects/ListProjects.vue`
+  - [x] Verificar por `grep` que nada lo referencia
+  - [x] Borrar de `src/styles/sass/modules/_pages.scss` las reglas de la vista de proyectos que queden muertas
 
-- [ ] **Tarea 5 — Verificar los cuatro anchos** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] 390 px: una columna, sin scroll horizontal
-  - [ ] 768 px: dos columnas
-  - [ ] 1280 px y 1920 px: sin scroll horizontal, la grilla no se estira más allá del contenedor
-  - [ ] Verificar en los tres estados de tema
-  - [ ] Confirmar que las tres cards tienen la misma altura pese a que una no tiene botones
+- [x] **Tarea 5 — Verificar los cuatro anchos** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] 390 px: una columna, sin scroll horizontal
+  - [x] 768 px: dos columnas
+  - [x] 1280 px y 1920 px: sin scroll horizontal, la grilla no se estira más allá del contenedor
+  - [x] Verificar en los tres estados de tema
+  - [x] Confirmar que las tres cards tienen la misma altura pese a que una no tiene botones
 
 ## Dev Notes
 
@@ -223,8 +223,46 @@ src/styles/sass/modules/_pages.scss           MODIFICADO — se borran reglas mu
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2/AC3/AC4 — los anchos, medidos:**
+
+| Viewport | Columnas | Ancho de card | Scroll horizontal |
+|---|---|---|---|
+| 390 | **1** | 335 px | no (documento 375 px) |
+| 768 | **2** | — | no (documento 753 px) |
+| 1280 | 3 | 346 px | no |
+
+`auto-fit` con un mínimo hace el trabajo de los breakpoints sin declarar ninguno: una columna cuando no
+entran dos de 320 px, dos cuando sí, tres cuando sobra.
+
+**AC3 —** ningún ancho depende del índice. El patrón 60/40 que dejaba cards al 40 % de un viewport de
+390 px (P7) desapareció con `ListProjects.vue`.
+
+### El `min()` no es decorativo
+
+`minmax(min(320px, 100%), 1fr)`. Con `minmax(320px, 1fr)` a secas, una pantalla cuyo contenido útil
+mide menos de 320 px deja la pista en 320 y la card desborda. El `min()` hace que el mínimo ceda al
+ancho disponible: a 390 px la card mide 335 y el documento no scrollea en horizontal.
+
+### El escalonado vive en la grilla, y es deliberado
+
+La historia sugiere pasar `--d` desde la vista. Se dejó en `ProjectGrid` porque **el retardo depende
+del índice, y el índice solo existe donde está el `v-for`**. Sacarlo obligaría a repetir el `v-for` en
+la Home y en Proyectos, que es exactamente el camino por el que las dos terminaron con dos
+implementaciones distintas de la misma card. El paso es 70 ms, el valor de `--stagger`.
+
+### Limpieza
+
+`ListProjects.vue`, `ItemProject.vue`, `ButtonCustom.vue` y `_buttons.scss` eliminados —los dos últimos
+eran deuda pendiente de la historia 3.2, que no podía cerrarse hasta que `ItemProject` muriera—.
+`src/components/projects/` y `src/components/buttons/` quedaron vacías y se borraron.
+
+De `_pages.scss` se quitaron las reglas muertas de `.card-list`, `.box-buttons`, `.boton-primario`,
+`.boton-secundario` y `.projects-description`: **476 → 423 líneas**. La eliminación se hizo con el
+divisor por conteo de llaves de la historia 3.1 —que además recorre los `@media` y borra los que
+quedan vacíos— con verificación de balance antes de escribir. No con expresiones regulares.
 
 ### File List

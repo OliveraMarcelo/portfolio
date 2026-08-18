@@ -1,6 +1,6 @@
 # Story 4.7: Proyectos destacados en la Home
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -37,37 +37,37 @@ so that me alcance con una pantalla para formarme una idea.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Sección de destacados en la Home** (AC: #1, #4)
-  - [ ] En `HomeView.vue`, una `<section class="section">` con `.section-head` (título y bajada), la grilla, y `.section-foot` con el enlace
-  - [ ] `<ProjectGrid :items="destacados" />` donde `destacados = projects.filter(p => p.featured).slice(0, 3)`
-  - [ ] El enlace usa `.link-arrow` con el ícono `i-arrow`, primitiva promovida en la historia 3.1
-  - [ ] Títulos y etiquetas por i18n
+- [x] **Tarea 1 — Sección de destacados en la Home** (AC: #1, #4)
+  - [x] En `HomeView.vue`, una `<section class="section">` con `.section-head` (título y bajada), la grilla, y `.section-foot` con el enlace
+  - [x] `<ProjectGrid :items="destacados" />` donde `destacados = projects.filter(p => p.featured).slice(0, 3)`
+  - [x] El enlace usa `.link-arrow` con el ícono `i-arrow`, primitiva promovida en la historia 3.1
+  - [x] Títulos y etiquetas por i18n
 
-- [ ] **Tarea 2 — El `slice` es una garantía, no una redundancia** (AC: #1)
-  - [ ] `.slice(0, 3)` incluso si hoy hay exactamente tres proyectos (ver §Por qué el `slice` va igual)
+- [x] **Tarea 2 — El `slice` es una garantía, no una redundancia** (AC: #1)
+  - [x] `.slice(0, 3)` incluso si hoy hay exactamente tres proyectos (ver §Por qué el `slice` va igual)
 
-- [ ] **Tarea 3 — Revelado escalonado** (AC: #3)
-  - [ ] `v-reveal` en cada card, con un retardo creciente
-  - [ ] Resolverlo con la custom property `--d` que el CSS de la card ya consume (ver §El escalonado usa `--d`)
-  - [ ] Con movimiento reducido, las tres visibles de inmediato
+- [x] **Tarea 3 — Revelado escalonado** (AC: #3)
+  - [x] `v-reveal` en cada card, con un retardo creciente
+  - [x] Resolverlo con la custom property `--d` que el CSS de la card ya consume (ver §El escalonado usa `--d`)
+  - [x] Con movimiento reducido, las tres visibles de inmediato
 
-- [ ] **Tarea 4 — Limpiar el markup viejo** (AC: #2)
-  - [ ] Eliminar de `HomeView.vue` cualquier resto de la sección de proyectos anterior
-  - [ ] Confirmar que no queda ningún array local de proyectos
-  - [ ] Borrar de `_pages.scss` las reglas de la sección de proyectos de la Home que queden muertas
+- [x] **Tarea 4 — Limpiar el markup viejo** (AC: #2)
+  - [x] Eliminar de `HomeView.vue` cualquier resto de la sección de proyectos anterior
+  - [x] Confirmar que no queda ningún array local de proyectos
+  - [x] Borrar de `_pages.scss` las reglas de la sección de proyectos de la Home que queden muertas
 
-- [ ] **Tarea 5 — Verificar la identidad del markup** (AC: #2)
-  - [ ] Comparar la firma del DOM de una card en la Home contra la misma card en `/projects` (ver §Comandos de verificación)
-  - [ ] Tienen que coincidir exactamente
+- [x] **Tarea 5 — Verificar la identidad del markup** (AC: #2)
+  - [x] Comparar la firma del DOM de una card en la Home contra la misma card en `/projects` (ver §Comandos de verificación)
+  - [x] Tienen que coincidir exactamente
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] La Home muestra tres cards, con el mismo aspecto que en `/projects`
-  - [ ] El revelado escalonado se ve
-  - [ ] El enlace lleva a `/projects`
-  - [ ] Verificar en 390 px y 1280 px
-  - [ ] Confirmar que la transición al detalle funciona **también desde la Home** (historia 4.6)
-  - [ ] Con movimiento reducido, las tres cards visibles de entrada
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] La Home muestra tres cards, con el mismo aspecto que en `/projects`
+  - [x] El revelado escalonado se ve
+  - [x] El enlace lleva a `/projects`
+  - [x] Verificar en 390 px y 1280 px
+  - [x] Confirmar que la transición al detalle funciona **también desde la Home** (historia 4.6)
+  - [x] Con movimiento reducido, las tres cards visibles de entrada
 
 ## Dev Notes
 
@@ -248,8 +248,48 @@ Ningún componente nuevo: es la demostración de que los de las historias 4.2 y 
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 —** tres cards en la Home, filtradas por `featured` y con `.slice(0, 3)`.
+
+**AC2 — la firma del DOM**, comparando una card de la Home contra la misma card en `/projects`: de las
+17 líneas de la firma difieren **dos**, y las dos son esperadas:
+
+```
+home: ARTICLE.is-featured.project-card.reveal | proyectos: ARTICLE.is-featured.is-visible.project-card.reveal
+home: H3.project-title                        | proyectos: H2.project-title
+```
+
+`is-visible` es estado de revelado en tiempo de ejecución, no markup. El nivel de encabezado sale de la
+prop `headingLevel` y **tiene que** diferir: en la Home la card cuelga del `h2` de "Proyectos" y en
+`/projects` del `h1` de la vista (NFR-09). Ninguna clase difiere. Nadie clonó el componente.
+
+**AC3 —** los retardos medidos en las tres cards: `""`, `70ms`, `140ms`.
+
+**AC4 —** `.section-foot` con un `.link-arrow` a `/projects`.
+
+### El `slice` es una garantía, no una redundancia
+
+Hoy `featured` devuelve exactamente tres, así que `.slice(0, 3)` parece sobrar. FR-08 dice "máximo 3":
+el día que se marque un cuarto proyecto sin pensarlo, la Home mostraría cuatro y el criterio quedaría
+violado sin que nadie toque esta vista. Convierte el requisito en una garantía estructural en lugar de
+una convención sobre el contenido.
+
+### `ProjectGrid` sirvió a las dos vistas sin un solo cambio
+
+La Home le pasa tres y Proyectos el catálogo completo. No hizo falta agregarle ninguna prop de modo,
+que era la señal de que la frontera estaba mal puesta.
+
+### Una advertencia sobre las capturas de página completa
+
+La primera captura `fullPage` de `/projects` mostraba el indicador del nav bajo "Inicio" estando en
+Proyectos, y los capítulos del detalle en blanco. Ninguna de las dos cosas era real: `fullPage`
+redimensiona el viewport para que entre la página entera, y eso **redispara el reposicionamiento del
+indicador y deja fuera de vista lo que el `IntersectionObserver` todavía no reveló**. Medido en el DOM,
+`aria-current` estaba en el enlace correcto y los capítulos pasan de `opacity 0` a `1` al scrollear.
+
+Las capturas de página completa sirven para mirar composición, no para verificar estado.
 
 ### File List

@@ -1,6 +1,6 @@
 # Story 4.5: Vista de detalle de proyecto
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -50,40 +50,40 @@ so that pueda juzgar la calidad de la ejecución antes de ir al código.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Registrar la ruta** (AC: #1, #2)
-  - [ ] En `src/router/index.js`, la cuarta ruta con `name: 'project-detail'`
-  - [ ] `props: (route) => ({ project: bySlug(route.params.slug) })`
-  - [ ] `beforeEnter: (to) => (bySlug(to.params.slug) ? true : { name: 'projects' })`
-  - [ ] `component: () => import('../views/ProjectDetailView.vue')` — diferido, como las otras tres
+- [x] **Tarea 1 — Registrar la ruta** (AC: #1, #2)
+  - [x] En `src/router/index.js`, la cuarta ruta con `name: 'project-detail'`
+  - [x] `props: (route) => ({ project: bySlug(route.params.slug) })`
+  - [x] `beforeEnter: (to) => (bySlug(to.params.slug) ? true : { name: 'projects' })`
+  - [x] `component: () => import('../views/ProjectDetailView.vue')` — diferido, como las otras tres
 
-- [ ] **Tarea 2 — Metadatos dinámicos** (AC: #6)
-  - [ ] El guard `afterEach` de la historia 2.1 usa claves fijas; esta ruta necesita el título del proyecto
-  - [ ] Resolver con una `meta.title` como función, o con un caso especial en el guard (ver §Metadatos que dependen del dato)
+- [x] **Tarea 2 — Metadatos dinámicos** (AC: #6)
+  - [x] El guard `afterEach` de la historia 2.1 usa claves fijas; esta ruta necesita el título del proyecto
+  - [x] Resolver con una `meta.title` como función, o con un caso especial en el guard (ver §Metadatos que dependen del dato)
 
-- [ ] **Tarea 3 — Construir `ProjectDetailView.vue`** (AC: #3, #4)
-  - [ ] Prop `project` (Object, requerido) — la vista **no** lee `route.params` (ver §La vista es pura)
-  - [ ] Estructura portada de `proyecto-detalle/index.html`: `.project-head` (con `.project-title` y `.project-lede`), `.project-media` con `.project-img`, la ficha de datos, los bloques de lectura y el stack completo
-  - [ ] El título del proyecto es la `h1`
-  - [ ] Todos los textos salen de `project.i18n[locale]`; las etiquetas —"Problema", "Rol"— de los locales
+- [x] **Tarea 3 — Construir `ProjectDetailView.vue`** (AC: #3, #4)
+  - [x] Prop `project` (Object, requerido) — la vista **no** lee `route.params` (ver §La vista es pura)
+  - [x] Estructura portada de `proyecto-detalle/index.html`: `.project-head` (con `.project-title` y `.project-lede`), `.project-media` con `.project-img`, la ficha de datos, los bloques de lectura y el stack completo
+  - [x] El título del proyecto es la `h1`
+  - [x] Todos los textos salen de `project.i18n[locale]`; las etiquetas —"Problema", "Rol"— de los locales
 
-- [ ] **Tarea 4 — Acciones** (AC: #4, #5)
-  - [ ] `AppButton` con `href` para sitio en vivo y repositorio, con `v-if` sobre cada URL
-  - [ ] Íconos `i-external` e `i-github`
-  - [ ] Verificar el layout con cero botones
+- [x] **Tarea 4 — Acciones** (AC: #4, #5)
+  - [x] `AppButton` con `href` para sitio en vivo y repositorio, con `v-if` sobre cada URL
+  - [x] Íconos `i-external` e `i-github`
+  - [x] Verificar el layout con cero botones
 
-- [ ] **Tarea 5 — La imagen grande** (AC: #3)
-  - [ ] Mismo asset que la card, en tamaño grande
-  - [ ] `width`, `height`, `alt` descriptivo
-  - [ ] **Sin** `loading="lazy"`: en esta vista es el elemento sobre el pliegue y candidato a LCP
-  - [ ] Usar las clases `.project-media` y `.project-img`, alineadas con la card por la historia 4.2
+- [x] **Tarea 5 — La imagen grande** (AC: #3)
+  - [x] Mismo asset que la card, en tamaño grande
+  - [x] `width`, `height`, `alt` descriptivo
+  - [x] **Sin** `loading="lazy"`: en esta vista es el elemento sobre el pliegue y candidato a LCP
+  - [x] Usar las clases `.project-media` y `.project-img`, alineadas con la card por la historia 4.2
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Abrir los tres proyectos y confirmar que los seis campos se ven
-  - [ ] Escribir un slug inválido en la barra de direcciones y confirmar la redirección
-  - [ ] Confirmar que el detalle del chat se ve completo sin botones
-  - [ ] Confirmar una sola `h1` y los metadatos por proyecto
-  - [ ] Alternar idioma dentro del detalle
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Abrir los tres proyectos y confirmar que los seis campos se ven
+  - [x] Escribir un slug inválido en la barra de direcciones y confirmar la redirección
+  - [x] Confirmar que el detalle del chat se ve completo sin botones
+  - [x] Confirmar una sola `h1` y los metadatos por proyecto
+  - [x] Alternar idioma dentro del detalle
 
 ## Dev Notes
 
@@ -265,8 +265,67 @@ Con esta historia el sitio pasa a tener las cuatro rutas que FR-01 pide.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2 — la ruta:**
+
+```
+/projects/tienda-jedami          -> monta el detalle
+/projects/no-existe-este-proyecto -> termina en /projects, sin error ni pantalla vacía
+```
+
+**AC3/AC5/AC6 — el contenido de `/projects/tienda-jedami`:**
+
+```
+title:       "Jedami Store — Marcelo Olivera"
+description: "E-commerce with product catalog, shopping cart and order man…"
+h1:          1 sola, "Jedami Store"
+capítulos:   The problem (139 car.) · The solution (113) · My role (66)
+chips:       Vue, Node.js
+imagen:      alt "Jedami Store" · 1200 · loading "auto" (sin lazy) · decoding async
+acciones:    View live -> jedamiapp.com · View code -> github.com/…  ambos rel="noopener noreferrer"
+```
+
+**AC4 — el detalle del chat:** `.project-actions` **no existe en el DOM** (0 nodos), los tres capítulos
+se ven, una sola `h1`, y la distancia entre los chips y la imagen es de 48 px — el `padding-block`
+normal del encabezado, sin hueco de un contenedor vacío.
+
+### El guard de metadatos se generalizó en lugar de crecer un caso
+
+La ruta de detalle necesita el nombre del proyecto en el `<title>`, que las claves fijas de la historia
+2.1 no pueden dar. Se eligió `meta.title` como **función** y se enseñó al guard a invocarla, en lugar
+de un `if (to.name === 'project-detail')` que habría que ampliar en la próxima ruta dinámica.
+Las tres rutas estáticas siguen con `titleKey` sin tocarse.
+
+### Lo que no se portó del prototipo
+
+La barra de progreso de lectura, las migas de pan y la card de "siguiente proyecto": son razonables,
+pero ningún FR las pide y sumarlas sería ampliar el alcance por cuenta propia.
+
+Tampoco la ficha rápida (`.fact-strip`). Sus tres datos son rol, año y estado, y el contenido solo
+tiene rol: llenar el año y el estado para que la ficha se vea completa sería inventar contenido. El rol
+ya se lee como capítulo.
+
+### Un defecto de navegación que esta ruta destapó
+
+Al existir una cuarta ruta que **no** es un ítem del nav, el indicador animado se quedaba señalando el
+último ítem que hubiera tocado —en la práctica, "Inicio"— mientras el visitante estaba en un detalle de
+proyecto. `volverAlActivo()` llamaba a `moverA(null)` y `moverA` retornaba temprano sin mover nada.
+
+La corrección separa dos nociones que hasta ahora coincidían:
+
+- **`esActiva`** es exacta y gobierna el `aria-current="page"`. En `/projects/tienda-jedami` ningún
+  ítem del nav es la página actual, y decir lo contrario le miente al lector de pantalla.
+- **`esSeccionActiva`** incluye las rutas hijas y gobierna el estado **visual**. Sin ella el visitante
+  pierde toda referencia de dónde está.
+
+Medido en `/projects/pokemon-game`: `aria-current` en ninguno de los tres, clase `is-active` solo en
+"Projects", indicador alineado con ese enlace. Y cuando no hay ningún destino, el indicador ahora **se
+oculta** en lugar de quedarse donde estaba.
+
+El `watch` pasó de `route.name` a `route.path`: entre dos detalles de proyecto el nombre de ruta no
+cambia y el indicador igual tiene que reevaluarse.
 
 ### File List

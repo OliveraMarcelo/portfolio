@@ -71,14 +71,14 @@ development_status:
   epic-3-retrospective: optional
 
   # Épica 4: Proyectos que cuentan lo que resolvieron
-  epic-4: ready-for-dev
-  4-1-modulo-unico-de-contenido-de-proyectos: ready-for-dev
-  4-2-card-canonica-de-proyecto: ready-for-dev
-  4-3-grilla-responsive-de-proyectos: ready-for-dev
-  4-4-la-card-responde-al-cursor: ready-for-dev
-  4-5-vista-de-detalle-de-proyecto: ready-for-dev
-  4-6-transicion-continua-de-la-card-al-detalle: ready-for-dev
-  4-7-proyectos-destacados-en-la-home: ready-for-dev
+  epic-4: done
+  4-1-modulo-unico-de-contenido-de-proyectos: done
+  4-2-card-canonica-de-proyecto: done
+  4-3-grilla-responsive-de-proyectos: done
+  4-4-la-card-responde-al-cursor: done
+  4-5-vista-de-detalle-de-proyecto: done
+  4-6-transicion-continua-de-la-card-al-detalle: done
+  4-7-proyectos-destacados-en-la-home: done
   epic-4-retrospective: optional
 
   # Épica 5: Trayectoria y habilidades legibles de un vistazo

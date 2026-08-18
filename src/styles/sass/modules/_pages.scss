@@ -1,21 +1,4 @@
-// Mobile: proyectos scrolleables horizontalmente
-@media (max-width: 766px) and (min-width: 368px) {
-    .card-list {
-        display: flex !important;
-        flex-direction: row !important;
-        overflow-x: auto !important;
-        gap: 1rem;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 1rem;
-    }
-    .card-list > div {
-        min-width: 85vw;
-        max-width: 90vw;
-        flex: 0 0 auto;
-        scroll-snap-align: center;
-    }
-}
+
 // Mobile: columna para presentación, textos centrados y destacados
 @media (max-width: 766px) and (min-width: 368px) {
     .presentation-box-photo {
@@ -72,8 +55,7 @@
         margin: 0.5rem 0;
         border: 3px solid var(--color-accent);
         box-shadow: var(--shadow-md);
-    }
-}
+    }}
   .certificate-container {
     text-align: center;
     margin: 2rem 0;
@@ -106,29 +88,25 @@
       border-radius: 8px;
       box-shadow: var(--shadow-md);
       border: 1px solid var(--color-border);
-    }
-  }
+    }}
 
   // Tablet
   @media (min-width: 767px) and (max-width: 1024px) {
     .certificate-img {
       max-width: 85%;
-    }
-  }
+    }}
 
   // Desktop pequeño
   @media (min-width: 1025px) and (max-width: 1368px) {
     .certificate-img {
       max-width: 75%;
-    }
-  }
+    }}
 
   // Desktop grande (1920px o más)
   @media (min-width: 1920px) {
     .certificate-img {
       max-width: 60%;
-    }
-  }
+    }}
 
 .home {
         display: flex;
@@ -157,13 +135,7 @@
     }
     .photo {
         width: 150px;
-    }
-    .box-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-}
+    }}
 
 // Responsive: 766px - 1024px
 @media (min-width: 767px) and (max-width: 1024px) {
@@ -184,8 +156,7 @@
     }
     .photo {
         width: 180px;
-    }
-}
+    }}
 
 // Responsive: 1024px - 1368px
 @media (min-width: 1025px) and (max-width: 1368px) {
@@ -205,8 +176,7 @@
     }
     .photo {
         width: 220px;
-    }
-}
+    }}
 
 // Responsive: 1920px o mayor (mantener diseño actual)
 @media (min-width: 1920px) {
@@ -227,8 +197,7 @@
     }
     .photo {
         width: 350px;
-    }
-}
+    }}
 
 .presentation-box-photo {
     display: flex;
@@ -318,14 +287,7 @@
   .bordeline-photo {
     transition: none !important;
     animation: none !important;
-  }
-}
-.box-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    margin: 20px 0 20px 0;
-}
+  }}
 .photo {
     border-radius: 100%;
     width: 350px;
@@ -335,11 +297,6 @@
     display: flex;
     flex-direction: column;
     margin: 5rem 7rem 1rem 7rem;
-}
-.projects-description {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
 }
 
 //about view
@@ -384,12 +341,6 @@
         text-align: center !important;
     }
     
-    // ButtonCustom
-    .boton-primario,
-    .boton-secundario {
-        margin: 0.5rem 0 !important;
-    }
-    
     // ListProjects - ya tienes el scroll horizontal
     
     // SkillList - hacer responsive
@@ -426,8 +377,7 @@
         text-align: center !important;
         margin: 0 auto !important;
         display: block !important;
-    }
-}
+    }}
 
 // Tablet: ajustes medios
 @media (min-width: 767px) and (max-width: 1024px) {
@@ -442,8 +392,7 @@
     
     .section-title {
         font-size: 1.8rem !important;
-    }
-}
+    }}
 
 // Desktop pequeño
 @media (min-width: 1025px) and (max-width: 1368px) {
@@ -457,8 +406,7 @@
     
     .section-title {
         font-size: 2rem !important;
-    }
-}
+    }}
 
 // Desktop grande (1920px o más) - mantener tamaños originales
 @media (min-width: 1920px) {
@@ -472,5 +420,4 @@
     
     .section-title {
         font-size: 2.2rem !important;
-    }
-}
+    }}

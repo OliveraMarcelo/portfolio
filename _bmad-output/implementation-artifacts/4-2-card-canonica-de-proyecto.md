@@ -1,6 +1,6 @@
 # Story 4.2: Card canónica de proyecto
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -43,40 +43,40 @@ so that pueda elegir cuál mirar en detalle.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Fijar el vocabulario canónico** (AC: #1, #5)
-  - [ ] Usar las clases de la tabla de §El vocabulario canónico de la card
-  - [ ] **No** uses `.card`, `.card-media`, `.card-body`, `.card-img`, `.card-summary` ni `.projects-grid`
-  - [ ] Portar los estilos a `src/styles/sections.scss` o a `<style>` no scoped del componente: los comparten la Home y Proyectos, y la historia 4.6 los necesita alineados con el detalle
+- [x] **Tarea 1 — Fijar el vocabulario canónico** (AC: #1, #5)
+  - [x] Usar las clases de la tabla de §El vocabulario canónico de la card
+  - [x] **No** uses `.card`, `.card-media`, `.card-body`, `.card-img`, `.card-summary` ni `.projects-grid`
+  - [x] Portar los estilos a `src/styles/sections.scss` o a `<style>` no scoped del componente: los comparten la Home y Proyectos, y la historia 4.6 los necesita alineados con el detalle
 
-- [ ] **Tarea 2 — Construir `ProjectCard.vue`** (AC: #1)
-  - [ ] Prop `project` (Object, requerido): un elemento de `src/content/projects.js`
-  - [ ] Prop `variant`: `'featured'` | `'compact'`, default `'featured'`
-  - [ ] Estructura: `.project-card` → `.project-media` (con `.project-img` y `.project-media-tag`) + `.project-body` (`.project-title` con `.card-title-link`, `.project-summary`, `.chips.chips-sm`, `.project-actions`)
-  - [ ] Los textos salen de `project.i18n[locale]`, no de claves de i18n
+- [x] **Tarea 2 — Construir `ProjectCard.vue`** (AC: #1)
+  - [x] Prop `project` (Object, requerido): un elemento de `src/content/projects.js`
+  - [x] Prop `variant`: `'featured'` | `'compact'`, default `'featured'`
+  - [x] Estructura: `.project-card` → `.project-media` (con `.project-img` y `.project-media-tag`) + `.project-body` (`.project-title` con `.card-title-link`, `.project-summary`, `.chips.chips-sm`, `.project-actions`)
+  - [x] Los textos salen de `project.i18n[locale]`, no de claves de i18n
 
-- [ ] **Tarea 3 — La imagen** (AC: #2)
-  - [ ] Resolver el asset desde `project.image` (nombre base, sin extensión ni ruta)
-  - [ ] `width`, `height`, `loading="lazy"`, `decoding="async"`
-  - [ ] `alt` descriptivo: el título del proyecto, no "imagen" ni el nombre del archivo
-  - [ ] `.project-media` con `aspect-ratio: 16 / 10` y la imagen con `object-fit: cover`
+- [x] **Tarea 3 — La imagen** (AC: #2)
+  - [x] Resolver el asset desde `project.image` (nombre base, sin extensión ni ruta)
+  - [x] `width`, `height`, `loading="lazy"`, `decoding="async"`
+  - [x] `alt` descriptivo: el título del proyecto, no "imagen" ni el nombre del archivo
+  - [x] `.project-media` con `aspect-ratio: 16 / 10` y la imagen con `object-fit: cover`
 
-- [ ] **Tarea 4 — Acciones y enlaces** (AC: #3, #4)
-  - [ ] Botones a sitio en vivo y a repositorio usando `AppButton` con `href`
-  - [ ] `v-if` sobre `project.liveUrl` y `project.repoUrl`
-  - [ ] Íconos `i-external` e `i-github` del sprite
-  - [ ] Verificar el layout con cero, uno y dos botones
+- [x] **Tarea 4 — Acciones y enlaces** (AC: #3, #4)
+  - [x] Botones a sitio en vivo y a repositorio usando `AppButton` con `href`
+  - [x] `v-if` sobre `project.liveUrl` y `project.repoUrl`
+  - [x] Íconos `i-external` e `i-github` del sprite
+  - [x] Verificar el layout con cero, uno y dos botones
 
-- [ ] **Tarea 5 — Eliminar el componente viejo** (AC: #5)
-  - [ ] Borrar `src/components/projects/ItemProject.vue`
-  - [ ] Verificar por `grep` que nada lo referencia
+- [x] **Tarea 5 — Eliminar el componente viejo** (AC: #5)
+  - [x] Borrar `src/components/projects/ItemProject.vue`
+  - [x] Verificar por `grep` que nada lo referencia
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Renderizar los tres proyectos y confirmar que el de chat se ve bien sin botones
-  - [ ] Confirmar que el título navega al detalle (la ruta llega en la 4.5; hasta entonces el enlace apunta a una ruta inexistente — ver §El enlace del título antes de que exista el detalle)
-  - [ ] Verificar `alt`, `width`, `height`, `loading` y `decoding` en las tres imágenes
-  - [ ] Verificar `rel="noopener noreferrer"` en los enlaces externos
-  - [ ] Alternar idioma y confirmar que título y resumen cambian
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Renderizar los tres proyectos y confirmar que el de chat se ve bien sin botones
+  - [x] Confirmar que el título navega al detalle (la ruta llega en la 4.5; hasta entonces el enlace apunta a una ruta inexistente — ver §El enlace del título antes de que exista el detalle)
+  - [x] Verificar `alt`, `width`, `height`, `loading` y `decoding` en las tres imágenes
+  - [x] Verificar `rel="noopener noreferrer"` en los enlaces externos
+  - [x] Alternar idioma y confirmar que título y resumen cambian
 
 ## Dev Notes
 
@@ -253,8 +253,59 @@ src/components/projects/ItemProject.vue     ELIMINADO
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2/AC5 — las tres cards, medidas:**
+
+```
+imágenes: alt "Jedami Store" / "Pokemon Game"  ·  1200×750  ·  loading=lazy  ·  decoding=async
+títulos:  H2 con .card-title-link -> /projects/<slug>
+chips:    stack real, el primero con .chip-lead
+```
+
+**AC3 — el proyecto sin enlaces:** `[2, 2, 0]` botones por card, y las tres miden **486 px de alto**.
+El `height: 100%` de `.project-card` sostiene la altura pese a que una no tiene acciones.
+
+**AC4 —** los cuatro enlaces externos con `rel="noopener noreferrer"`.
+
+**AC5 —** `ItemProject.vue` eliminado; `grep` sin referencias; el vocabulario `.card-*` / `.projects-grid`
+ausente de `src/`.
+
+### El vocabulario quedó unificado en `project-*`
+
+Nueve clases renombradas según la tabla de la historia. `.card-title-link` se conserva con su nombre
+porque es del sistema.
+
+El CSS va **global** en `sections.scss` y no en un `<style scoped>`, porque lo comparten la Home,
+Proyectos y el detalle — y porque la historia 4.6 necesita que card y detalle compartan
+`view-transition-name` sin peleas de especificidad.
+
+### Dos reglas hubo que separar por contexto, y una era un defecto
+
+`.project-media` no puede ser la misma en los dos lugares: en la card el borde inferior separa la
+imagen del cuerpo, y en el detalle la imagen es una pieza suelta con borde completo y radio. Lo común
+quedó global y el marco lo pone cada contexto.
+
+Con `.project-actions` el problema era peor y **habría sido un defecto real**: el bloque
+`@media (hover: hover)` de la historia 4.4 las deja en `opacity: 0.6` hasta que se apunta la card. En
+el detalle no hay ninguna `.project-card` que las revele, así que los dos botones del detalle habrían
+quedado **atenuados de forma permanente**. Se scopearon a `.project-card .project-actions`.
+
+### La variante `quiet`
+
+El prototipo usa `.btn-quiet` para "Ver en vivo" y `.link-underline` para "Ver código", pero
+`.btn-quiet` **no está definida en `_system/components.css`**: solo existe su `:hover`. Con `.btn`
+declarando `border: 1px solid transparent` y sin fondo, ese botón renderiza invisible en el prototipo.
+
+Se resolvió agregando `quiet` como tercera variante de `AppButton`, con el tratamiento de
+`.link-underline` —sin pastilla, subrayado que crece desde la izquierda— bajo el vocabulario `btn-*`.
+Un solo componente de botón, tres variantes por prop.
+
+### Lo que no se portó
+
+`.project-media-tag` no la pide ningún FR y su texto en el prototipo es el **nombre del archivo de la
+captura**, que no es contenido. No se portó ni su CSS.
 
 ### File List

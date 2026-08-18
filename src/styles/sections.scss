@@ -74,3 +74,245 @@
 .link-arrow .ico { transition: transform var(--dur-base) var(--ease-out); }
 
 .link-arrow:hover .ico { transform: translateX(4px); }
+
+/* ============================================================
+   Card de proyecto — vocabulario canonico `project-*`
+   ============================================================
+
+   El prototipo traia DOS vocabularios para la misma card: la Home usaba
+   `.project-*` y Proyectos `.card-*`, porque la unificacion extrajo el chasis
+   al sistema y dejo las secciones sin unificar.
+
+   Gana `project-*` por dos razones concretas:
+     1. La vista de detalle ya usa ese prefijo, y alinear card y detalle es lo
+        que permite que compartan el `view-transition-name` de la historia 4.6
+        sin peleas de especificidad.
+     2. `.card` es generico: en un sitio con lightbox, chips y paneles invita a
+        que otra cosa lo reutilice y aparezca un conflicto.
+
+   Las implementaciones internas se portan del CSS de Proyectos, que es el mas
+   completo, renombradas. Van globales y no en un <style scoped> porque las
+   comparten la Home, Proyectos y el detalle.
+   ============================================================ */
+
+.project-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  /* La entrada corre como @keyframes y el hover como `transition`, separados
+     a proposito: unificados, la card entraria con 600ms y despues el hover
+     heredaria esa duracion, o el hover pisaria la entrada a mitad de camino.
+     El `transition` de aca queda reservado para el hover de la historia 4.4. */
+  transition: transform var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.section-alt .project-card { background: var(--color-bg); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .project-card.reveal { opacity: 0; transform: translateY(24px); }
+  /* `backwards` y no `forwards`: al terminar, el elemento vuelve a su estilo
+     calculado y el hover parte del estado correcto. */
+  .project-card.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    animation: card-in var(--dur-slow) var(--ease-out) var(--d, 0ms) backwards;
+  }
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Compartida por la card y por el detalle: es la que lleva el
+   `view-transition-name` de la historia 4.6, y por eso no puede vivir en un
+   <style scoped>. Lo comun va aca; el marco lo pone cada contexto, porque en
+   la card el borde inferior separa media de body y en el detalle la imagen es
+   una pieza suelta con borde completo. */
+.project-media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ph-bg);
+}
+
+.project-card .project-media { border-bottom: 1px solid var(--color-border); }
+
+.project-media-wrap .project-media {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.project-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+/* Estado sin captura. Es visible a proposito: la ausencia del asset es una
+   brecha de contenido real (historia 7.1), no algo que convenga disimular
+   con una imagen prestada. */
+.project-media-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.project-media-tag {
+  position: absolute;
+  inset-block-end: 0.625rem;
+  inset-inline-start: 0.625rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.project-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.project-summary {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  max-width: 44ch;
+}
+
+/* `.chips` trae un margin-top propio para el hero; dentro del body de la card
+   el espaciado lo da el `gap` del contenedor. */
+.project-body .chips { margin-top: 0; }
+
+/* El contenedor de acciones lo comparten la card y el detalle; lo que es
+   propio de la card —empujarlas al pie con `margin-top: auto`— va scopeado.
+   Sin eso, las acciones del detalle heredarian tambien el estado atenuado del
+   hover de mas abajo y quedarian en opacity 0.6 de forma permanente, porque
+   en esa vista no hay ninguna `.project-card` que las revele. */
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.project-card .project-actions {
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+/* Grilla de proyectos (FR-11). `auto-fit` con un minimo hace el trabajo de
+   los breakpoints: una columna cuando no entran dos de 320px, dos cuando si.
+
+   El `min(320px, 100%)` NO es decorativo: con `minmax(320px, 1fr)` a secas,
+   una pantalla de 300px de contenido util deja la pista en 320 y la card
+   desborda horizontalmente. El `min()` hace que el minimo ceda al ancho
+   disponible.
+
+   Reemplaza el patron 60/40 calculado por indice, que en mobile dejaba cards
+   al 40% de un viewport de 390px (P7). Ningun ancho depende de la posicion. */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+/* ---------- Encabezado de vista ---------------------------- */
+/* Compartido por Proyectos, Sobre mi y el detalle de proyecto. */
+
+.view-head {
+  padding-block: clamp(3rem, 7vw, var(--space-16)) clamp(2rem, 5vw, 3.25rem);
+}
+
+.view-title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.view-title .dot { color: var(--color-accent-ink); }
+
+.view-lede {
+  max-width: 46ch;
+  margin-top: 1.25rem;
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Hover de la card (A5, FR-13) ------------------- */
+/* Un solo gesto protagonico por seccion: elevacion + sombra + zoom contenido
+   de la imagen + revelado de las acciones. Nada mas.
+
+   `:focus-within` va SIEMPRE junto a `:hover`: sin el, quien navega con Tab
+   llega al titulo de la card y no ve ningun cambio — y si las acciones
+   estuvieran ocultas por hover, tampoco las veria aparecer. */
+.project-card:hover,
+.project-card:focus-within {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  box-shadow: var(--shadow-lg);
+}
+
+/* El zoom va en --dur-slow (600ms) mientras la card se eleva en --dur-fast
+   (180ms). La diferencia es intencional: la card responde rapido al cursor y
+   la imagen sigue con inercia. Igualarlas hace que el gesto se sienta
+   mecanico. Lo que contiene el zoom es el `overflow: hidden` de
+   `.project-media`; sin el, la imagen se sale de la card. */
+.project-card:hover .project-img,
+.project-card:focus-within .project-img { transform: scale(1.06); }
+
+/* `hover: hover` y no un breakpoint: en un dispositivo touch no hay hover, y
+   unas acciones que solo aparecen al apuntar NO APARECEN NUNCA. El visitante
+   de mobile se quedaria sin los enlaces al sitio en vivo y al repositorio,
+   que es justo lo que FR-12 pide mostrar.
+
+   Fuera de este bloque las acciones estan visibles por defecto. El defecto no
+   se ve probando en escritorio con la ventana angosta: hay que emular touch,
+   porque `hover` depende del dispositivo y no del ancho. */
+@media (hover: hover) and (pointer: fine) {
+  .project-card .project-actions {
+    opacity: 0.6;
+    transform: translateY(4px);
+    transition: opacity var(--dur-fast) var(--ease-out),
+                transform var(--dur-fast) var(--ease-out);
+  }
+  .project-card:hover .project-actions,
+  .project-card:focus-within .project-actions {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

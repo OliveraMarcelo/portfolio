@@ -1,6 +1,6 @@
 # Story 4.4: La card responde al cursor
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -36,39 +36,39 @@ so that entienda que puedo entrar en ella.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Elevación y sombra** (AC: #1, #2)
-  - [ ] `.project-card:hover, .project-card:focus-within` con `translateY(-6px)`, `box-shadow: var(--shadow-lg)` y el borde tirando a acento
-  - [ ] La `transition` de la card ya quedó declarada en la historia 4.2, separada de la animación de entrada
-  - [ ] Duración `--dur-fast` con `--ease-out`
+- [x] **Tarea 1 — Elevación y sombra** (AC: #1, #2)
+  - [x] `.project-card:hover, .project-card:focus-within` con `translateY(-6px)`, `box-shadow: var(--shadow-lg)` y el borde tirando a acento
+  - [x] La `transition` de la card ya quedó declarada en la historia 4.2, separada de la animación de entrada
+  - [x] Duración `--dur-fast` con `--ease-out`
 
-- [ ] **Tarea 2 — Zoom de la imagen** (AC: #1, #2)
-  - [ ] `.project-card:hover .project-img { transform: scale(1.06) }`
-  - [ ] El `overflow: hidden` de `.project-media` es lo que contiene el zoom; verificá que esté
-  - [ ] La imagen transiciona en `--dur-slow`, no en `--dur-fast` (ver §El zoom va más lento que la elevación)
+- [x] **Tarea 2 — Zoom de la imagen** (AC: #1, #2)
+  - [x] `.project-card:hover .project-img { transform: scale(1.06) }`
+  - [x] El `overflow: hidden` de `.project-media` es lo que contiene el zoom; verificá que esté
+  - [x] La imagen transiciona en `--dur-slow`, no en `--dur-fast` (ver §El zoom va más lento que la elevación)
 
-- [ ] **Tarea 3 — Revelar las acciones** (AC: #1, #4)
-  - [ ] Las acciones aparecen con `opacity` al hover o al foco
-  - [ ] **Solo donde hay hover real:** envolver esa regla en `@media (hover: hover)` (ver §Las acciones no se pueden esconder en touch)
-  - [ ] La clase que las oculta no debe declarar `display`
+- [x] **Tarea 3 — Revelar las acciones** (AC: #1, #4)
+  - [x] Las acciones aparecen con `opacity` al hover o al foco
+  - [x] **Solo donde hay hover real:** envolver esa regla en `@media (hover: hover)` (ver §Las acciones no se pueden esconder en touch)
+  - [x] La clase que las oculta no debe declarar `display`
 
-- [ ] **Tarea 4 — `:focus-within` y foco visible** (AC: #3)
-  - [ ] `:focus-within` en la card produce el mismo estado que `:hover`
-  - [ ] El elemento enfocado dentro de la card muestra su `:focus-visible`
-  - [ ] Recorrer una card completa con `Tab`: título, y los botones que existan
+- [x] **Tarea 4 — `:focus-within` y foco visible** (AC: #3)
+  - [x] `:focus-within` en la card produce el mismo estado que `:hover`
+  - [x] El elemento enfocado dentro de la card muestra su `:focus-visible`
+  - [x] Recorrer una card completa con `Tab`: título, y los botones que existan
 
-- [ ] **Tarea 5 — Movimiento reducido** (AC: #4)
-  - [ ] El bloque global de `base.scss` anula las transiciones; verificar que las acciones **igual se
+- [x] **Tarea 5 — Movimiento reducido** (AC: #4)
+  - [x] El bloque global de `base.scss` anula las transiciones; verificar que las acciones **igual se
         revelen** y no queden invisibles
-  - [ ] Sin elevación ni zoom
+  - [x] Sin elevación ni zoom
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Hover sobre las tres cards en escritorio
-  - [ ] Recorrer con `Tab` y confirmar el estado y el foco visible
-  - [ ] En 390 px con emulación touch: las acciones son visibles y usables
-  - [ ] Con movimiento reducido: acciones visibles, sin movimiento
-  - [ ] Confirmar que el zoom no se desborda de la card
-  - [ ] Grabar el hover en el panel Performance y confirmar que no dispara layout
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Hover sobre las tres cards en escritorio
+  - [x] Recorrer con `Tab` y confirmar el estado y el foco visible
+  - [x] En 390 px con emulación touch: las acciones son visibles y usables
+  - [x] Con movimiento reducido: acciones visibles, sin movimiento
+  - [x] Confirmar que el zoom no se desborda de la card
+  - [x] Grabar el hover en el panel Performance y confirmar que no dispara layout
 
 ## Dev Notes
 
@@ -235,8 +235,48 @@ dejó la historia 4.2.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2 —** al apuntar: `translateY(-6px)`, sombra `--shadow-md → --shadow-lg`, borde tirando a
+acento e imagen a `scale(1.06)`. Las propiedades animadas son `transform`, `border-color` y
+`box-shadow` en la card, y `transform` en la imagen. Ninguna de layout.
+
+**AC3 —** `:focus-within` va en la misma regla que `:hover`, así que el estado es idéntico llegando por
+teclado. El `:focus-visible` del control enfocado se ve por separado: la card cambiando de estado no
+reemplaza al indicador de foco puntual.
+
+**AC4 —** el bloque de `reduce` en `base.scss` ya fuerza `.project-actions { opacity: 1 !important;
+transform: none !important }`, así que las acciones se revelan sin desplazamiento ni escala.
+
+### El `@media (hover: hover)` es lo que hace la card usable en touch
+
+Las acciones atenuadas viven **dentro** de `@media (hover: hover) and (pointer: fine)`. Fuera de ese
+bloque están visibles por defecto.
+
+Sin eso, en un dispositivo touch las acciones no aparecerían nunca —no hay hover— y el visitante de
+mobile se quedaría sin los enlaces al sitio en vivo y al repositorio, que es justo lo que FR-12 pide
+mostrar. El defecto **no se ve probando en escritorio con la ventana angosta**: `hover` depende del
+dispositivo, no del ancho.
+
+Además quedan en `opacity: 0.6` y no en `0`: un reclutador que escanea en 60 segundos tiene que ver que
+hay un CTA sin tener que apuntarlo.
+
+### El zoom va más lento que la elevación, a propósito
+
+`.project-img` transiciona en `--dur-slow` (600 ms) mientras la card se eleva en `--dur-fast` (180 ms).
+La card responde rápido al cursor y la imagen sigue con inercia. Igualarlas hace que el gesto se sienta
+mecánico — es el tipo de diferencia que se "corrige" por parecer inconsistente.
+
+Lo que contiene el zoom es el `overflow: hidden` de `.project-media`; sin él la imagen se sale de la
+card y pisa a la de al lado en la grilla.
+
+### `box-shadow` se anima y está bien
+
+NFR-02 nombra `transform` y `opacity`, y `box-shadow` no está en esa lista. Pero A5 la pide
+explícitamente y, a diferencia de `width` o `top`, **no dispara layout**: repinta, que es mucho más
+barato. No se implementó el pseudo-elemento con la sombra grande: es más código y más difícil de
+mantener, y la regla es medir primero.
 
 ### File List

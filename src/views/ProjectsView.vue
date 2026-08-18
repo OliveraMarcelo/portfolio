@@ -1,49 +1,33 @@
 <template>
-  <div class="projects">
-    <div class="projects-description">
-      <MainTitle span-text="Mis" text="Proyectos" />
-      <SubTitle
-        text="Soy un apasionado en desarrollar aplicaciones web o mobile. Aca se muestran varios de las aplicaciones que fui desarrollando a lo largo de mi carrera" />
-    </div>
-    <ListProjects :projects="projects"/>
+  <div>
+    <section class="view-head" aria-labelledby="titulo-proyectos">
+      <div class="container">
+        <h1 class="view-title" id="titulo-proyectos">
+          <span class="mask"
+            ><span class="mask-in">{{ t('proyectos.titulo') }}<span class="dot">.</span></span></span
+          >
+        </h1>
+        <p class="view-lede mask">
+          <span class="mask-in" style="--d: 70ms">{{ t('proyectos.lede') }}</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="section" :aria-label="t('proyectos.gridAria')">
+      <div class="container">
+        <ProjectGrid :items="projects" />
+      </div>
+    </section>
   </div>
 </template>
+
 <script setup>
+import { useI18n } from 'vue-i18n';
+import ProjectGrid from '@/components/sections/ProjectGrid.vue';
+import { projects } from '@/content/projects';
 
-import ListProjects from '@/components/projects/ListProjects.vue';
-import MainTitle from '@/components/texts/MainTitle.vue';
-import SubTitle from '@/components/texts/SubTitle.vue';
-import jedamiPreview from '@/assets/icons/jedami-preview.png';
-import pokemonPreview from '@/assets/icons/pokemon-preview.png';
-import { onMounted, ref } from 'vue';
+/* El orden del array ES el orden de presentacion: la vista no reordena ni
+   filtra. Muestra el catalogo completo; la Home muestra los destacados. */
 
-const projects = ref([
-  {
-    title: 'Tienda Jedami',
-    image: jedamiPreview,
-    description: 'E-commerce con catálogo de productos, carrito de compras y gestión de pedidos. Desarrollado con Node.js y Vue.',
-    visit: 'https://jedamiapp.com',
-    github: 'https://github.com/OliveraMarcelo/tienda-jedami',
-  },
-  {
-    title: 'Pokemon Game',
-    image: pokemonPreview,
-    description: '¿Quién es este Pokémon? Juego de adivinanza con siluetas usando la PokéAPI. Desarrollado con TypeScript y Vue.',
-    visit: 'https://pokemon-game-theta-gold.vercel.app',
-    github: 'https://github.com/OliveraMarcelo/pokemon-game',
-  },
-]);
-
-onMounted(() => {
-  setTimeout(() => {
-    document.querySelectorAll('.presentation').forEach((card) => {
-      card.classList.add('loaded');
-    });
-  }, 100);
-  setTimeout(() => {
-    document.querySelectorAll('.photo').forEach((card) => {
-      card.classList.add('loaded');
-    });
-  }, 100);
-});
+const { t } = useI18n();
 </script>

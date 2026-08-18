@@ -75,3 +75,19 @@ span.mask-in { display: block; }
   .view-enter-from { opacity: 0; transform: translateY(16px); }
   .view-leave-to   { opacity: 0; transform: translateY(-12px); }
 }
+
+/* ---------- Elemento compartido (A6, FR-14) ---------------- */
+/* El prototipo declaraba la duracion por nombre
+   (`::view-transition-group(project-img-tienda-jedami)`), lo que obliga a
+   escribir una regla por proyecto. Con `*` la timing la toma todo el grupo,
+   incluida la raiz, y sumar un proyecto no pide tocar el CSS. */
+::view-transition-group(*) {
+  animation-duration: var(--dur-base);
+  animation-timing-function: var(--ease-in-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}

@@ -1,6 +1,6 @@
 # Story 4.6: Transición continua de la card al detalle
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -36,35 +36,35 @@ so that no pierda el hilo de qué proyecto abrí.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Nombrar la imagen de la card** (AC: #1, #2)
-  - [ ] En `ProjectCard.vue`, aplicar al `.project-img` un `view-transition-name` derivado del slug
-  - [ ] Formato: `proyecto-<slug>`, con el slug ya en `kebab-case` (ver §El nombre tiene que ser un identificador CSS válido)
-  - [ ] Aplicarlo con un `:style` enlazado, no con una clase
+- [x] **Tarea 1 — Nombrar la imagen de la card** (AC: #1, #2)
+  - [x] En `ProjectCard.vue`, aplicar al `.project-img` un `view-transition-name` derivado del slug
+  - [x] Formato: `proyecto-<slug>`, con el slug ya en `kebab-case` (ver §El nombre tiene que ser un identificador CSS válido)
+  - [x] Aplicarlo con un `:style` enlazado, no con una clase
 
-- [ ] **Tarea 2 — Nombrar la imagen del detalle** (AC: #1)
-  - [ ] En `ProjectDetailView.vue`, el mismo `view-transition-name` para el mismo slug
-  - [ ] Las dos imágenes usan las clases `.project-media` / `.project-img`, ya alineadas por la historia 4.2
+- [x] **Tarea 2 — Nombrar la imagen del detalle** (AC: #1)
+  - [x] En `ProjectDetailView.vue`, el mismo `view-transition-name` para el mismo slug
+  - [x] Las dos imágenes usan las clases `.project-media` / `.project-img`, ya alineadas por la historia 4.2
 
-- [ ] **Tarea 3 — Solo un nombre activo por documento** (AC: #2)
-  - [ ] En la vista de Proyectos hay tres cards y por lo tanto tres nombres distintos: eso es correcto
-  - [ ] El nombre no puede repetirse **dentro** de un documento; revisar el caso de la Home, que muestra las mismas cards (ver §El caso de la Home y el detalle a la vez)
+- [x] **Tarea 3 — Solo un nombre activo por documento** (AC: #2)
+  - [x] En la vista de Proyectos hay tres cards y por lo tanto tres nombres distintos: eso es correcto
+  - [x] El nombre no puede repetirse **dentro** de un documento; revisar el caso de la Home, que muestra las mismas cards (ver §El caso de la Home y el detalle a la vez)
 
-- [ ] **Tarea 4 — Respetar el movimiento reducido** (AC: #3)
-  - [ ] Si `useReducedMotion` indica preferencia reducida, **no** aplicar el `view-transition-name`
-  - [ ] El guard de la historia 2.6 ya salta la transición; esto evita además el costo de los snapshots
+- [x] **Tarea 4 — Respetar el movimiento reducido** (AC: #3)
+  - [x] Si `useReducedMotion` indica preferencia reducida, **no** aplicar el `view-transition-name`
+  - [x] El guard de la historia 2.6 ya salta la transición; esto evita además el costo de los snapshots
 
-- [ ] **Tarea 5 — Reverificar el scroll** (AC: #4)
-  - [ ] Scrollear abajo en Proyectos, abrir un detalle, volver atrás
-  - [ ] Si la posición no se restaura, saltar la transición en navegación hacia atrás
-  - [ ] Es la brecha 3 de la validación de arquitectura y esta es la historia donde se resuelve
+- [x] **Tarea 5 — Reverificar el scroll** (AC: #4)
+  - [x] Scrollear abajo en Proyectos, abrir un detalle, volver atrás
+  - [x] Si la posición no se restaura, saltar la transición en navegación hacia atrás
+  - [x] Es la brecha 3 de la validación de arquitectura y esta es la historia donde se resuelve
 
-- [ ] **Tarea 6 — Verificar los dos caminos** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Con la API: abrir los tres proyectos desde Proyectos y desde la Home
-  - [ ] Sin la API: repetir todo el recorrido y confirmar que navega igual
-  - [ ] Con movimiento reducido: navegación sin transición y sin errores
-  - [ ] Confirmar que no hay nombres repetidos
-  - [ ] Verificar la navegación hacia atrás con y sin transición
+- [x] **Tarea 6 — Verificar los dos caminos** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Con la API: abrir los tres proyectos desde Proyectos y desde la Home
+  - [x] Sin la API: repetir todo el recorrido y confirmar que navega igual
+  - [x] Con movimiento reducido: navegación sin transición y sin errores
+  - [x] Confirmar que no hay nombres repetidos
+  - [x] Verificar la navegación hacia atrás con y sin transición
 
 ## Dev Notes
 
@@ -229,8 +229,65 @@ Ningún archivo nuevo. Toda la infraestructura la dejó la historia 2.6.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2 — los nombres en `/projects`:**
+
+```
+proyecto-tienda-jedami · proyecto-pokemon-game
+únicos: true      identificadores CSS válidos: true      API disponible: true
+object-fit de la card: cover   (igual que el detalle, o la transición saltaría de encuadre)
+```
+
+Son dos y no tres porque el proyecto de chat no tiene captura: sin imagen no hay elemento que compartir.
+
+**AC1 desde la Home:** al abrir un proyecto desde la Home, `document.startViewTransition` **se invoca**
+(instrumentado), la navegación llega a `/projects/tienda-jedami`, el detalle monta con
+`view-transition-name: proyecto-tienda-jedami` y la consola queda sin errores. La transición funciona
+desde donde sea que se use la card, que es la consecuencia de haber puesto el nombre en el componente.
+
+**AC3 — degradación**, con `document.startViewTransition = undefined`:
+
+```
+navega: /projects -> /projects/tienda-jedami -> vuelve a /projects
+scroll: 700 -> 700        errores: []
+```
+
+### AC4: la brecha 3 no se materializó, y verificarlo evitó trabajo
+
+La arquitectura registraba como brecha importante el conflicto entre `startViewTransition` y la
+restauración de scroll, **con la salida ya decidida**: saltar la transición en navegación hacia atrás.
+
+Se reprodujo el escenario exacto a propósito —scrollear abajo en `/projects`, abrir el tercer proyecto,
+volver atrás— y la restauración es exacta:
+
+```
+antes: 700    en el detalle: 0    al volver: 700    diferencia: 0
+```
+
+La espera por altura de documento que la historia 2.5 dejó en `scrollBehavior` ya cubre este caso. **La
+salida pre-decidida habría agregado una rama al guard sin arreglar nada.** Es la segunda vez en este
+rediseño que verificar la causa antes de aplicar el remedio evita complejidad: la primera fue el
+propio arreglo de scroll de la 2.5.
+
+### Una medición mía que era falsa
+
+Un primer intento dio `antes: 657 → al volver: 770` y parecía el defecto. No lo era: el `scrollTo` se
+había ejecutado inmediatamente después de un cambio de viewport de 1280 a 390 px, con el layout todavía
+sin asentar — el máximo scroll medía 857 en ese instante y 1114 una vez estabilizado. **Medir durante un
+reflow devuelve números que no describen nada.** Repetido con el layout asentado, la diferencia es 0.
+
+### La timing va con `*`
+
+El prototipo declara la duración por nombre
+(`::view-transition-group(project-img-tienda-jedami)`), lo que obliga a escribir una regla por
+proyecto. Con `*` la toma todo el grupo y sumar un proyecto no pide tocar el CSS.
+
+### Con movimiento reducido no se aplica el nombre
+
+El guard de la 2.6 ya evita `startViewTransition`, así que el nombre sería inocuo — pero un elemento
+nombrado se promueve a su propia capa de composición, y eso cuesta aunque no se anime.
 
 ### File List

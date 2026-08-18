@@ -72,3 +72,39 @@
   color: var(--color-text);
 }
 .chips-sm { margin-top: 0.875rem; }
+
+/* Variante de enfasis bajo: es una accion secundaria dentro de una card, no
+   una llamada a la accion. Sin pastilla ni borde, con el subrayado que crece
+   desde la izquierda al hover — portado del `.link-underline` del prototipo
+   pero con el vocabulario `btn-*`, para que AppButton siga siendo el unico
+   componente de boton. */
+.btn-quiet {
+  position: relative;
+  min-height: 44px;
+  padding: 0 0.25rem;
+  gap: 0.4375rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+.btn-quiet::after {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  right: 0.25rem;
+  bottom: 10px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.btn-quiet:hover { color: var(--color-text); }
+.btn-quiet:hover::after,
+.btn-quiet:focus-visible::after { transform: scaleX(1); }
+
+/* El primer chip del stack es el principal del proyecto. */
+.chip-lead {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
