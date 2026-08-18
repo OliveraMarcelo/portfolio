@@ -1,6 +1,6 @@
 # Story 7.7: Verificado en los cuatro anchos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -37,28 +37,28 @@ so that no importe con qué entré.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Matriz de verificación** (AC: #1)
-  - [ ] 4 vistas × 4 anchos = 16 combinaciones. Recorrerlas todas
-  - [ ] Usar el hook de QA para no depender de las animaciones (ver §El hook de QA existe para esto)
-  - [ ] Anotar cada defecto con la vista y el ancho donde aparece
+- [x] **Tarea 1 — Matriz de verificación** (AC: #1)
+  - [x] 4 vistas × 4 anchos = 16 combinaciones. Recorrerlas todas
+  - [x] Usar el hook de QA para no depender de las animaciones (ver §El hook de QA existe para esto)
+  - [x] Anotar cada defecto con la vista y el ancho donde aparece
 
-- [ ] **Tarea 2 — Alturas de viewport** (AC: #2)
-  - [ ] Confirmar que ningún CSS usa `vh` para alturas de sección
-  - [ ] Probar el hero en un dispositivo móvil real o en emulación con la barra visible
-  - [ ] Confirmar que el indicador de scroll de la historia 3.4 queda visible dentro del hero
+- [x] **Tarea 2 — Alturas de viewport** (AC: #2)
+  - [x] Confirmar que ningún CSS usa `vh` para alturas de sección
+  - [x] Probar el hero en un dispositivo móvil real o en emulación con la barra visible
+  - [x] Confirmar que el indicador de scroll de la historia 3.4 queda visible dentro del hero
 
-- [ ] **Tarea 3 — Consistencia del chasis** (AC: #3)
-  - [ ] Medir header y logo en las cuatro vistas, en los tres estados de tema
-  - [ ] 4 × 3 = 12 mediciones que deben coincidir (ver §La medición del chasis ya encontró un defecto una vez)
+- [x] **Tarea 3 — Consistencia del chasis** (AC: #3)
+  - [x] Medir header y logo en las cuatro vistas, en los tres estados de tema
+  - [x] 4 × 3 = 12 mediciones que deben coincidir (ver §La medición del chasis ya encontró un defecto una vez)
 
-- [ ] **Tarea 4 — Navegadores** (AC: #4)
-  - [ ] Chrome, Firefox y Edge en las cuatro vistas
-  - [ ] Safari si hay acceso; si no, anotarlo como no verificado (ver §Safari, si no lo tenés)
-  - [ ] Confirmar la degradación de View Transitions en Firefox
+- [x] **Tarea 4 — Navegadores** (AC: #4)
+  - [x] Chrome, Firefox y Edge en las cuatro vistas
+  - [x] Safari si hay acceso; si no, anotarlo como no verificado (ver §Safari, si no lo tenés)
+  - [x] Confirmar la degradación de View Transitions en Firefox
 
-- [ ] **Tarea 5 — Corregir y reverificar** (AC: todos)
-  - [ ] Corregir lo encontrado
-  - [ ] Volver a correr la matriz completa: un arreglo en un ancho puede romper otro
+- [x] **Tarea 5 — Corregir y reverificar** (AC: todos)
+  - [x] Corregir lo encontrado
+  - [x] Volver a correr la matriz completa: un arreglo en un ancho puede romper otro
 
 ## Dev Notes
 
@@ -253,8 +253,48 @@ Ningún archivo nuevo: es una historia de auditoría y corrección.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+Cada verificación se corrió en **4 anchos × 4 vistas = 16 combinaciones**: 390, 768, 1280 y 1920 px
+sobre `/`, `/projects`, `/about` y `/projects/:slug`.
+
+**Sin scroll horizontal: 16 de 16.**
+
+**Áreas táctiles por debajo de 44×44: ninguna, en las 16.** Controles por vista: 29 en la Home, 22 en
+Proyectos, 17 en Sobre mí y en el detalle.
+
+**La grilla de proyectos**, medida:
+
+| Ancho | Columnas | Ancho de card | Documento |
+|---|---|---|---|
+| 390 | 1 | 335 px | 375 px |
+| 768 | 2 | — | 753 px |
+| 1280 | 3 | 346 px | — |
+
+El `min(320px, 100%)` del `minmax` es lo que evita el desborde en pantallas angostas: con
+`minmax(320px, 1fr)` a secas, la pista se queda en 320 y la card desborda.
+
+**Los tres estados de tema** —claro, oscuro y siguiendo al sistema— se verificaron junto con el
+contraste de la historia 7.5: cero pares por debajo de AA en los dos temas, en las cuatro vistas.
+
+### Un defecto de área táctil que solo aparece midiendo
+
+El enlace del título de card medía **194×40 px**: su alto es el de la línea de texto, y ningún ancho de
+viewport lo arreglaba. Agregarle padding lo habría desalineado del resto del cuerpo de la card.
+
+Se resolvió extendiendo su área con un pseudo-elemento absoluto sobre la card entera —que es lo que el
+hover ya sugiere— sin mover un píxel de la composición, con las acciones por encima con su propio
+`z-index` para que sigan recibiendo el clic.
+
+### Una advertencia sobre las capturas de página completa
+
+Varias capturas `fullPage` durante estas épicas mostraron cosas que **no eran reales**: el indicador
+del nav bajo el ítem equivocado, y secciones enteras en blanco. `fullPage` redimensiona el viewport
+para que entre la página, y eso redispara el reposicionamiento del indicador y deja fuera de vista lo
+que el `IntersectionObserver` todavía no reveló.
+
+Sirven para mirar composición. Para verificar estado, se mide en el DOM.
 
 ### File List

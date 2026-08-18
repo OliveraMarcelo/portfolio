@@ -8,7 +8,13 @@
 
   <AppNav />
 
-  <main id="main">
+  <!-- `tabindex="-1"` no es opcional en el destino de un skip link. Medido:
+       al activarlo, la URL cambiaba a #main y el scroll saltaba, pero el foco
+       se quedaba en el <body> — un elemento sin tabindex no puede recibirlo.
+       Quien navega con lector de pantalla activaba el atajo y seguia leyendo
+       desde el principio, que es exactamente lo que el atajo evita.
+       El -1 lo hace enfocable por programa sin agregarlo al orden de Tab. -->
+  <main id="main" tabindex="-1">
     <!-- `mode="out-in"`: sin el, Vue monta la vista nueva mientras la vieja
          todavia sale y las dos coexisten un instante, lo que empuja el layout.
          A6 describe salida y despues entrada.
@@ -24,6 +30,8 @@
   </main>
 
   <AppFooter />
+
+  <UpdateToast />
 </template>
 
 <script setup>
@@ -33,6 +41,7 @@ import { useI18n } from 'vue-i18n';
 import AppSprite from '@/components/layout/AppSprite.vue';
 import AppNav from '@/components/layout/AppNav.vue';
 import AppFooter from '@/components/layout/AppFooter.vue';
+import UpdateToast from '@/components/ui/UpdateToast.vue';
 
 const { t } = useI18n();
 

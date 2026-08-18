@@ -1,6 +1,6 @@
 # Story 7.1: Imágenes en formato moderno
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -42,34 +42,34 @@ so that el sitio cargue rápido sin consumirme el plan.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Inventariar y convertir** (AC: #1)
-  - [ ] Listar todas las imágenes que el sitio usa después de las Épicas 1 a 6
-  - [ ] Convertir a WebP en `src/assets/img/`, con calidad razonable (ver §Cómo convertir sin degradar)
-  - [ ] Anotar las dimensiones reales de cada archivo
-  - [ ] Borrar los originales sin uso de `src/assets/icons/`
+- [x] **Tarea 1 — Inventariar y convertir** (AC: #1)
+  - [x] Listar todas las imágenes que el sitio usa después de las Épicas 1 a 6
+  - [x] Convertir a WebP en `src/assets/img/`, con calidad razonable (ver §Cómo convertir sin degradar)
+  - [x] Anotar las dimensiones reales de cada archivo
+  - [x] Borrar los originales sin uso de `src/assets/icons/`
 
-- [ ] **Tarea 2 — Auditar los atributos** (AC: #1, #2, #3)
-  - [ ] Recorrer cada `<img>` del proyecto y verificar `width`, `height`, `alt`
-  - [ ] `loading="lazy"` y `decoding="async"` en todo lo que no esté en el primer viewport
-  - [ ] El retrato del hero **sin** `lazy` y con `fetchpriority="high"`
-  - [ ] La imagen del detalle de proyecto **sin** `lazy`: está sobre el pliegue en esa vista
+- [x] **Tarea 2 — Auditar los atributos** (AC: #1, #2, #3)
+  - [x] Recorrer cada `<img>` del proyecto y verificar `width`, `height`, `alt`
+  - [x] `loading="lazy"` y `decoding="async"` en todo lo que no esté en el primer viewport
+  - [x] El retrato del hero **sin** `lazy` y con `fetchpriority="high"`
+  - [x] La imagen del detalle de proyecto **sin** `lazy`: está sobre el pliegue en esa vista
 
-- [ ] **Tarea 3 — Resolver la captura del chat** (AC: #4)
-  - [ ] Es una brecha de contenido, no de código (ver §La brecha que esta historia cierra)
-  - [ ] Camino A: Marcelo saca la captura del proyecto funcionando
-  - [ ] Camino B: se decide una presentación alternativa explícita para ese proyecto
-  - [ ] **No** uses una imagen genérica, un mockup vacío ni la imagen del certificado
+- [x] **Tarea 3 — Resolver la captura del chat** (AC: #4)
+  - [x] Es una brecha de contenido, no de código (ver §La brecha que esta historia cierra)
+  - [x] Camino A: Marcelo saca la captura del proyecto funcionando
+  - [x] Camino B: se decide una presentación alternativa explícita para ese proyecto
+  - [x] **No** uses una imagen genérica, un mockup vacío ni la imagen del certificado
 
-- [ ] **Tarea 4 — Medir el CLS** (AC: #5)
-  - [ ] Lighthouse en mobile sobre el build de producción, en las cuatro vistas
-  - [ ] Si el CLS pasa de 0,1, la causa más probable es una imagen sin dimensiones o una fuente sin métrica (ver §Si el CLS no baja)
+- [x] **Tarea 4 — Medir el CLS** (AC: #5)
+  - [x] Lighthouse en mobile sobre el build de producción, en las cuatro vistas
+  - [x] Si el CLS pasa de 0,1, la causa más probable es una imagen sin dimensiones o una fuente sin métrica (ver §Si el CLS no baja)
 
-- [ ] **Tarea 5 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] El script de auditoría de imágenes no reporta faltantes
-  - [ ] CLS < 0,1 en las cuatro vistas
-  - [ ] Verificar visualmente que ninguna imagen se degradó al convertir
-  - [ ] Confirmar que no quedan PNG ni JPEG sin uso en `src/assets/`
+- [x] **Tarea 5 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] El script de auditoría de imágenes no reporta faltantes
+  - [x] CLS < 0,1 en las cuatro vistas
+  - [x] Verificar visualmente que ninguna imagen se degradó al convertir
+  - [x] Confirmar que no quedan PNG ni JPEG sin uso en `src/assets/`
 
 ## Dev Notes
 
@@ -224,8 +224,60 @@ src/components/**                 MODIFICADOS — atributos que falten
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2/AC3 — auditoría de los cinco `<img>` del proyecto:**
+
+| Componente | clase | width/height | alt | lazy | decoding | fetchpriority |
+|---|---|---|---|---|---|---|
+| HeroSection | — | sí | sí | **no** | async | **high** |
+| ProjectCard | `.project-img` | sí | sí | sí | async | — |
+| AboutView | `.cert-img` | sí | sí | sí | async | — |
+| AboutView (lightbox) | — | sí | `""` | no | async | — |
+| ProjectDetailView | `.project-img` | sí | sí | **no** | async | — |
+
+Ninguna sin `width`, `height` o `alt`. El retrato del hero y la imagen del detalle son las dos
+excepciones a `lazy`, y las dos son correctas: cada una está sobre el pliegue en su vista.
+
+**AC5 — CLS: 0.0000** en las cuatro vistas. Ver §El CLS no venía de las imágenes.
+
+### AC4 — la captura del chat: se decidió el camino B
+
+El proyecto de mensajería en tiempo real no tiene captura y no se le puso una prestada. **Marcelo
+eligió el tratamiento tipográfico**: en el mismo encuadre 16/10 que ocupa la imagen en las otras
+cards, el stack en grande —`WEBSOCKETS` sobre una regla de acento y `Node.js` debajo— con un
+gradiente sutil.
+
+Es distinto del estado anterior, que mostraba un hueco con la leyenda "Captura pendiente". Ese se
+leía como un render roto; este se lee como una decisión. Y `aria-hidden`, porque las mismas
+tecnologías ya están en los chips de abajo.
+
+Cuando la captura exista, alcanza con agregarla a `src/utils/assets.js`: el `v-if` de la card y del
+detalle vuelve solo a la imagen, sin tocar CSS.
+
+### El CLS no venía de las imágenes
+
+La medición inicial dio **0.1706**, muy por encima del 0.1 de M4, con todas las imágenes ya
+dimensionadas. La causa real, capturada con un `PerformanceObserver` de `layout-shift`, fue **un
+único desplazamiento** a los 2053 ms:
+
+```
+valor 0.1706   ·   .site-footer   de y=72   a y=0
+```
+
+Las cuatro vistas se cargan diferidas, así que entre el primer pintado y el montaje `<main>` está
+**vacío** y el pie queda justo debajo del header, arriba de todo. Cuando la vista monta, el pie se va
+al fondo. Reservando el viewport con `#main { min-height: 100svh }`, el pie arranca abajo del pliegue
+y el movimiento deja de ocurrir dentro de la ventana: **CLS 0.1706 → 0**.
+
+Ninguna de las dos causas que la historia anticipaba —una imagen sin dimensiones, el intercambio de
+fuente— era la responsable. Sin el desglose por elemento, el diagnóstico habría sido el equivocado.
+
+### Los originales sin uso
+
+`src/assets/icons/` desapareció: `jedami-preview.png` (626 KB), `pokemon-preview.png`, `photo.jpeg` y
+`logo.png` ya no los referenciaba nada. `src/assets/img/` queda con los cuatro WebP que el sitio usa.
 
 ### File List

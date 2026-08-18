@@ -1,8 +1,7 @@
 <template>
   <article class="project-card" :class="`is-${variant}`">
-    <figure class="project-media">
+    <figure v-if="imagen" class="project-media">
       <img
-        v-if="imagen"
         class="project-img"
         :src="imagen"
         :alt="textos.title"
@@ -12,10 +11,17 @@
         loading="lazy"
         decoding="async"
       />
-      <!-- Sin captura todavia. No se inventa una imagen ni se reusa otra:
-           el hueco es la brecha de contenido que la historia 7.1 resuelve. -->
-      <figcaption v-else class="project-media-empty">{{ t('proyectos.sinCaptura') }}</figcaption>
     </figure>
+
+    <!-- Sin captura, la ausencia se presenta como una decision de diseno y no
+         como un hueco: el stack en grande, tipografico. `aria-hidden` porque
+         las mismas tecnologias ya estan en los chips de abajo y anunciarlas
+         dos veces solo agrega ruido. -->
+    <div v-else class="project-media project-media-type" aria-hidden="true">
+      <p class="project-media-tech">{{ project.stack[0] }}</p>
+      <span class="project-media-rule"></span>
+      <p class="project-media-tech-sub">{{ project.stack.slice(1).join(' · ') }}</p>
+    </div>
 
     <div class="project-body">
       <component :is="`h${headingLevel}`" class="project-title">

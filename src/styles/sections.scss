@@ -96,6 +96,7 @@
    ============================================================ */
 
 .project-card {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -160,19 +161,47 @@
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
-/* Estado sin captura. Es visible a proposito: la ausencia del asset es una
-   brecha de contenido real (historia 7.1), no algo que convenga disimular
-   con una imagen prestada. */
-.project-media-empty {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  text-align: center;
+/* Presentacion sin captura (historia 7.1).
+
+   El proyecto de mensajeria en tiempo real no tiene captura, y no se le pone
+   un mockup generico ni una imagen prestada: seria contenido falso en un
+   portfolio. En vez del hueco —que se lee como un render roto— la ausencia se
+   convierte en una decision de diseno: el stack en grande, tipografico, en el
+   mismo encuadre 16/10 que ocupa la imagen en las otras cards.
+
+   Cuando la captura exista, el `v-if` vuelve a la imagen sin tocar el CSS. */
+.project-media-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.875rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: linear-gradient(
+    150deg,
+    var(--color-surface-raised) 0%,
+    var(--ph-bg) 100%
+  );
+}
+
+.project-media-tech {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: clamp(1.25rem, 0.9rem + 1.6vw, 2rem);
+  font-weight: 500;
   letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.project-media-rule {
+  width: 3.5rem;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+.project-media-tech-sub {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
   color: var(--color-text-muted);
 }
 
@@ -231,6 +260,26 @@
 .project-card .project-actions {
   margin-top: auto;
   padding-top: 0.75rem;
+  /* Por encima del area extendida del titulo, o los botones dejarian de
+     recibir el clic. */
+  position: relative;
+  z-index: 1;
+}
+
+/* El enlace del titulo extiende su area a la card entera.
+
+   Medido: el <a> del titulo ocupaba 194x40 px — por debajo de los 44 que pide
+   NFR-11, porque su alto es el de la linea de texto. Agregarle padding lo
+   arreglaria pero desalinearia el titulo del resto del cuerpo.
+
+   El pseudo-elemento resuelve las dos cosas: el objetivo tactil pasa a ser la
+   card completa —que es lo que el hover ya sugiere— sin mover un pixel de la
+   composicion. Las acciones quedan por encima con su propio z-index. */
+.project-card .card-title-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 
 /* Grilla de proyectos (FR-11). `auto-fit` con un minimo hace el trabajo de

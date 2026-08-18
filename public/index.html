@@ -49,7 +49,62 @@
     <link rel="preload" as="font" type="font/woff2" crossorigin
           href="<%= require('@/assets/fonts/inter-variable.woff2') %>">
 
+    <!-- El retrato del hero NO se precarga, y es una decision medida.
+
+         Es el elemento LCP y solo se descubre cuando la vista ya monto, asi
+         que precargarlo parece obvio. Se probo, en 4G simulada con CPU 4x:
+
+           sin preload   retrato 2191 -> 2498 ms    LCP 2532 ms
+           con preload   retrato  175 ->  711 ms    LCP 3092 ms
+
+         La imagen llega antes y el LCP EMPEORA 560 ms. La razon es que el
+         cuello de botella nunca fue la imagen sino la cadena de JavaScript
+         —chunk-vendors tarda 1356 ms en bajar—, y el preload le roba ancho de
+         banda justo a eso. El retrato termina esperando igual, pero ahora la
+         vista tambien. -->
+
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta name="description" content="Frontend Developer especializado en interfaces modernas con Vue, Flutter y Dart. Proyectos reales, stack usado y cómo contactarme.">
+    <link rel="canonical" href="https://marcecode.com/">
+
+    <!-- Tarjeta de previsualización (NFR-20).
+
+         Estas etiquetas son ESTATICAS y no las toca el router, a diferencia
+         del <title> y la description por ruta (D11). No es una
+         inconsistencia: los rastreadores de LinkedIn, WhatsApp y Twitter NO
+         ejecutan JavaScript — piden el HTML, leen las metaetiquetas del
+         documento inicial y se van. Cualquier etiqueta og: que Vue insertara
+         al montar es invisible para ellos.
+
+         La consecuencia es que en una SPA sin renderizado en servidor todas
+         las rutas comparten la misma tarjeta. Es una limitacion real del
+         alcance —el PRD excluye backend y SSR—, no un defecto, y por eso la
+         tarjeta describe EL SITIO y no una pagina.
+
+         Las URLs van ABSOLUTAS con el dominio: ninguna plataforma resuelve
+         una ruta relativa, y falla en silencio — la tarjeta sale sin imagen.
+
+         og:image:width y og:image:height no son decorativas: sin ellas
+         algunas plataformas, LinkedIn entre ellas, tienen que descargar la
+         imagen para conocer sus dimensiones antes de decidir el layout, y si
+         la descarga tarda muestran la tarjeta sin imagen. -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://marcecode.com/">
+    <meta property="og:site_name" content="MarceCode">
+    <meta property="og:title" content="Marcelo Olivera — Frontend Developer">
+    <meta property="og:description" content="Construyo interfaces que se sienten tan bien como se ven — web, mobile y escritorio. Proyectos reales con Vue, Flutter y Node.js.">
+    <meta property="og:image" content="https://marcecode.com/og-image.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Marcelo Olivera, Frontend Developer">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Marcelo Olivera — Frontend Developer">
+    <meta name="twitter:description" content="Construyo interfaces que se sienten tan bien como se ven — web, mobile y escritorio. Proyectos reales con Vue, Flutter y Node.js.">
+    <meta name="twitter:image" content="https://marcecode.com/og-image.webp">
   </head>
   <body>
     <noscript>

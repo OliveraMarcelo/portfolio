@@ -161,3 +161,7 @@ button {
   white-space: nowrap;
   border: 0;
 }
+
+/* El <main> es enfocable por programa para que el skip link funcione, pero no
+   es un control: no lleva anillo de foco. */
+main:focus { outline: none; }

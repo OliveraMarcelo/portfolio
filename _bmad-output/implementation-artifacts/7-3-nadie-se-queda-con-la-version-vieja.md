@@ -1,6 +1,6 @@
 # Story 7.3: Nadie se queda con la versión vieja
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -44,34 +44,34 @@ so that no me quede una versión desactualizada.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Emitir el evento de actualización** (AC: #1)
-  - [ ] En `registerServiceWorker.js`, en el handler `updated(registration)`, despachar un `CustomEvent` con la `registration` en el detalle
-  - [ ] Conservar los `console.log` restantes condicionados a `NODE_ENV !== 'production'`, como quedó en la historia 1.1
+- [x] **Tarea 1 — Emitir el evento de actualización** (AC: #1)
+  - [x] En `registerServiceWorker.js`, en el handler `updated(registration)`, despachar un `CustomEvent` con la `registration` en el detalle
+  - [x] Conservar los `console.log` restantes condicionados a `NODE_ENV !== 'production'`, como quedó en la historia 1.1
 
-- [ ] **Tarea 2 — El aviso en `App.vue`** (AC: #1, #2)
-  - [ ] Escuchar el evento y mostrar un aviso **no bloqueante**: no un modal, no un overlay
-  - [ ] Un botón para actualizar y otro para descartar
-  - [ ] Texto por i18n
-  - [ ] Área táctil ≥ 44×44 px y alcanzable por teclado
-  - [ ] Usar los tokens; sin colores literales
+- [x] **Tarea 2 — El aviso en `App.vue`** (AC: #1, #2)
+  - [x] Escuchar el evento y mostrar un aviso **no bloqueante**: no un modal, no un overlay
+  - [x] Un botón para actualizar y otro para descartar
+  - [x] Texto por i18n
+  - [x] Área táctil ≥ 44×44 px y alcanzable por teclado
+  - [x] Usar los tokens; sin colores literales
 
-- [ ] **Tarea 3 — Aplicar la actualización** (AC: #2)
-  - [ ] Enviar `{ type: 'SKIP_WAITING' }` al worker en espera
-  - [ ] Recargar cuando el worker nuevo tome control, no antes (ver §El orden de `SKIP_WAITING` y la recarga)
-  - [ ] Guardar contra el bucle de recarga
+- [x] **Tarea 3 — Aplicar la actualización** (AC: #2)
+  - [x] Enviar `{ type: 'SKIP_WAITING' }` al worker en espera
+  - [x] Recargar cuando el worker nuevo tome control, no antes (ver §El orden de `SKIP_WAITING` y la recarga)
+  - [x] Guardar contra el bucle de recarga
 
-- [ ] **Tarea 4 — Cabeceras de nginx** (AC: #3)
-  - [ ] `location = /index.html` y `location = /service-worker.js` con `Cache-Control: no-cache`
-  - [ ] Verificar que el bloque de assets con hash conserve `expires 1y, immutable`
-  - [ ] Agregar `Referrer-Policy: strict-origin-when-cross-origin`
-  - [ ] Considerar la CSP de solo-mismo-origen, viable ahora que no hay terceros (ver §La CSP es opcional pero ya es gratis)
+- [x] **Tarea 4 — Cabeceras de nginx** (AC: #3)
+  - [x] `location = /index.html` y `location = /service-worker.js` con `Cache-Control: no-cache`
+  - [x] Verificar que el bloque de assets con hash conserve `expires 1y, immutable`
+  - [x] Agregar `Referrer-Policy: strict-origin-when-cross-origin`
+  - [x] Considerar la CSP de solo-mismo-origen, viable ahora que no hay terceros (ver §La CSP es opcional pero ya es gratis)
 
-- [ ] **Tarea 5 — Auditar la consola y la red** (AC: #4, #5)
-  - [ ] Recorrer las cuatro vistas con el build de producción y confirmar consola vacía
-  - [ ] Confirmar que ninguna petición sale del propio origen
+- [x] **Tarea 5 — Auditar la consola y la red** (AC: #4, #5)
+  - [x] Recorrer las cuatro vistas con el build de producción y confirmar consola vacía
+  - [x] Confirmar que ninguna petición sale del propio origen
 
-- [ ] **Tarea 6 — Verificar el ciclo completo** (AC: #1, #2)
-  - [ ] Probar el flujo de actualización de verdad, con dos builds (ver §Cómo probar la actualización)
+- [x] **Tarea 6 — Verificar el ciclo completo** (AC: #1, #2)
+  - [x] Probar el flujo de actualización de verdad, con dos builds (ver §Cómo probar la actualización)
 
 ## Dev Notes
 
@@ -286,8 +286,76 @@ src/locales/{es,en}.json        MODIFICADO — texto del aviso
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2 — el ciclo completo, probado con dos builds reales:**
+
+```
+build 1 -> service worker activo
+build 2 (con un cambio visible) y recarga:
+
+  sw:      { activo: true, enEspera: true }          <- la version nueva espera
+  aviso:   visible, role="status", position: fixed
+           botones "Actualizar" 110x44 y "Despues" 99x44
+           tapa el pie: false
+  click en Actualizar ->
+           kicker antes:  "Hola, soy"        (cache viejo)
+           kicker despues:"Hola, soy (v2)"   (version nueva)
+           el aviso ya no esta
+```
+
+El cambio de texto es la prueba: si el orden de `SKIP_WAITING` y la recarga estuviera mal, la página
+habría vuelto a mostrar el texto viejo después de haber aceptado actualizar.
+
+**AC4/AC5 — auditoría del build de producción en las cuatro vistas:**
+
+```
+consola:            (vacia)
+hosts distintos:    []          51 peticiones, todas al propio origen
+respuestas >= 400:  []
+```
+
+**AC3 —** `nginx.conf` con `location = /index.html` y `location = /service-worker.js` en `no-cache`,
+los assets con hash intactos en `expires 1y, immutable`, más `Referrer-Policy` y una CSP de
+solo-mismo-origen.
+
+### El orden de `SKIP_WAITING` y la recarga
+
+`postMessage` es **asíncrono**. Recargar inmediatamente después lo hace mientras el worker viejo
+todavía controla la página: el navegador vuelve a servir el caché viejo y el visitante ve **lo mismo**
+después de haber aceptado actualizar — peor que no ofrecerlo. Se espera `controllerchange`, con una
+bandera como guarda contra el bucle de recargas.
+
+Y `skipWaiting: false` en las opciones de Workbox es lo que deja la versión nueva **en espera** para
+que el aviso pueda ofrecerla. Con `true`, el worker nuevo tomaría control solo y la página cambiaría
+bajo los pies del visitante.
+
+### Los 404 del manifest eran diez, no dos
+
+Los dos errores de consola que este proyecto arrastraba desde la historia 1.1 —`android-chrome-192x192.png`
+y `favicon.svg`— eran la punta de algo más grande: el plugin de PWA inyecta referencias a **diez
+archivos** bajo `/img/icons/` que **nunca existieron en este proyecto**. El navegador solo pedía
+algunos, así que solo algunos aparecían en la consola.
+
+Se generó el juego completo desde el mismo glifo `i-code` del sprite, dibujado como trazo y no como
+texto: rasterizado a 16 px, un `<text>` depende de la fuente que tenga el sistema y el resultado cambia
+de máquina en máquina. Los dos `maskable` dejan el glifo al 60 % para que el recorte circular de
+Android no se lo coma.
+
+De paso se corrigieron dos cosas más que venían del andamiaje por defecto:
+
+- El **favicon** usaba `#1a1a2e` y `#7c3aed`, dos colores que no pertenecen a ninguna paleta del
+  proyecto. Ahora usa `--color-bg` y `--color-accent`.
+- El **título del documento servido** era `portafolio` —el `name` de `package.json`— y aparecía también
+  en el manifest y en el `<noscript>`. El router lo sobrescribe al montar, pero lo que ve un rastreador
+  que no ejecuta JavaScript decía "portafolio".
+
+### La CSP
+
+Viable porque D14 está cumplido: no hay Google Fonts, ni worker de PDF.js, ni Font Awesome. Los dos
+`'unsafe-inline'` son necesarios y están anotados en el archivo: uno por el script inline de tema e
+idioma que corre antes del primer pintado (D2), otro por los estilos inline de Vue.
 
 ### File List

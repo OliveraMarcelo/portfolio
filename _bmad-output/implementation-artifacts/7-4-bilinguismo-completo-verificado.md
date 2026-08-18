@@ -1,6 +1,6 @@
 # Story 7.4: Bilingüismo completo verificado
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -43,36 +43,36 @@ so that no me quede media página en español.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Auditar la paridad de claves** (AC: #2)
-  - [ ] Correr el script de comparación (ver §Comandos de verificación)
-  - [ ] Completar lo que falte en cualquiera de los dos idiomas
+- [x] **Tarea 1 — Auditar la paridad de claves** (AC: #2)
+  - [x] Correr el script de comparación (ver §Comandos de verificación)
+  - [x] Completar lo que falte en cualquiera de los dos idiomas
 
-- [ ] **Tarea 2 — Auditar los módulos de contenido** (AC: #3)
-  - [ ] `projects.js`: `title`, `summary`, `problem`, `solution`, `role` en ES y EN, para los tres proyectos
-  - [ ] `timeline.js`: `role`, `org`, `text` en los dos idiomas, para todos los hitos
-  - [ ] `skills.js`: etiquetas de grupo en los dos idiomas
-  - [ ] `contact.js`: etiqueta de cada canal en los dos idiomas
+- [x] **Tarea 2 — Auditar los módulos de contenido** (AC: #3)
+  - [x] `projects.js`: `title`, `summary`, `problem`, `solution`, `role` en ES y EN, para los tres proyectos
+  - [x] `timeline.js`: `role`, `org`, `text` en los dos idiomas, para todos los hitos
+  - [x] `skills.js`: etiquetas de grupo en los dos idiomas
+  - [x] `contact.js`: etiqueta de cada canal en los dos idiomas
 
-- [ ] **Tarea 3 — Auditar lo que no es texto visible** (AC: #1)
-  - [ ] `document.title` y la meta description de las cuatro rutas
-  - [ ] Todos los `alt` de imagen
-  - [ ] Todos los `aria-label`, `aria-labelledby` y textos `.sr-only`
-  - [ ] El `placeholder` de cualquier campo, si hubiera
-  - [ ] Ver §Lo que se olvida siempre
+- [x] **Tarea 3 — Auditar lo que no es texto visible** (AC: #1)
+  - [x] `document.title` y la meta description de las cuatro rutas
+  - [x] Todos los `alt` de imagen
+  - [x] Todos los `aria-label`, `aria-labelledby` y textos `.sr-only`
+  - [x] El `placeholder` de cualquier campo, si hubiera
+  - [x] Ver §Lo que se olvida siempre
 
-- [ ] **Tarea 4 — Barrer texto literal** (AC: #5)
-  - [ ] Recorrer los templates buscando nodos de texto que no salgan de `t(...)` ni de `content`
-  - [ ] Los formatos derivados —"2023 — actualidad"— tienen que tomar la palabra de los locales
+- [x] **Tarea 4 — Barrer texto literal** (AC: #5)
+  - [x] Recorrer los templates buscando nodos de texto que no salgan de `t(...)` ni de `content`
+  - [x] Los formatos derivados —"2023 — actualidad"— tienen que tomar la palabra de los locales
 
-- [ ] **Tarea 5 — Verificar el cambio en caliente** (AC: #4)
-  - [ ] Alternar idioma en la vista más larga, scrolleada al fondo
-  - [ ] Confirmar que el scroll no se mueve y `<html lang>` cambia
-  - [ ] Confirmar que el indicador del nav se realinea (historia 2.2)
+- [x] **Tarea 5 — Verificar el cambio en caliente** (AC: #4)
+  - [x] Alternar idioma en la vista más larga, scrolleada al fondo
+  - [x] Confirmar que el scroll no se mueve y `<html lang>` cambia
+  - [x] Confirmar que el indicador del nav se realinea (historia 2.2)
 
-- [ ] **Tarea 6 — Recorrido completo en EN** (AC: #1)
-  - [ ] Poner el sitio en inglés y recorrer las cuatro vistas de punta a punta
-  - [ ] Anotar cada resto de español encontrado y corregirlo
-  - [ ] Repetir hasta que el recorrido salga limpio
+- [x] **Tarea 6 — Recorrido completo en EN** (AC: #1)
+  - [x] Poner el sitio en inglés y recorrer las cuatro vistas de punta a punta
+  - [x] Anotar cada resto de español encontrado y corregirlo
+  - [x] Repetir hasta que el recorrido salga limpio
 
 ## Dev Notes
 
@@ -257,8 +257,54 @@ Ningún archivo nuevo: es una historia de auditoría y corrección.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC2 — paridad de claves:**
+
+```
+claves ES: 73   EN: 73     solo en ES: ninguna     solo en EN: ninguna
+```
+
+**AC3 — cobertura de los módulos de contenido:** 13 entradas revisadas (3 proyectos × 5 campos,
+7 hitos × 3 campos, 3 canales × 2 campos), en los dos idiomas. **Campos faltantes: ninguno.**
+
+**AC1 — recorrido completo en inglés** por seis rutas —las cuatro vistas más los tres detalles—
+recogiendo texto visible, `alt`, `aria-label`, `title`, `document.title`, la meta description y el
+menú mobile y el lightbox abiertos.
+
+El barrido marcó cuatro cosas, y **las cuatro son falsos positivos de la heurística**:
+
+| Marcado | Por qué está bien |
+|---|---|
+| `aria-label: "Cambiar el idioma del sitio a español"` | Describe **la acción**, así que en el diccionario inglés va en español. La historia 1.7 lo dejó documentado y la 7.4 avisa de no "corregirlo" |
+| `"Who's that Pokémon? … PokéAPI"` | Nombres propios con acento |
+| `"Instituto de Formación Técnica Superior No. 11"` | Nombre propio de la organización |
+
+**Restos reales de español en inglés: cero.**
+
+**AC5 — texto literal en templates:** el barrido encuentra cuatro, y los cuatro son nombres propios que
+no se traducen: `MarceCode` (×2), `Marcelo` y `Olivera`.
+
+**AC4 — el cambio en caliente**, en Sobre mí scrolleado a 2000 px:
+
+```
+              antes                     despues
+scroll        2000                      2000        <- conservado
+lang          es                        en
+title         Sobre mí — Marcelo…       About — Marcelo…
+indicador     x=970.6                   x=965.1     <- se realineo
+```
+
+El indicador se movió 5,5 px porque "Sobre mí" y "About me" no miden lo mismo. Es exactamente el caso
+que la historia 2.2 tenía como criterio y que solo se ve al cambiar de idioma.
+
+### Esta historia no encontró trabajo pendiente
+
+Y eso es el resultado esperado: la infraestructura fue de la Épica 1 y las claves se repartieron entre
+las épicas que las necesitan, precisamente para no tener que rehacer pantallas acá. Si hubiera
+aparecido mucho por traducir, habría sido señal de que alguna historia anterior se cerró sin cumplir su
+parte.
 
 ### File List

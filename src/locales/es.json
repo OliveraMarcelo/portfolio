@@ -64,8 +64,7 @@
     "gridAria": "Catálogo de proyectos",
     "stackDe": "Stack de {proyecto}",
     "verEnVivo": "Ver en vivo",
-    "verCodigo": "Ver código",
-    "sinCaptura": "Captura pendiente"
+    "verCodigo": "Ver código"
   },
   "detalle": {
     "problema": "El problema",
@@ -109,5 +108,10 @@
   "contacto": {
     "titulo": "Hablemos",
     "lede": "Estoy abierto a propuestas de trabajo, colaboraciones y proyectos. Escribime por donde te quede más cómodo."
+  },
+  "actualizacion": {
+    "texto": "Hay una versión nueva del sitio.",
+    "actualizar": "Actualizar",
+    "despues": "Después"
   }
 }

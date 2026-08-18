@@ -39,16 +39,14 @@
 
         <!-- La Home resume: solo los hitos de trabajo. Quien filtra es la
              vista, no el componente — mismo criterio que ProjectGrid y
-             SkillGrid. TimelineItem es el MISMO de Sobre mi. -->
-        <ol class="timeline">
-          <span class="timeline-rail" aria-hidden="true"><span class="timeline-progress"></span></span>
-          <TimelineItem
-            v-for="(hito, i) in trayectoriaLaboral"
-            :key="hito.id"
-            v-reveal="{ delay: i * 70 }"
-            :item="hito"
-          />
-        </ol>
+             SkillGrid.
+
+             Se monta TimelineSection y no se replica su markup. La primera
+             version copiaba el <ol> con su riel: el resultado fue un eje que
+             NUNCA se dibujaba, porque el codigo que calcula el avance vive en
+             el componente. Clonar el markup dejo afuera el comportamiento, y
+             el sintoma —una linea gris que no avanza— no se nota mirando. -->
+        <TimelineSection :items="trayectoriaLaboral" />
 
         <p class="section-foot" v-reveal>
           <RouterLink class="link-arrow" to="/about">
@@ -72,7 +70,7 @@ import ProjectGrid from '@/components/sections/ProjectGrid.vue';
 import AppIcon from '@/components/ui/AppIcon.vue';
 import SkillGrid from '@/components/sections/SkillGrid.vue';
 import SectionHeading from '@/components/ui/SectionHeading.vue';
-import TimelineItem from '@/components/sections/TimelineItem.vue';
+import TimelineSection from '@/components/sections/TimelineSection.vue';
 import ContactSection from '@/components/sections/ContactSection.vue';
 import { projects } from '@/content/projects';
 import { skills } from '@/content/skills';

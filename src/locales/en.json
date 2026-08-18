@@ -64,8 +64,7 @@
     "gridAria": "Project catalog",
     "stackDe": "{proyecto} stack",
     "verEnVivo": "View live",
-    "verCodigo": "View code",
-    "sinCaptura": "Screenshot pending"
+    "verCodigo": "View code"
   },
   "detalle": {
     "problema": "The problem",
@@ -109,5 +108,10 @@
   "contacto": {
     "titulo": "Let's talk",
     "lede": "I am open to job offers, collaborations and projects. Reach out through whichever channel suits you."
+  },
+  "actualizacion": {
+    "texto": "A new version of the site is available.",
+    "actualizar": "Update",
+    "despues": "Later"
   }
 }

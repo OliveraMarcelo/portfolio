@@ -15,10 +15,11 @@ import pokemonPreview from '@/assets/img/pokemon-preview.webp';
 const IMAGENES = {
   'jedami-preview': jedamiPreview,
   'pokemon-preview': pokemonPreview,
-  /* 'chat-preview' NO existe todavia. Brecha de contenido registrada en la
-     arquitectura y en la historia 7.1: hace falta que Marcelo saque la
-     captura. Hasta entonces esta funcion devuelve null y quien la consume
-     tiene que renderizar el caso sin imagen, no un enlace roto. */
+  /* 'chat-preview' NO existe. Decidido en la historia 7.1: ese proyecto se
+     presenta con un tratamiento tipografico en lugar de una captura, porque
+     un mockup generico o una imagen prestada seria contenido falso en un
+     portfolio. Si algun dia hay captura real, alcanza con agregarla aca: el
+     `v-if` de ProjectCard y del detalle vuelve solo a la imagen. */
 };
 
 export function imagenDeProyecto(nombre) {

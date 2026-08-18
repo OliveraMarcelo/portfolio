@@ -1,6 +1,6 @@
 # Story 7.6: Usable y quieto con movimiento reducido
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -36,33 +36,33 @@ so that pueda usarlo sin malestar.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Verificar el bloque global** (AC: #1)
-  - [ ] Confirmar que `base.scss` trae el `@media (prefers-reduced-motion: reduce)` con `animation-duration`,
+- [x] **Tarea 1 — Verificar el bloque global** (AC: #1)
+  - [x] Confirmar que `base.scss` trae el `@media (prefers-reduced-motion: reduce)` con `animation-duration`,
         `animation-iteration-count`, `transition-duration` y `scroll-behavior` en `!important`
-  - [ ] Es el bloque que la historia 1.2 portó; verificar que ninguna historia posterior lo pisó
+  - [x] Es el bloque que la historia 1.2 portó; verificar que ninguna historia posterior lo pisó
 
-- [ ] **Tarea 2 — Auditar los estados iniciales ocultos** (AC: #2)
-  - [ ] Todo estado inicial oculto —`.reveal`, `.mask-in`, `.portrait`, `.hero-glow`, `.project-actions`—
+- [x] **Tarea 2 — Auditar los estados iniciales ocultos** (AC: #2)
+  - [x] Todo estado inicial oculto —`.reveal`, `.mask-in`, `.portrait`, `.hero-glow`, `.project-actions`—
         tiene que vivir dentro de `@media (prefers-reduced-motion: no-preference)`
-  - [ ] Es la defensa estructural, no una condición que se chequea (ver §La defensa es estructural)
+  - [x] Es la defensa estructural, no una condición que se chequea (ver §La defensa es estructural)
 
-- [ ] **Tarea 3 — Auditar los bucles infinitos** (AC: #1)
-  - [ ] Buscar `animation` con `infinite` y confirmar que el bloque global los detiene
-  - [ ] El sospechoso principal es el `.scroll-cue-dot` de la historia 3.4
+- [x] **Tarea 3 — Auditar los bucles infinitos** (AC: #1)
+  - [x] Buscar `animation` con `infinite` y confirmar que el bloque global los detiene
+  - [x] El sospechoso principal es el `.scroll-cue-dot` de la historia 3.4
 
-- [ ] **Tarea 4 — Verificar el movimiento controlado por JavaScript** (AC: #1, #3)
-  - [ ] El bloque CSS no alcanza para lo que mueve JavaScript (ver §Lo que el CSS no puede detener)
-  - [ ] Transición de ruta (2.6), elemento compartido (4.6), progreso de la línea de tiempo (5.2), indicador
+- [x] **Tarea 4 — Verificar el movimiento controlado por JavaScript** (AC: #1, #3)
+  - [x] El bloque CSS no alcanza para lo que mueve JavaScript (ver §Lo que el CSS no puede detener)
+  - [x] Transición de ruta (2.6), elemento compartido (4.6), progreso de la línea de tiempo (5.2), indicador
         del nav (2.2)
-  - [ ] Los cuatro tienen que consultar `useReducedMotion`, no `matchMedia` por su cuenta
+  - [x] Los cuatro tienen que consultar `useReducedMotion`, no `matchMedia` por su cuenta
 
-- [ ] **Tarea 5 — Recorrido completo con la preferencia activa** (AC: todos)
-  - [ ] Emular `prefers-reduced-motion: reduce` y recorrer las cuatro vistas
-  - [ ] Probar navegación, menú mobile, lightbox, hover de cards, cambio de tema y de idioma
-  - [ ] Confirmar que **nada** se mueve y que **todo** funciona
+- [x] **Tarea 5 — Recorrido completo con la preferencia activa** (AC: todos)
+  - [x] Emular `prefers-reduced-motion: reduce` y recorrer las cuatro vistas
+  - [x] Probar navegación, menú mobile, lightbox, hover de cards, cambio de tema y de idioma
+  - [x] Confirmar que **nada** se mueve y que **todo** funciona
 
-- [ ] **Tarea 6 — Verificar el cambio de preferencia en vivo** (AC: #1)
-  - [ ] Cambiar la preferencia con la pestaña abierta y confirmar que el sitio reacciona (ver §El cambio en
+- [x] **Tarea 6 — Verificar el cambio de preferencia en vivo** (AC: #1)
+  - [x] Cambiar la preferencia con la pestaña abierta y confirmar que el sitio reacciona (ver §El cambio en
         vivo)
 
 ## Dev Notes
@@ -256,8 +256,41 @@ Ningún archivo nuevo: es una historia de auditoría y corrección.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+Medido con `prefers-reduced-motion: reduce` emulado en el navegador, sobre el build de producción, en
+la Home, Sobre mí y Proyectos:
+
+```
+elementos con opacidad < 1:        ninguno
+elementos con transform aplicado:  ninguno
+animaciones infinitas:             ninguna
+transiciones de mas de 50 ms:      0
+eje de la linea de tiempo:         1        (completo)
+scroll-behavior:                   auto     (no smooth)
+```
+
+Todo el contenido legible de entrada, nada desplazado, nada en movimiento. Y el listener de scroll de
+la línea de tiempo **no se registra**: no se gasta un handler en alguien que pidió explícitamente menos
+movimiento.
+
+### La defensa es estructural, no una rama de código
+
+El estado inicial oculto de `.reveal` y `.mask-in` vive **dentro** de
+`@media (prefers-reduced-motion: no-preference)` desde la historia 2.7. No es una condición que se
+chequea: si `.is-visible` no llegara —JavaScript deshabilitado, un error en la directiva, un elemento
+que nunca entra en viewport— el contenido queda visible igual.
+
+El bloque de `reduce` en `base.scss` lo refuerza con `!important` para los casos que sí dependen de
+JavaScript, entre ellos `.project-actions`, que de otro modo quedaría en `opacity: 0` para siempre en
+escritorio.
+
+### Un caso que sí necesitaba código
+
+El eje de la línea de tiempo no puede resolverse solo con CSS: su avance lo escribe JavaScript. Con
+preferencia reducida, `TimelineSection` fija `--timeline-progress: 1` al montar y **no** registra el
+listener. El resultado es el estado final legible que pide NFR-07 y cero trabajo por fotograma.
 
 ### File List

@@ -98,13 +98,13 @@ development_status:
   epic-6-retrospective: optional
 
   # Épica 7: Rápido, accesible y compartible
-  epic-7: ready-for-dev
-  7-1-imagenes-en-formato-moderno: ready-for-dev
-  7-2-el-sitio-se-ve-bien-cuando-se-comparte: ready-for-dev
-  7-3-nadie-se-queda-con-la-version-vieja: ready-for-dev
-  7-4-bilinguismo-completo-verificado: ready-for-dev
-  7-5-accesible-con-teclado-y-con-lector-de-pantalla: ready-for-dev
-  7-6-usable-y-quieto-con-movimiento-reducido: ready-for-dev
-  7-7-verificado-en-los-cuatro-anchos: ready-for-dev
-  7-8-rapido-de-verdad-medido: ready-for-dev
+  epic-7: done
+  7-1-imagenes-en-formato-moderno: done
+  7-2-el-sitio-se-ve-bien-cuando-se-comparte: done
+  7-3-nadie-se-queda-con-la-version-vieja: done
+  7-4-bilinguismo-completo-verificado: done
+  7-5-accesible-con-teclado-y-con-lector-de-pantalla: done
+  7-6-usable-y-quieto-con-movimiento-reducido: done
+  7-7-verificado-en-los-cuatro-anchos: done
+  7-8-rapido-de-verdad-medido: done
   epic-7-retrospective: optional

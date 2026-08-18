@@ -35,11 +35,10 @@
 
     <div class="project-media-wrap">
       <div class="container">
-        <figure class="project-media">
+        <figure v-if="imagen" class="project-media">
           <!-- Al reves que en la card, aca la imagen esta sobre el pliegue y
                es la candidata a LCP de la vista: sin `loading="lazy"`. -->
           <img
-            v-if="imagen"
             class="project-img"
             :src="imagen"
             :alt="textos.title"
@@ -48,8 +47,13 @@
             height="750"
             decoding="async"
           />
-          <figcaption v-else class="project-media-empty">{{ t('proyectos.sinCaptura') }}</figcaption>
         </figure>
+
+        <div v-else class="project-media project-media-type" aria-hidden="true">
+          <p class="project-media-tech">{{ project.stack[0] }}</p>
+          <span class="project-media-rule"></span>
+          <p class="project-media-tech-sub">{{ project.stack.slice(1).join(' · ') }}</p>
+        </div>
       </div>
     </div>
 

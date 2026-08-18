@@ -1,6 +1,6 @@
 # Story 7.5: Accesible con teclado y con lector de pantalla
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -49,36 +49,36 @@ so that no quede afuera de ninguna funcionalidad.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Recorrido con teclado en las cuatro vistas** (AC: #1)
-  - [ ] `Tab` desde la carga: el primer foco es el `.skip-link`
-  - [ ] Recorrer hasta el final sin quedar atrapado ni saltear controles
-  - [ ] Confirmar que el orden de tabulación sigue el orden visual
-  - [ ] Probar el menú mobile abierto y el lightbox abierto (foco contenido)
-  - [ ] Confirmar que activar el skip link lleva el foco a `<main>`
+- [x] **Tarea 1 — Recorrido con teclado en las cuatro vistas** (AC: #1)
+  - [x] `Tab` desde la carga: el primer foco es el `.skip-link`
+  - [x] Recorrer hasta el final sin quedar atrapado ni saltear controles
+  - [x] Confirmar que el orden de tabulación sigue el orden visual
+  - [x] Probar el menú mobile abierto y el lightbox abierto (foco contenido)
+  - [x] Confirmar que activar el skip link lleva el foco a `<main>`
 
-- [ ] **Tarea 2 — Estructura semántica** (AC: #2)
-  - [ ] Verificar los cuatro landmarks en las cuatro vistas
-  - [ ] Una sola `h1` por vista
-  - [ ] Jerarquía de encabezados sin saltos (ver §Los saltos de nivel de encabezado)
+- [x] **Tarea 2 — Estructura semántica** (AC: #2)
+  - [x] Verificar los cuatro landmarks en las cuatro vistas
+  - [x] Una sola `h1` por vista
+  - [x] Jerarquía de encabezados sin saltos (ver §Los saltos de nivel de encabezado)
 
-- [ ] **Tarea 3 — Auditar los `alt`** (AC: #3)
-  - [ ] Informativas: retrato, capturas de proyecto, certificado → `alt` descriptivo y traducido
-  - [ ] Decorativas: ninguna debería tener `alt` porque los íconos son SVG con `aria-hidden`
-  - [ ] Confirmar que ningún `alt` es el nombre del archivo
+- [x] **Tarea 3 — Auditar los `alt`** (AC: #3)
+  - [x] Informativas: retrato, capturas de proyecto, certificado → `alt` descriptivo y traducido
+  - [x] Decorativas: ninguna debería tener `alt` porque los íconos son SVG con `aria-hidden`
+  - [x] Confirmar que ningún `alt` es el nombre del archivo
 
-- [ ] **Tarea 4 — Auditar el contraste** (AC: #4)
-  - [ ] Medir los pares de texto y fondo en tema oscuro y en tema claro
-  - [ ] Prestar atención al acento como texto chico (ver §El acento como texto chico ya está resuelto)
-  - [ ] Verificar el texto atenuado sobre superficie elevada
+- [x] **Tarea 4 — Auditar el contraste** (AC: #4)
+  - [x] Medir los pares de texto y fondo en tema oscuro y en tema claro
+  - [x] Prestar atención al acento como texto chico (ver §El acento como texto chico ya está resuelto)
+  - [x] Verificar el texto atenuado sobre superficie elevada
 
-- [ ] **Tarea 5 — Auditar las áreas táctiles** (AC: #5)
-  - [ ] Medir todos los controles a 390 px
-  - [ ] Los sospechosos: enlaces del pie, chips si son clickeables, botón de cierre del lightbox
+- [x] **Tarea 5 — Auditar las áreas táctiles** (AC: #5)
+  - [x] Medir todos los controles a 390 px
+  - [x] Los sospechosos: enlaces del pie, chips si son clickeables, botón de cierre del lightbox
 
-- [ ] **Tarea 6 — Lighthouse** (AC: #6)
-  - [ ] Auditoría en mobile sobre el build de producción, en las cuatro vistas
-  - [ ] Corregir lo que reporte hasta llegar a 95
-  - [ ] **No** te detengas en el puntaje: Lighthouse no ve todo (ver §Lighthouse es el piso, no el techo)
+- [x] **Tarea 6 — Lighthouse** (AC: #6)
+  - [x] Auditoría en mobile sobre el build de producción, en las cuatro vistas
+  - [x] Corregir lo que reporte hasta llegar a 95
+  - [x] **No** te detengas en el puntaje: Lighthouse no ve todo (ver §Lighthouse es el piso, no el techo)
 
 ## Dev Notes
 
@@ -287,8 +287,79 @@ Ningún archivo nuevo: es una historia de auditoría y corrección.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC6 — Lighthouse, accesibilidad: 100 en las cuatro vistas** (M2 pide ≥95), mediana de tres corridas.
+
+**AC1 — recorrido con `Tab` en las cuatro vistas.** El primer enfocable es siempre el `.skip-link`, el
+orden sigue el orden visual, y **ningún control quedó sin anillo de foco** (`outline 2px`). Home 21
+paradas, Proyectos 18, Sobre mí 13, detalle 13.
+
+Foco contenido, medido con el menú mobile abierto a 390 px:
+
+```
+foco siempre dentro: true (8 tabs)   ·   Escape cierra   ·   foco devuelto al boton
+```
+
+**AC2 —** una sola `h1` por vista y los cuatro landmarks presentes. Jerarquías sin saltos:
+
+```
+/                 1 2 3 3 3 2 3 3 3 2 3 3 2
+/projects         1 2 2 2
+/about            1 2 3 3 3 3 3 3 3 2 2 3 3 3
+/projects/:slug   1 2 2 2
+```
+
+**AC3 —** ningún `alt` ausente, ninguno con el nombre del archivo, ninguno diciendo "imagen".
+
+**AC4 — contraste: cero pares por debajo de AA**, midiendo 218 textos reales entre las cuatro vistas y
+los dos temas.
+
+**AC5 — áreas táctiles:** cero controles por debajo de 44×44 px, en 4 anchos × 4 vistas.
+
+### Dos "fallas" de contraste que eran mi medición, no el sitio
+
+La primera pasada reportó `.chip-lead` en 2.26:1 y `.milestone-tag.is-now` en **1:1** — un texto del
+mismo color que su fondo, lo que habría sido invisible.
+
+No era eso. Los dos usan `--color-accent-soft`, que es `rgba(255, 121, 72, 0.12)`, y mi extractor leía
+los tres primeros números y descartaba el alfa: medía texto naranja sobre **naranja pleno** en lugar de
+sobre un velo del 12 % encima del fondo real. De ahí el 1:1.
+
+Corregido componiendo la pila completa de fondos desde la raíz —un rgba sobre otro rgba se acumula— las
+mismas mediciones dan **cero fallas**. Un número imposible como 1:1 es la señal de que el instrumento
+está mal, no el sitio.
+
+### Dos defectos reales, encontrados midiendo
+
+**1. El skip link no movía el foco.** Al activarlo, la URL cambiaba a `#main` y el scroll saltaba, pero
+el foco se quedaba en el `<body>`: un elemento sin `tabindex` no puede recibirlo. Quien navega con
+lector de pantalla activaba el atajo y **seguía leyendo desde el principio**, que es justo lo que el
+atajo evita. Corregido con `tabindex="-1"` en `<main>`, que lo hace enfocable por programa sin sumarlo
+al orden de `Tab`, más `main:focus { outline: none }` porque no es un control.
+
+```
+antes:   hash "#main"   foco en BODY
+despues: hash "#main"   foco en main   anillo: none
+```
+
+**2. Dos fallos de WCAG 2.5.3 (Label in Name)**, que ningún recorrido visual muestra:
+
+- Las **cards de contacto** tenían `aria-label="Escribime por WhatsApp"` sobre un texto visible
+  "+54 11 3432-3271". El nombre accesible tiene que **contener** el texto visible: quien maneja el
+  sitio por voz dice lo que ve y el comando no encuentra el control. Quitado el atributo, el nombre
+  sale del contenido —"WhatsApp +54 11 3432-3271"— y coincide exactamente.
+- El **botón de idioma** tenía el mismo problema con "ES / EN". Anteponer el texto visible al
+  `aria-label` **no alcanzó** —la comparación no es literal—; se resolvió sacando el atributo y
+  poniendo un `.sr-only` dentro del botón, así el nombre se compone del mismo recorrido del DOM del que
+  sale el texto visible y contenerlo es automático.
+
+### Lighthouse es el piso
+
+Los dos defectos de arriba: el primero Lighthouse **no lo detecta** —recorrer el foco no está
+automatizado— y el segundo sí. AC6 pide 95 y el sitio da 100, pero los AC1 a AC5 son los que se
+verificaron a mano y son los que importan.
 
 ### File List

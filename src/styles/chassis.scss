@@ -258,5 +258,18 @@
    La regla vive acá y no en App.vue: depende de --header-h, que es del
    chasis, y estando en el mismo archivo la media query de la excepcion
    temporal puede pisarla sin depender del orden de imports. */
-#main { padding-top: var(--header-h); }
+/* El padding despeja el header fijo. El min-height reserva la altura de la
+   vista antes de que llegue: las cuatro se cargan diferidas, asi que entre el
+   primer pintado y el montaje `main` esta VACIO y el pie queda justo debajo
+   del header — visible, arriba de todo. Cuando la vista monta, el pie se va
+   al fondo.
+
+   Medido: un unico desplazamiento de 0.1706 a los 2053 ms, con `.site-footer`
+   moviendose de y=72 a y=0. Era el 100% del CLS de la Home, muy por encima
+   del 0.1 que pide M4. Reservando el viewport, el pie arranca abajo del
+   pliegue y el movimiento deja de ocurrir dentro de la ventana. */
+#main {
+  padding-top: var(--header-h);
+  min-height: 100svh;
+}
 

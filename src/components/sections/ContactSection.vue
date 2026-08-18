@@ -16,7 +16,6 @@
             v-reveal="{ delay: i * 70 }"
             :href="canal.href"
             v-bind="atributosDeEnlace(canal)"
-            :aria-label="textos(canal).aria"
           >
             <AppIcon :name="canal.icon" size="lg" />
             <span class="contact-label">{{ textos(canal).label }}</span>
@@ -37,7 +36,18 @@ import { atributosDeEnlace } from '@/content/contact';
 
 /* Sin formulario, y no por simplificar: FR-24 pide enlaces directos y el PRD
    excluye del alcance el backend. Un formulario sin backend necesitaria un
-   servicio de terceros —Formspree, EmailJS— que ademas contradice D14. */
+   servicio de terceros —Formspree, EmailJS— que ademas contradice D14.
+
+   Las cards NO llevan aria-label. Lo tenian —"Escribime por WhatsApp"— y
+   Lighthouse lo marco: WCAG 2.5.3 (Label in Name) pide que el nombre
+   accesible CONTENGA el texto visible, y "Escribime por WhatsApp" no contiene
+   "+54 11 3432-3271". Quien maneja el sitio por voz dice lo que ve y el
+   comando no encuentra el control.
+
+   Sin el atributo, el nombre accesible sale del contenido —"WhatsApp
+   +54 11 3432-3271"— y coincide exactamente con lo que se ve. Los iconos del
+   pie SI conservan su aria-label porque no tienen texto visible, y ahi 2.5.3
+   no aplica. */
 
 defineProps({
   channels: { type: Array, required: true },
