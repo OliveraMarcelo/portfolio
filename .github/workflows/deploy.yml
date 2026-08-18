@@ -136,6 +136,27 @@ jobs:
             # El deploy no puede darse por bueno sin comprobar que el sitio
             # responde con la version que se acaba de publicar. Antes decia
             # "Deploy exitoso" sin verificar nada.
+            echo "──── certificado que presenta el origen ────"
+            # Si el certificado esta vencido, Cloudflare en modo Full (strict)
+            # RECHAZA la conexion al origen y sirve una copia vieja. Desde
+            # afuera se ve un 200 normal, porque el certificado que valida el
+            # navegador es el de Cloudflare, no el nuestro.
+            #
+            # Ojo con el metodo: verificar con `curl -k` desde el propio
+            # servidor NO detecta esto, porque -k saltea justamente la
+            # validacion que Cloudflare si hace.
+            openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -dates -subject 2>&1 | sed 's/^/  /' || echo "  (no se pudo leer el certificado)"
+            printf "  vencido? "
+            if openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -checkend 0 >/dev/null 2>&1; then
+              echo "no, sigue vigente"
+            else
+              echo "SI — Cloudflare no puede validar el origen"
+            fi
+
+            echo "──── handshake TLS contra el propio origen, validando ────"
+            curl -s -o /dev/null -w "  con validacion: %{http_code} (%{ssl_verify_result})\n" \
+              --resolve marcecode.com:443:127.0.0.1 https://marcecode.com/ 2>&1 || echo "  la conexion validada FALLA"
+
             echo "──── que devuelve el dominio publico vs este servidor ────"
             printf "  desde este servidor:  %s\n" "$(curl -sk https://localhost/ -H 'Host: marcecode.com' | grep -o '<title>[^<]*</title>' || echo '(sin respuesta)')"
             printf "  desde el dominio:     %s\n" "$(curl -s https://marcecode.com/ | grep -o '<title>[^<]*</title>' || echo '(sin respuesta)')"
