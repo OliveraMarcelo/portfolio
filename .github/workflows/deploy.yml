@@ -72,9 +72,30 @@ jobs:
               apt-get update -qq && apt-get install -y certbot
             fi
 
-            # Obtener certificado si no existe (standalone: libera el puerto 80 brevemente)
+            # El certificado se pide si NO EXISTE o si le quedan menos de 30 dias.
+            #
+            # Antes la condicion era solo la existencia del archivo, y por eso
+            # el sitio estuvo sirviendo una copia vieja: el certificado vencio
+            # el 31 de julio de 2026, el archivo seguia ahi, el deploy lo
+            # saltaba, y Cloudflare —que valida el origen— dejaba de poder
+            # conectarse y servia contenido cacheado del 10 de mayo. Desde
+            # afuera se veia un 200 normal, porque el certificado que valida el
+            # navegador es el de Cloudflare, no el nuestro.
+            NECESITA_CERT=0
             if [ ! -f "/etc/letsencrypt/live/marcecode.com/fullchain.pem" ]; then
-              # Detener todos los containers que ocupen el puerto 80
+              echo "No hay certificado: se pide uno nuevo."
+              NECESITA_CERT=1
+            elif ! openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -checkend 2592000 >/dev/null 2>&1; then
+              echo "El certificado vence en menos de 30 dias: se renueva."
+              openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -dates | sed 's/^/  /'
+              NECESITA_CERT=1
+            else
+              echo "Certificado vigente:"
+              openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -enddate | sed 's/^/  /'
+            fi
+
+            if [ "$NECESITA_CERT" = "1" ]; then
+              # standalone necesita el puerto 80, que el propio container ocupa
               docker ps -q --filter "publish=80" | xargs -r docker stop
               docker compose -f /opt/portfolio/docker-compose.prod.yml down 2>/dev/null || true
               certbot certonly --standalone \
@@ -82,12 +103,21 @@ jobs:
                 --email $LE_EMAIL \
                 --agree-tos \
                 --no-eff-email \
-                --non-interactive
+                --non-interactive \
+                --force-renewal
+              echo "Certificado nuevo:"
+              openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -dates | sed 's/^/  /'
             fi
 
-            # Renovación automática vía cron (si no está ya)
-            (crontab -l 2>/dev/null | grep -q 'certbot renew') || \
-              (crontab -l 2>/dev/null; echo "0 3 * * * certbot renew --quiet --deploy-hook 'docker compose -f /opt/portfolio/docker-compose.prod.yml exec -T portfolio nginx -s reload'") | crontab -
+            # Renovacion automatica. El cron anterior corria `certbot renew` a
+            # secas: standalone necesita el puerto 80 y el container lo ocupa,
+            # asi que la renovacion venia fallando en silencio desde que el
+            # stack pasa a publicar los puertos directo. De ahi que el
+            # certificado llegara a vencerse.
+            #
+            # Los hooks bajan y suben el stack alrededor de la renovacion.
+            crontab -l 2>/dev/null | grep -v 'certbot renew' | crontab - 2>/dev/null || true
+            (crontab -l 2>/dev/null; echo "0 3 * * * certbot renew --quiet --standalone --pre-hook 'docker compose -f /opt/portfolio/docker-compose.prod.yml down' --post-hook 'docker compose -f /opt/portfolio/docker-compose.prod.yml up -d'") | crontab -
 
             cd /opt/portfolio
 
@@ -162,13 +192,25 @@ jobs:
             printf "  desde el dominio:     %s\n" "$(curl -s https://marcecode.com/ | grep -o '<title>[^<]*</title>' || echo '(sin respuesta)')"
 
             echo "──── verificando el sitio ────"
+            rm -f /tmp/publicado.html
+            # SIN -k, y resolviendo el dominio contra el propio servidor: es la
+            # misma validacion que hace Cloudflare. Con -k, un certificado
+            # vencido pasaba el chequeo y el deploy se daba por bueno mientras
+            # el sitio publico servia una copia de hace tres meses.
             for i in $(seq 1 15); do
-              if curl -skf https://localhost/ -H 'Host: marcecode.com' -o /tmp/publicado.html; then break; fi
+              if curl -sf --resolve marcecode.com:443:127.0.0.1 https://marcecode.com/ -o /tmp/publicado.html; then break; fi
               sleep 2
             done
 
+            if [ ! -s /tmp/publicado.html ]; then
+              echo "FALLO: el origen no acepta una conexion TLS validada."
+              echo "Cloudflare tampoco va a poder, y va a servir contenido viejo."
+              openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -dates | sed 's/^/  /' || true
+              exit 1
+            fi
+
             if grep -q '<title>Marcelo Olivera' /tmp/publicado.html; then
-              echo "OK: el sitio responde con la version nueva"
+              echo "OK: el sitio responde con la version nueva, con TLS validado"
             else
               echo "FALLO: el sitio responde, pero no con la version esperada"
               echo "titulo servido:"; grep -o '<title>[^<]*</title>' /tmp/publicado.html || echo '(sin title)'
