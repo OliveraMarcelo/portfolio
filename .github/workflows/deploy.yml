@@ -98,15 +98,33 @@ jobs:
               # standalone necesita el puerto 80, que el propio container ocupa
               docker ps -q --filter "publish=80" | xargs -r docker stop
               docker compose -f /opt/portfolio/docker-compose.prod.yml down 2>/dev/null || true
-              certbot certonly --standalone \
-                -d marcecode.com \
-                --email $LE_EMAIL \
-                --agree-tos \
-                --no-eff-email \
-                --non-interactive \
-                --force-renewal
-              echo "Certificado nuevo:"
-              openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -dates | sed 's/^/  /'
+
+              # El fallo de la renovacion NO puede tumbar el deploy: con `set -e`
+              # el script cortaba justo despues del `down`, y el sitio quedaba
+              # sin container. Un certificado vencido es un problema; dejar el
+              # servidor apagado es peor.
+              if certbot certonly --standalone \
+                   -d marcecode.com \
+                   --email $LE_EMAIL \
+                   --agree-tos \
+                   --no-eff-email \
+                   --non-interactive; then
+                echo "Certificado renovado:"
+                openssl x509 -in /etc/letsencrypt/live/marcecode.com/fullchain.pem -noout -dates | sed 's/^/  /'
+              else
+                echo "AVISO: no se pudo renovar el certificado. El deploy sigue."
+                echo "El desafio HTTP-01 no puede funcionar con el proxy de"
+                echo "Cloudflare activo: Let's Encrypt pide"
+                echo "  http://marcecode.com/.well-known/acme-challenge/..."
+                echo "y Cloudflare responde con su copia cacheada del sitio en"
+                echo "lugar de reenviar el pedido al origen. Se necesita una de"
+                echo "estas tres, y las tres se hacen en el panel de Cloudflare:"
+                echo "  1. un Origin Certificate de Cloudflare (dura 15 anios,"
+                echo "     no se renueva nunca mas)"
+                echo "  2. el desafio DNS-01 con un token de API"
+                echo "  3. desactivar el proxy (nube gris) el rato que dura la"
+                echo "     renovacion"
+              fi
             fi
 
             # Renovacion automatica. El cron anterior corria `certbot renew` a
@@ -159,6 +177,10 @@ jobs:
             # El deploy reportaba exito y en produccion no cambiaba nada.
             docker compose -f docker-compose.prod.yml down --remove-orphans
             docker compose -f docker-compose.prod.yml up -d
+
+            # A partir de aca el stack tiene que quedar arriba pase lo que pase:
+            # cualquier salida por error levanta el container antes de irse.
+            trap 'docker compose -f /opt/portfolio/docker-compose.prod.yml up -d || true' EXIT
 
             echo "──── estado despues del deploy ────"
             docker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
