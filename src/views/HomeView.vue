@@ -4,12 +4,9 @@
 
     <section class="section" id="proyectos" aria-labelledby="titulo-destacados">
       <div class="container">
-        <header class="section-head">
-          <h2 class="section-title" id="titulo-destacados" v-reveal>
-            {{ t('home.destacadosTitulo') }}<span class="dot" aria-hidden="true">.</span>
-          </h2>
-          <p class="section-lede" v-reveal="{ delay: 70 }">{{ t('home.destacadosLede') }}</p>
-        </header>
+        <SectionHeading id="titulo-destacados" :title="t('home.destacadosTitulo')">
+          {{ t('home.destacadosLede') }}
+        </SectionHeading>
 
         <ProjectGrid :items="destacados" :heading-level="3" />
 
@@ -22,11 +19,47 @@
       </div>
     </section>
 
-    <!-- Las secciones que siguen conservan los componentes viejos hasta que
-         su historia las reemplace: habilidades en la 5.4, trayectoria en la
-         5.5 y contacto en la 6.2. -->
-    <SkillList />
-    <MyStory />
+    <section class="section section-alt" id="stack" aria-labelledby="titulo-stack">
+      <div class="container">
+        <SectionHeading id="titulo-stack" :title="t('habilidades.titulo')">
+          {{ t('habilidades.lede') }}
+        </SectionHeading>
+
+        <SkillGrid :groups="skills" />
+      </div>
+    </section>
+
+    <section class="section" id="trayectoria" aria-labelledby="titulo-trayectoria">
+      <div class="container">
+        <SectionHeading
+          id="titulo-trayectoria"
+          :kicker="t('trayectoria.kicker')"
+          :title="t('trayectoria.titulo')"
+        />
+
+        <!-- La Home resume: solo los hitos de trabajo. Quien filtra es la
+             vista, no el componente — mismo criterio que ProjectGrid y
+             SkillGrid. TimelineItem es el MISMO de Sobre mi. -->
+        <ol class="timeline">
+          <span class="timeline-rail" aria-hidden="true"><span class="timeline-progress"></span></span>
+          <TimelineItem
+            v-for="(hito, i) in trayectoriaLaboral"
+            :key="hito.id"
+            v-reveal="{ delay: i * 70 }"
+            :item="hito"
+          />
+        </ol>
+
+        <p class="section-foot" v-reveal>
+          <RouterLink class="link-arrow" to="/about">
+            {{ t('home.verTrayectoria') }}
+            <AppIcon name="arrow" />
+          </RouterLink>
+        </p>
+      </div>
+    </section>
+
+    <!-- El contacto llega en la historia 6.2 y es la ultima seccion. -->
   </div>
 </template>
 
@@ -37,9 +70,12 @@ import { RouterLink } from 'vue-router';
 import HeroSection from '@/components/sections/HeroSection.vue';
 import ProjectGrid from '@/components/sections/ProjectGrid.vue';
 import AppIcon from '@/components/ui/AppIcon.vue';
-import SkillList from '@/components/skills/SkillList.vue';
-import MyStory from '@/components/stories/MyStory.vue';
+import SkillGrid from '@/components/sections/SkillGrid.vue';
+import SectionHeading from '@/components/ui/SectionHeading.vue';
+import TimelineItem from '@/components/sections/TimelineItem.vue';
 import { projects } from '@/content/projects';
+import { skills } from '@/content/skills';
+import { timeline } from '@/content/timeline';
 
 /* El IntersectionObserver local que agregaba `.loaded` se elimino: lo
    reemplaza la directiva v-reveal de la historia 2.7. Dos observers
@@ -54,4 +90,8 @@ const { t } = useI18n();
    proyecto sin pensarlo la Home mostraria cuatro sin que nadie toque esta
    vista. Convierte el requisito en una garantia estructural. */
 const destacados = computed(() => projects.filter((p) => p.featured).slice(0, 3));
+
+/* El resumen de la Home muestra la trayectoria laboral; el detalle completo
+   —formacion y perfil personal incluidos— vive en Sobre mi. */
+const trayectoriaLaboral = computed(() => timeline.filter((h) => h.type === 'work'));
 </script>

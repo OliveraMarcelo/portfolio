@@ -1,6 +1,6 @@
 # Story 5.4: Habilidades agrupadas por categoría
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -42,48 +42,48 @@ so that pueda comparar rápido contra lo que estoy buscando.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Decidir los íconos** (AC: #3)
-  - [ ] La historia 5.1 dejó un campo `icon` en `skills.js` con el nombre previsto y la decisión pendiente
-  - [ ] Sumar al sprite de `AppSprite.vue` los símbolos de tecnología que falten, en el mismo estilo de trazo (ver §Los íconos de tecnología no están en el sprite)
-  - [ ] IDs con el prefijo `i-`, como el resto: `i-vue`, `i-docker`
-  - [ ] **No** uses los PNG de `src/assets/icons/`
+- [x] **Tarea 1 — Decidir los íconos** (AC: #3)
+  - [x] La historia 5.1 dejó un campo `icon` en `skills.js` con el nombre previsto y la decisión pendiente
+  - [x] Sumar al sprite de `AppSprite.vue` los símbolos de tecnología que falten, en el mismo estilo de trazo (ver §Los íconos de tecnología no están en el sprite)
+  - [x] IDs con el prefijo `i-`, como el resto: `i-vue`, `i-docker`
+  - [x] **No** uses los PNG de `src/assets/icons/`
 
-- [ ] **Tarea 2 — Construir `SkillGrid.vue`** (AC: #1)
-  - [ ] Prop `groups` (Object o Array): los grupos de `src/content/skills.js`
-  - [ ] Estructura: `.stack-groups` → un `.stack-group` por categoría → `.stack-group-title` + `.skill-list` → un `.skill` por ítem
-  - [ ] La etiqueta del grupo sale de los locales; el nombre de la tecnología, del módulo
-  - [ ] Estilos portados de `home/page.css` (líneas 442–496)
+- [x] **Tarea 2 — Construir `SkillGrid.vue`** (AC: #1)
+  - [x] Prop `groups` (Object o Array): los grupos de `src/content/skills.js`
+  - [x] Estructura: `.stack-groups` → un `.stack-group` por categoría → `.stack-group-title` + `.skill-list` → un `.skill` por ítem
+  - [x] La etiqueta del grupo sale de los locales; el nombre de la tecnología, del módulo
+  - [x] Estilos portados de `home/page.css` (líneas 442–496)
 
-- [ ] **Tarea 3 — Revelado escalonado** (AC: #2)
-  - [ ] `v-reveal` a nivel de grupo o de ítem, con retardo creciente
-  - [ ] Reutilizar el mismo mecanismo de custom property que las historias 3.3 y 4.7
-  - [ ] Con movimiento reducido, todos visibles de inmediato
+- [x] **Tarea 3 — Revelado escalonado** (AC: #2)
+  - [x] `v-reveal` a nivel de grupo o de ítem, con retardo creciente
+  - [x] Reutilizar el mismo mecanismo de custom property que las historias 3.3 y 4.7
+  - [x] Con movimiento reducido, todos visibles de inmediato
 
-- [ ] **Tarea 4 — Micro-interacción** (AC: #3, #5)
-  - [ ] `.skill:hover .ico { transform: rotate(6deg) scale(1.08) }` con `--ease-spring`
-  - [ ] Solo `transform` y `color` (NFR-02)
-  - [ ] Con movimiento reducido, sin rotación ni escala
+- [x] **Tarea 4 — Micro-interacción** (AC: #3, #5)
+  - [x] `.skill:hover .ico { transform: rotate(6deg) scale(1.08) }` con `--ease-spring`
+  - [x] Solo `transform` y `color` (NFR-02)
+  - [x] Con movimiento reducido, sin rotación ni escala
 
-- [ ] **Tarea 5 — Montar en las dos vistas** (AC: #1)
-  - [ ] `HomeView.vue`: sección de habilidades, tercera según FR-08
-  - [ ] `AboutView.vue`: la sección de habilidades que hoy está comentada
-  - [ ] **El mismo componente en las dos**, sin variantes duplicadas (ver §El mismo componente en Home y en Sobre mí)
+- [x] **Tarea 5 — Montar en las dos vistas** (AC: #1)
+  - [x] `HomeView.vue`: sección de habilidades, tercera según FR-08
+  - [x] `AboutView.vue`: la sección de habilidades que hoy está comentada
+  - [x] **El mismo componente en las dos**, sin variantes duplicadas (ver §El mismo componente en Home y en Sobre mí)
 
-- [ ] **Tarea 6 — Eliminar los componentes viejos** (AC: #4)
-  - [ ] Borrar `src/components/skills/SkillList.vue` y `src/components/skills/ItemSkill.vue`
-  - [ ] Descomentar y reemplazar el `<!-- <SkillList/> -->` de `AboutView.vue`
-  - [ ] Borrar los PNG de tecnología que queden sin uso
-  - [ ] Verificar por `grep` que nada los referencia
+- [x] **Tarea 6 — Eliminar los componentes viejos** (AC: #4)
+  - [x] Borrar `src/components/skills/SkillList.vue` y `src/components/skills/ItemSkill.vue`
+  - [x] Descomentar y reemplazar el `<!-- <SkillList/> -->` de `AboutView.vue`
+  - [x] Borrar los PNG de tecnología que queden sin uso
+  - [x] Verificar por `grep` que nada los referencia
 
-- [ ] **Tarea 7 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Los tres grupos con sus ítems reales, en las dos vistas
-  - [ ] Comparar la firma del DOM entre la Home y Sobre mí
-  - [ ] El revelado escalonado se ve
-  - [ ] El hover rota y escala el ícono
-  - [ ] Los íconos cambian de color al alternar el tema
-  - [ ] Con movimiento reducido: visibles, sin movimiento
-  - [ ] Verificar en 390 px y 1280 px, en los tres estados de tema
+- [x] **Tarea 7 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Los tres grupos con sus ítems reales, en las dos vistas
+  - [x] Comparar la firma del DOM entre la Home y Sobre mí
+  - [x] El revelado escalonado se ve
+  - [x] El hover rota y escala el ícono
+  - [x] Los íconos cambian de color al alternar el tema
+  - [x] Con movimiento reducido: visibles, sin movimiento
+  - [x] Verificar en 390 px y 1280 px, en los tres estados de tema
 
 ## Dev Notes
 
@@ -256,8 +256,58 @@ src/locales/{es,en}.json                   MODIFICADO — etiquetas de grupo y t
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 — los tres grupos, medidos:**
+
+```
+FRONTEND  HTML · CSS · JavaScript · Vue · React · Flutter
+BACKEND   Node.js · Express · SQL/NoSQL
+TOOLS     Git · Docker
+```
+
+Exactamente los del PRD §7.5, ni uno más.
+
+**AC2 —** revelado escalonado por grupo con `v-reveal`, paso 70 ms.
+
+**AC3 —** `.skill:hover .ico` con `rotate(6deg) scale(1.08)` en `--ease-spring`; solo `transform` y
+`color`.
+
+**AC4 —** `SkillList.vue` e `ItemSkill.vue` eliminados, y con ellos los seis PNG de tecnología.
+
+**AC5 —** con movimiento reducido, los tres grupos visibles y la transición del ícono en 0.01 ms.
+
+### La decisión de los íconos: se dibujaron once símbolos
+
+La historia 5.1 dejó abierta la elección entre sumar símbolos al sprite, quedarse sin íconos o usar los
+PNG. **Se eligió sumarlos al sprite**, y son abstracciones monocromas de trazo, no los logos oficiales:
+el sprite es `fill: none` con `stroke: currentColor`, y un logo de marca —de relleno y multicolor—
+metido ahí se vería de otro material que el resto y dejaría de seguir el color del tema, que es todo el
+punto de D9.
+
+Once símbolos nuevos: `i-html`, `i-css`, `i-javascript`, `i-vue`, `i-react`, `i-flutter`, `i-node`,
+`i-express`, `i-database`, `i-git`, `i-docker`.
+
+Y se verificó lo que la historia advertía, porque **un `<use>` a un ID inexistente renderiza un SVG
+vacío sin ningún error en consola**:
+
+```
+símbolos usados: 11      que no existen: []      con caja de tamaño cero: 0
+color heredado del tema: rgb(90, 98, 112)
+```
+
+Medir la caja es lo que detecta el símbolo faltante; la consola no dice nada.
+
+### El mismo componente en las dos vistas
+
+La firma del DOM de `.stack-groups` en la Home y en Sobre mí es **idéntica**. Es el mismo componente con
+los mismos datos: si alguna vista tuviera que mostrar menos, filtraría lo que le pasa por props.
+
+### `--ease-spring` es para esto y no para lo otro
+
+`cubic-bezier(0.34, 1.56, 0.64, 1)` sobrepasa y vuelve. Va en la micro-interacción del ícono (A7), no en
+el revelado ni en el hover de la card, que llevan `--ease-out`.
 
 ### File List

@@ -19,7 +19,6 @@ import './styles/chassis.scss'
 import './styles/animations.scss'
 import './styles/sections.scss'
 import './styles/components.scss'
-import './styles/sass/main.scss'
 
 import App from './App.vue'
 import reveal from './directives/reveal'

@@ -33,7 +33,8 @@
     "helloIm": "Hola soy",
     "developer": "Developer",
     "aboutMeDesc": "Soy un apasionado desarrollador web con experiencia en front-end y back-end. Me encanta crear aplicaciones web increíbles y resolver problemas desafiantes.",
-    "downloadCV": "Descargar CV"
+    "downloadCV": "Descargar CV",
+    "cerrar": "Cerrar"
   },
   "meta": {
     "home": {
@@ -78,6 +79,34 @@
   "home": {
     "destacadosTitulo": "Proyectos",
     "destacadosLede": "Tres cosas que están corriendo, no ejercicios de curso.",
-    "verTodos": "Ver todos los proyectos"
+    "verTodos": "Ver todos los proyectos",
+    "verTrayectoria": "Ver la trayectoria completa"
+  },
+  "trayectoria": {
+    "kicker": "Trayectoria",
+    "titulo": "Cómo llegué hasta acá",
+    "ongoing": "Actualidad",
+    "completed": "Completado",
+    "always": "Siempre",
+    "hasta": "actualidad",
+    "aria": "Línea de tiempo de mi trayectoria"
+  },
+  "habilidades": {
+    "titulo": "Mis habilidades",
+    "lede": "Lo que uso todos los días y lo que sé mover cuando hace falta.",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "tools": "Herramientas"
+  },
+  "sobreMi": {
+    "titulo": "Sobre mí",
+    "lede": "Desarrollar sitios web hermosos y funcionales es lo que amo hacer, y por eso doy lo mejor de mí en cada nuevo desafío."
+  },
+  "certificado": {
+    "kicker": "Certificación",
+    "titulo": "Certificado Full Stack Developer",
+    "nota": "El programa completo: fundamentos de la web, JavaScript, back-end con Node.js y Express, React y bases de datos. Ampliá la imagen para verlo en detalle.",
+    "pie": "Digital House · Full Stack Developer",
+    "alt": "Certificado Full Stack Developer — Digital House"
   }
 }

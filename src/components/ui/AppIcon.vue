@@ -11,6 +11,9 @@
 export const ICONOS = [
   'moon', 'sun', 'menu', 'close', 'arrow',
   'external', 'github', 'whatsapp', 'mail', 'linkedin', 'code',
+  /* Tecnologias (historia 5.4). */
+  'html', 'css', 'javascript', 'vue', 'react', 'flutter',
+  'node', 'express', 'database', 'git', 'docker',
 ];
 </script>
 

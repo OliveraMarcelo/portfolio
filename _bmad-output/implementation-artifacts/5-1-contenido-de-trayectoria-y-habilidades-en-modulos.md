@@ -1,6 +1,6 @@
 # Story 5.1: Contenido de trayectoria y habilidades en módulos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -36,26 +36,26 @@ so that actualizarlas no implique tocar el diseño.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Crear `timeline.js`** (AC: #1, #2)
-  - [ ] Array ordenado cronológicamente; el orden del array **es** el orden de presentación
-  - [ ] Campos por hito: `id`, `type`, `period: { from, to }`, e `i18n` con `role`, `org` y `text` por idioma
-  - [ ] `to: null` en el hito en curso; nunca la cadena `"actualidad"` ni `"presente"` (ver §El período es un dato, no un texto)
-  - [ ] Contenido real de la tabla de §Los hitos reales
+- [x] **Tarea 1 — Crear `timeline.js`** (AC: #1, #2)
+  - [x] Array ordenado cronológicamente; el orden del array **es** el orden de presentación
+  - [x] Campos por hito: `id`, `type`, `period: { from, to }`, e `i18n` con `role`, `org` y `text` por idioma
+  - [x] `to: null` en el hito en curso; nunca la cadena `"actualidad"` ni `"presente"` (ver §El período es un dato, no un texto)
+  - [x] Contenido real de la tabla de §Los hitos reales
 
-- [ ] **Tarea 2 — Crear `skills.js`** (AC: #3)
-  - [ ] Tres grupos: `frontend`, `backend`, `tools`
-  - [ ] Cada grupo con su etiqueta traducible y su lista de ítems
-  - [ ] Cada ítem con `name` y el nombre del ícono del sprite si existe (ver §Los íconos de habilidad y el sprite)
+- [x] **Tarea 2 — Crear `skills.js`** (AC: #3)
+  - [x] Tres grupos: `frontend`, `backend`, `tools`
+  - [x] Cada grupo con su etiqueta traducible y su lista de ítems
+  - [x] Cada ítem con `name` y el nombre del ícono del sprite si existe (ver §Los íconos de habilidad y el sprite)
 
-- [ ] **Tarea 3 — Etiquetas de grupo en los locales** (AC: #3, #4)
-  - [ ] "Frontend", "Backend" y "Herramientas" / "Tools" van a `src/locales/{es,en}.json`
-  - [ ] Los nombres de las tecnologías —Vue, Docker, SQL— **no** se traducen y van en el módulo
+- [x] **Tarea 3 — Etiquetas de grupo en los locales** (AC: #3, #4)
+  - [x] "Frontend", "Backend" y "Herramientas" / "Tools" van a `src/locales/{es,en}.json`
+  - [x] Los nombres de las tecnologías —Vue, Docker, SQL— **no** se traducen y van en el módulo
 
-- [ ] **Tarea 4 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Paridad ES/EN en todos los hitos (ver §Comandos de verificación)
-  - [ ] Confirmar que ningún hito usa texto para el período
-  - [ ] Confirmar que el contenido coincide con el PRD y no hay nada inventado
+- [x] **Tarea 4 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Paridad ES/EN en todos los hitos (ver §Comandos de verificación)
+  - [x] Confirmar que ningún hito usa texto para el período
+  - [x] Confirmar que el contenido coincide con el PRD y no hay nada inventado
 
 ## Dev Notes
 
@@ -220,8 +220,50 @@ src/locales/{es,en}.json     MODIFICADO — etiquetas de grupo y la palabra "act
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1/AC2/AC3 — los dos módulos, medidos en Node:**
+
+```
+hitos: 7            tipos: work, education, personal      estados: ongoing, completed, always
+paridad ES/EN en role/org/text: true
+ningún período es texto: true
+grupos de skills: frontend:6  backend:3  tools:2   (11 ítems, todos con `icon`)
+```
+
+**AC4 —** ningún texto de trayectoria ni de habilidades queda literal en un template.
+
+### Los años no están, y no se inventan
+
+El PRD no trae fechas. Los siete hitos quedan con `period: { from: null, to: null }` y un `TODO`
+visible por hito. **Una fecha inventada en un CV es peor que una fecha ausente.**
+
+Para no dejar la presentación vacía mientras tanto, cada hito lleva `status` —`ongoing`, `completed`,
+`always`— que es lo que **sí** se sabe y lo que el prototipo mostraba como texto ("Actualidad", "En
+curso", "Egresado", "Siempre"). `TimelineItem` muestra el rango cuando hay años y la etiqueta de estado
+cuando no. Cuando los años lleguen, `period` gana y `status` queda solo para los hitos personales, que
+genuinamente no tienen fecha.
+
+**Un dato que apareció al mirar la imagen del certificado:** está fechado en **abril de 2022**, así que
+el `to` de Digital House es 2022. Queda anotado en el módulo; falta el año de inicio.
+
+### El período es un dato y no un texto, por tres razones concretas
+
+1. **Se traduce solo.** "2023 — actualidad" y "2023 — present" son dos presentaciones del mismo dato.
+2. **Se puede ordenar.** Un array con años numéricos se ordena; uno con cadenas, no.
+3. **La etiqueta "En curso"** se deriva del dato, no de comparar contra una cadena.
+
+### Los íconos: el dato queda listo, la decisión visual va en la 5.4
+
+`skills.js` lleva `icon` con el nombre previsto del símbolo (`'vue'`, `'docker'`). No se usan los PNG de
+`src/assets/icons/`: no siguen el color del tema, que es el punto entero de D9, y en tema claro los
+logos de marca quedan ilegibles.
+
+### Las tecnologías no se traducen
+
+"Vue" es "Vue" en los dos idiomas, así que los nombres viven en el módulo y solo las **etiquetas de
+grupo** —"Herramientas" / "Tools"— van a los locales. Es la misma frontera de la historia 1.7.
 
 ### File List

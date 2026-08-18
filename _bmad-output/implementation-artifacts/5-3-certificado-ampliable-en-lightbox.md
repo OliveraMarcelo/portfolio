@@ -1,6 +1,6 @@
 # Story 5.3: Certificado ampliable en lightbox
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -43,46 +43,46 @@ so that pueda verificarlo sin descargar nada.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — La imagen** (AC: #1, #5)
-  - [ ] Convertir `src/assets/icons/image.png` a `src/assets/img/certificado.webp` (ver §La fuente es un PNG, no el PDF)
-  - [ ] Miniatura con `width`, `height`, `loading="lazy"`, `decoding="async"` y `alt` descriptivo
-  - [ ] Borrar `public/certificado.pdf` y `src/assets/icons/image.png` una vez verificado que nada los referencia
+- [x] **Tarea 1 — La imagen** (AC: #1, #5)
+  - [x] Convertir `src/assets/icons/image.png` a `src/assets/img/certificado.webp` (ver §La fuente es un PNG, no el PDF)
+  - [x] Miniatura con `width`, `height`, `loading="lazy"`, `decoding="async"` y `alt` descriptivo
+  - [x] Borrar `public/certificado.pdf` y `src/assets/icons/image.png` una vez verificado que nada los referencia
 
-- [ ] **Tarea 2 — `AppLightbox.vue`** (AC: #2, #3, #4)
-  - [ ] Prop `open` (Boolean) con `v-model:open`, o estado interno con eventos `open` / `close`
-  - [ ] Slot para el contenido, para que sirva a cualquier imagen y no solo al certificado
-  - [ ] Fondo atenuado que cierra al clic
-  - [ ] Botón de cierre con `aria-label` desde los locales y el ícono `i-close`
-  - [ ] Clases: `.lightbox` y las que porte de `sobre-mi/page.css`, normalizadas a kebab sin BEM
+- [x] **Tarea 2 — `AppLightbox.vue`** (AC: #2, #3, #4)
+  - [x] Prop `open` (Boolean) con `v-model:open`, o estado interno con eventos `open` / `close`
+  - [x] Slot para el contenido, para que sirva a cualquier imagen y no solo al certificado
+  - [x] Fondo atenuado que cierra al clic
+  - [x] Botón de cierre con `aria-label` desde los locales y el ícono `i-close`
+  - [x] Clases: `.lightbox` y las que porte de `sobre-mi/page.css`, normalizadas a kebab sin BEM
 
-- [ ] **Tarea 3 — Gestión del foco** (AC: #2, #3, #4)
-  - [ ] Al abrir: guardar `document.activeElement`, mover el foco al botón de cierre
-  - [ ] Al cerrar: devolver el foco al elemento guardado
-  - [ ] `Tab` contenido dentro del lightbox
-  - [ ] Reusar el patrón de la historia 2.4 (ver §El mismo patrón de foco que el menú mobile)
+- [x] **Tarea 3 — Gestión del foco** (AC: #2, #3, #4)
+  - [x] Al abrir: guardar `document.activeElement`, mover el foco al botón de cierre
+  - [x] Al cerrar: devolver el foco al elemento guardado
+  - [x] `Tab` contenido dentro del lightbox
+  - [x] Reusar el patrón de la historia 2.4 (ver §El mismo patrón de foco que el menú mobile)
 
-- [ ] **Tarea 4 — Bloquear el scroll del fondo** (AC: #2)
-  - [ ] `document.body.style.overflow = 'hidden'` con el lightbox abierto
-  - [ ] Restaurar al cerrar **y** en `onUnmounted`
+- [x] **Tarea 4 — Bloquear el scroll del fondo** (AC: #2)
+  - [x] `document.body.style.overflow = 'hidden'` con el lightbox abierto
+  - [x] Restaurar al cerrar **y** en `onUnmounted`
 
-- [ ] **Tarea 5 — Semántica de diálogo** (AC: #2, #4)
-  - [ ] `role="dialog"` y `aria-modal="true"` en el contenedor
-  - [ ] `aria-label` o `aria-labelledby` que lo nombre
-  - [ ] La miniatura es un `<button>`, no un `<div>` con `@click` (ver §La miniatura es un botón)
+- [x] **Tarea 5 — Semántica de diálogo** (AC: #2, #4)
+  - [x] `role="dialog"` y `aria-modal="true"` en el contenedor
+  - [x] `aria-label` o `aria-labelledby` que lo nombre
+  - [x] La miniatura es un `<button>`, no un `<div>` con `@click` (ver §La miniatura es un botón)
 
-- [ ] **Tarea 6 — Montar en la vista** (AC: #1, #2)
-  - [ ] `AboutView.vue` renderiza la miniatura del certificado y el `AppLightbox`
-  - [ ] El texto de contexto —"Certificado Full Stack Developer, Digital House"— por i18n
+- [x] **Tarea 6 — Montar en la vista** (AC: #1, #2)
+  - [x] `AboutView.vue` renderiza la miniatura del certificado y el `AppLightbox`
+  - [x] El texto de contexto —"Certificado Full Stack Developer, Digital House"— por i18n
 
-- [ ] **Tarea 7 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Abrir con clic y con `Enter` desde el teclado
-  - [ ] Cerrar por las tres vías y confirmar el retorno del foco en cada una
-  - [ ] Recorrer con `Tab` y confirmar la contención
-  - [ ] Confirmar que el `body` recupera el scroll
-  - [ ] Verificar en 390 px que la imagen ampliada cabe
-  - [ ] Con movimiento reducido: abre y cierra sin animación
-  - [ ] Confirmar que no queda rastro de `pdfjs-dist` ni del PDF
+- [x] **Tarea 7 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Abrir con clic y con `Enter` desde el teclado
+  - [x] Cerrar por las tres vías y confirmar el retorno del foco en cada una
+  - [x] Recorrer con `Tab` y confirmar la contención
+  - [x] Confirmar que el `body` recupera el scroll
+  - [x] Verificar en 390 px que la imagen ampliada cabe
+  - [x] Con movimiento reducido: abre y cierra sin animación
+  - [x] Confirmar que no queda rastro de `pdfjs-dist` ni del PDF
 
 ## Dev Notes
 
@@ -261,8 +261,59 @@ src/assets/icons/image.png             ELIMINADO
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 —** `image.png` (1097×796, 100 KB) → `certificado.webp` (1600×1161, **54 KB**). Miniatura con
+`width`, `height`, `loading="lazy"`, `decoding="async"` y `alt` descriptivo traducido.
+
+**AC2/AC3/AC4 — el lightbox, medido:**
+
+```
+miniatura: BUTTON   alt: "Full Stack Developer certificate — Digital House"
+al abrir:  role=dialog  aria-modal=true  aria-label=<el mismo texto>
+           foco en el botón de cierre: true       body.overflow: hidden
+Tab:       el foco sigue dentro: true
+clic sobre la imagen:  NO cierra
+Escape:    cierra · foco devuelto al disparador · body.overflow restaurado
+botón ✕:   cierra · foco devuelto
+clic fuera: cierra · foco devuelto
+```
+
+**AC5 —** `certificado.pdf` y `image.png` eliminados; sin rastro de `pdfjs-dist`.
+
+### La fuente era un PNG, no el PDF
+
+`MyStory.vue` ya renderizaba `image.png` con el `alt` "Certificado Full Stack Developer - Digital
+House". **Esa ya era la imagen del certificado**, así que no hizo falta rasterizar nada y el PDF se
+eliminó sin reemplazo.
+
+### Por qué no `<dialog>`
+
+El elemento nativo daría foco contenido y cierre con `Escape` sin escribir código, y aun así:
+
+- promueve el diálogo al **top layer**, un contexto de apilamiento fuera del árbol normal, y el contrato
+  de `z-index` del sitio —velo 90 < header 100 < panel 105— dejaría de aplicar. Ese contrato existe
+  porque su ausencia ya causó un defecto real en la historia 2.4;
+- el `::backdrop` se estiliza aparte y no hereda los tokens del tema igual.
+
+El lightbox va en 110, un escalón por encima del panel mobile, y el contrato sigue siendo explícito.
+
+### El clic sobre la imagen no cierra
+
+Escuchando el clic en toda la capa, un clic **sobre el certificado** también cerraría — justo cuando el
+visitante lo está mirando. El handler compara `event.target` contra el contenedor y contra el velo.
+
+### El foco reusa el composable de la 2.4
+
+`useFocusTrap` es el mismo, con el disparador pasado explícito: un `.click()` programático no mueve el
+foco y Safari no enfoca los `<button>` al hacer clic. Dos implementaciones del mismo comportamiento
+accesible es como aparecen inconsistencias que solo salen en auditoría.
+
+### `alt` en la miniatura, vacío en la ampliada
+
+El diálogo ya está nombrado con ese texto por su `aria-label`; repetirlo en la imagen lo anunciaría dos
+veces.
 
 ### File List

@@ -82,12 +82,12 @@ development_status:
   epic-4-retrospective: optional
 
   # Épica 5: Trayectoria y habilidades legibles de un vistazo
-  epic-5: ready-for-dev
-  5-1-contenido-de-trayectoria-y-habilidades-en-modulos: ready-for-dev
-  5-2-linea-de-tiempo-con-revelado-progresivo: ready-for-dev
-  5-3-certificado-ampliable-en-lightbox: ready-for-dev
-  5-4-habilidades-agrupadas-por-categoria: ready-for-dev
-  5-5-resumen-de-trayectoria-y-cv-en-la-home: ready-for-dev
+  epic-5: done
+  5-1-contenido-de-trayectoria-y-habilidades-en-modulos: done
+  5-2-linea-de-tiempo-con-revelado-progresivo: done
+  5-3-certificado-ampliable-en-lightbox: done
+  5-4-habilidades-agrupadas-por-categoria: done
+  5-5-resumen-de-trayectoria-y-cv-en-la-home: done
   epic-5-retrospective: optional
 
   # Épica 6: Contacto a un solo gesto

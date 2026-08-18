@@ -1,6 +1,6 @@
 # Story 5.2: Línea de tiempo con revelado progresivo
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -43,47 +43,47 @@ so that entienda el recorrido y no solo los datos sueltos.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Normalizar el vocabulario** (AC: #1)
-  - [ ] Usar las clases kebab de la tabla de §Dos vocabularios, uno canónico
-  - [ ] **No** portes las clases BEM de `sobre-mi/page.css` (`.timeline__axis`, `.timeline__item`, `.section__head`)
-  - [ ] Las primitivas de sección son las que la historia 3.1 promovió: `.section`, `.section-head`, `.section-title`
+- [x] **Tarea 1 — Normalizar el vocabulario** (AC: #1)
+  - [x] Usar las clases kebab de la tabla de §Dos vocabularios, uno canónico
+  - [x] **No** portes las clases BEM de `sobre-mi/page.css` (`.timeline__axis`, `.timeline__item`, `.section__head`)
+  - [x] Las primitivas de sección son las que la historia 3.1 promovió: `.section`, `.section-head`, `.section-title`
 
-- [ ] **Tarea 2 — `TimelineItem.vue`** (AC: #1)
-  - [ ] Prop `item` (Object, requerido): un hito de `src/content/timeline.js`
-  - [ ] Estructura: `.milestone` → `.milestone-node` + `.milestone-meta` (con `.milestone-tag`) + `.milestone-title` + `.milestone-org` + `.milestone-desc`
-  - [ ] Formatear el período desde `{ from, to }`; con `to === null`, la palabra "actualidad" sale de los locales y el tag recibe `.is-now`
-  - [ ] Prop `variant` derivada de `item.type` para diferenciar formación, experiencia y personal
+- [x] **Tarea 2 — `TimelineItem.vue`** (AC: #1)
+  - [x] Prop `item` (Object, requerido): un hito de `src/content/timeline.js`
+  - [x] Estructura: `.milestone` → `.milestone-node` + `.milestone-meta` (con `.milestone-tag`) + `.milestone-title` + `.milestone-org` + `.milestone-desc`
+  - [x] Formatear el período desde `{ from, to }`; con `to === null`, la palabra "actualidad" sale de los locales y el tag recibe `.is-now`
+  - [x] Prop `variant` derivada de `item.type` para diferenciar formación, experiencia y personal
 
-- [ ] **Tarea 3 — `TimelineSection.vue`** (AC: #1, #2)
-  - [ ] Prop `items` (Array): los hitos
-  - [ ] Estructura: `.timeline` → `.timeline-rail` con `.timeline-progress` + un `TimelineItem` por hito
-  - [ ] `v-reveal` en cada `TimelineItem`, con retardo escalonado
+- [x] **Tarea 3 — `TimelineSection.vue`** (AC: #1, #2)
+  - [x] Prop `items` (Array): los hitos
+  - [x] Estructura: `.timeline` → `.timeline-rail` con `.timeline-progress` + un `TimelineItem` por hito
+  - [x] `v-reveal` en cada `TimelineItem`, con retardo escalonado
 
-- [ ] **Tarea 4 — El progreso del eje** (AC: #2, #3)
-  - [ ] Un listener de `scroll` pasivo que calcula el avance y lo escribe en la custom property `--timeline-progress`
-  - [ ] `.timeline-progress` usa `transform: scaleY(var(--timeline-progress, 0))` con `transform-origin: top center`
-  - [ ] Clampear entre 0 y 1
-  - [ ] Leer las medidas **fuera** del handler o con cuidado (ver §El cálculo del avance sin matar los fps)
-  - [ ] Quitar el listener en `onUnmounted`
+- [x] **Tarea 4 — El progreso del eje** (AC: #2, #3)
+  - [x] Un listener de `scroll` pasivo que calcula el avance y lo escribe en la custom property `--timeline-progress`
+  - [x] `.timeline-progress` usa `transform: scaleY(var(--timeline-progress, 0))` con `transform-origin: top center`
+  - [x] Clampear entre 0 y 1
+  - [x] Leer las medidas **fuera** del handler o con cuidado (ver §El cálculo del avance sin matar los fps)
+  - [x] Quitar el listener en `onUnmounted`
 
-- [ ] **Tarea 5 — Movimiento reducido** (AC: #4)
-  - [ ] Si `useReducedMotion` indica preferencia reducida, fijar `--timeline-progress` en `1` y **no** registrar el listener
-  - [ ] Los hitos visibles de entrada por la defensa estructural de `.reveal` (historia 2.7)
+- [x] **Tarea 5 — Movimiento reducido** (AC: #4)
+  - [x] Si `useReducedMotion` indica preferencia reducida, fijar `--timeline-progress` en `1` y **no** registrar el listener
+  - [x] Los hitos visibles de entrada por la defensa estructural de `.reveal` (historia 2.7)
 
-- [ ] **Tarea 6 — Reescribir `AboutView.vue`** (AC: #1, #5)
-  - [ ] Sección de trayectoria con `TimelineSection` consumiendo `src/content/timeline.js`
-  - [ ] La `h1` de la vista es su título de sección; una sola
-  - [ ] Borrar `src/components/stories/MyStory.vue` y su `IntersectionObserver` local
-  - [ ] Conservar por ahora el certificado y las habilidades: son las historias 5.3 y 5.4
+- [x] **Tarea 6 — Reescribir `AboutView.vue`** (AC: #1, #5)
+  - [x] Sección de trayectoria con `TimelineSection` consumiendo `src/content/timeline.js`
+  - [x] La `h1` de la vista es su título de sección; una sola
+  - [x] Borrar `src/components/stories/MyStory.vue` y su `IntersectionObserver` local
+  - [x] Conservar por ahora el certificado y las habilidades: son las historias 5.3 y 5.4
 
-- [ ] **Tarea 7 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] Scrollear la línea de tiempo y ver el eje dibujarse
-  - [ ] Confirmar que llega a 1 al final y a 0 al principio
-  - [ ] Con movimiento reducido: eje completo, hitos legibles, sin listener
-  - [ ] Grabar el scroll en Performance y confirmar 60 fps
-  - [ ] Verificar en 390 px y 1280 px
-  - [ ] Confirmar que no quedan clases BEM
+- [x] **Tarea 7 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] Scrollear la línea de tiempo y ver el eje dibujarse
+  - [x] Confirmar que llega a 1 al final y a 0 al principio
+  - [x] Con movimiento reducido: eje completo, hitos legibles, sin listener
+  - [x] Grabar el scroll en Performance y confirmar 60 fps
+  - [x] Verificar en 390 px y 1280 px
+  - [x] Confirmar que no quedan clases BEM
 
 ## Dev Notes
 
@@ -275,8 +275,59 @@ eliminar.
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 —** siete hitos en una `<ol>`, no párrafos. Cero clases BEM en el documento.
+
+**AC2 — el eje, medido de punta a punta:**
+
+```
+arriba del bloque  --timeline-progress: 0.0000   ->  scaleY(0)
+a media altura                          0.5853
+al final                                1.0000   ->  scaleY(1)
+transform-origin: 0.5px 0px   (top center sobre un eje de 1px)
+```
+
+**AC3 —** solo `transform`; el eje se dibuja con `scaleY` y nunca con `height`.
+
+**AC4 — con `prefers-reduced-motion: reduce`**, emulado en el navegador:
+
+```
+--timeline-progress: 1     scaleY(1)     hitos visibles: true
+```
+
+y el listener de scroll **no se registra**.
+
+**AC5 —** `MyStory.vue` eliminado.
+
+### Una medición mía que era mentira
+
+Un primer intento leyó `scaleY(0.748)` con `--timeline-progress` ya en `1` y parecía un desfase. No lo
+era: `base.scss` declara `html { scroll-behavior: smooth }`, así que `window.scrollTo` **anima** durante
+cientos de milisegundos y el valor sigue cambiando mientras se lee. Con la espera correcta, 0 y 1
+exactos.
+
+### El cálculo del avance sin matar los fps
+
+`getBoundingClientRect()` fuerza layout y acá no hay forma de evitarlo: el avance *es* geometría. La
+mitigación son tres cosas, no una:
+
+1. listener `{ passive: true }`;
+2. **coalescido con `requestAnimationFrame`**, así se mide una vez por fotograma como máximo y no una
+   por evento de scroll;
+3. la altura del bloque —lo único que no cambia al scrollear— cacheada y recalculada solo en `resize`.
+
+El handler escribe **una** custom property y no toca clases ni nada que dispare layout.
+
+El ancla está al 55 % del viewport y no al borde: el eje va un poco adelantado respecto de lo que se
+está leyendo, que es lo que lo hace sentir una guía y no un rastro.
+
+### `.sr-only` subió a `base.scss`
+
+Es una utilidad general —la usan el lightbox y la Épica 7—, no de esta vista. Usa
+`clip-path: inset(50%)` y no `display: none`: esas dos sacan el texto también del árbol de
+accesibilidad, que es lo contrario de lo que se busca.
 
 ### File List

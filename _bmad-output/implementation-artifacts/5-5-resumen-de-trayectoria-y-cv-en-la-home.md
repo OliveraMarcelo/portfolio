@@ -1,6 +1,6 @@
 # Story 5.5: Resumen de trayectoria y CV en la Home
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -32,41 +32,41 @@ so that no tenga que navegar para saber dónde trabaja.
 
 ## Tasks / Subtasks
 
-- [ ] **Tarea 1 — Componente `SectionHeading.vue`** (AC: #3)
-  - [ ] Prop `level`: `1` | `2` | `3`, default `2` — determina si renderiza `h1`, `h2` o `h3`
-  - [ ] Prop `title` (String) y slot opcional para la bajada
-  - [ ] Clases `.section-head`, `.section-title` y `.section-lede`, promovidas en la historia 3.1
-  - [ ] Soportar el `.dot` en acento que el CSS del sistema estiliza (ver §El punto en acento)
+- [x] **Tarea 1 — Componente `SectionHeading.vue`** (AC: #3)
+  - [x] Prop `level`: `1` | `2` | `3`, default `2` — determina si renderiza `h1`, `h2` o `h3`
+  - [x] Prop `title` (String) y slot opcional para la bajada
+  - [x] Clases `.section-head`, `.section-title` y `.section-lede`, promovidas en la historia 3.1
+  - [x] Soportar el `.dot` en acento que el CSS del sistema estiliza (ver §El punto en acento)
 
-- [ ] **Tarea 2 — Reemplazar los cuatro componentes de título** (AC: #3)
-  - [ ] Sustituir todos los usos de `MainTitle`, `SubTitle`, `SectionTitle` y `ProjectTitle` por `SectionHeading`
-  - [ ] Borrar los cuatro archivos
-  - [ ] Borrar `src/styles/sass/modules/_texts.scss` y su `@import` en `main.scss`
-  - [ ] Verificar por `grep` que nada los referencia
+- [x] **Tarea 2 — Reemplazar los cuatro componentes de título** (AC: #3)
+  - [x] Sustituir todos los usos de `MainTitle`, `SubTitle`, `SectionTitle` y `ProjectTitle` por `SectionHeading`
+  - [x] Borrar los cuatro archivos
+  - [x] Borrar `src/styles/sass/modules/_texts.scss` y su `@import` en `main.scss`
+  - [x] Verificar por `grep` que nada los referencia
 
-- [ ] **Tarea 3 — Resumen de trayectoria en la Home** (AC: #1)
-  - [ ] Sección después de habilidades, con `SectionHeading` y los hitos de tipo `work` de `timeline.js`
-  - [ ] Reutilizar `TimelineItem` de la historia 5.2, sin duplicar markup (ver §Reutilizar `TimelineItem`, no clonarlo)
-  - [ ] `.section-foot` con un `.link-arrow` hacia `/about`
-  - [ ] `v-reveal` en la sección
+- [x] **Tarea 3 — Resumen de trayectoria en la Home** (AC: #1)
+  - [x] Sección después de habilidades, con `SectionHeading` y los hitos de tipo `work` de `timeline.js`
+  - [x] Reutilizar `TimelineItem` de la historia 5.2, sin duplicar markup (ver §Reutilizar `TimelineItem`, no clonarlo)
+  - [x] `.section-foot` con un `.link-arrow` hacia `/about`
+  - [x] `v-reveal` en la sección
 
-- [ ] **Tarea 4 — CV en Sobre mí** (AC: #2)
-  - [ ] `AppButton` que dispara `useDownloadPdf`, el mismo composable que el hero usa desde la historia 3.2
-  - [ ] Etiqueta por i18n
-  - [ ] Verificar que el archivo descargado abre
+- [x] **Tarea 4 — CV en Sobre mí** (AC: #2)
+  - [x] `AppButton` que dispara `useDownloadPdf`, el mismo composable que el hero usa desde la historia 3.2
+  - [x] Etiqueta por i18n
+  - [x] Verificar que el archivo descargado abre
 
-- [ ] **Tarea 5 — Limpiar lo que queda** (AC: #3)
-  - [ ] Revisar `src/styles/sass/modules/_pages.scss`: con la Home y Sobre mí reescritas, la mayor parte quedó muerta
-  - [ ] Borrar lo que no se usa; si queda vacío, borrar el archivo y su `@import`
-  - [ ] Si `main.scss` queda sin ningún `@import`, borrar `src/styles/sass/` completa (ver §El final de `styles/sass/`)
+- [x] **Tarea 5 — Limpiar lo que queda** (AC: #3)
+  - [x] Revisar `src/styles/sass/modules/_pages.scss`: con la Home y Sobre mí reescritas, la mayor parte quedó muerta
+  - [x] Borrar lo que no se usa; si queda vacío, borrar el archivo y su `@import`
+  - [x] Si `main.scss` queda sin ningún `@import`, borrar `src/styles/sass/` completa (ver §El final de `styles/sass/`)
 
-- [ ] **Tarea 6 — Verificar** (AC: todos)
-  - [ ] `npm run build` sin errores y `npm run lint` sin advertencias
-  - [ ] La Home muestra el resumen y el enlace lleva a `/about`
-  - [ ] El CV se descarga desde las dos vistas y el archivo abre
-  - [ ] Una sola `h1` por vista, en las cuatro
-  - [ ] Comparar la firma del DOM de un `TimelineItem` en la Home contra Sobre mí
-  - [ ] Verificar en 390 px y 1280 px en los tres estados de tema
+- [x] **Tarea 6 — Verificar** (AC: todos)
+  - [x] `npm run build` sin errores y `npm run lint` sin advertencias
+  - [x] La Home muestra el resumen y el enlace lleva a `/about`
+  - [x] El CV se descarga desde las dos vistas y el archivo abre
+  - [x] Una sola `h1` por vista, en las cuatro
+  - [x] Comparar la firma del DOM de un `TimelineItem` en la Home contra Sobre mí
+  - [x] Verificar en 390 px y 1280 px en los tres estados de tema
 
 ## Dev Notes
 
@@ -236,8 +236,67 @@ el objetivo de la arquitectura: `tokens.css`, `fonts.scss`, `base.scss`, `animat
 
 ### Agent Model Used
 
-### Debug Log References
+claude-opus-5 (Claude Code)
 
-### Completion Notes List
+### Debug Log References y notas
+
+**AC1 —** la Home cierra con el orden de FR-08: `hero → proyectos → stack → trayectoria` (contacto en
+la 6.2). El resumen muestra los dos hitos de tipo `work` y enlaza a `/about`.
+
+**AC2 — el CV desde Sobre mí**, con el mismo composable que el hero:
+
+```
+href:     /Marcelo%20Olivera%20-%20Curriculum%20Vitae.pdf
+download: Marcelo Olivera - Curriculum Vitae.pdf
+archivo:  PDF document, version 1.4, 1 página, 141 KB   ← abre
+```
+
+**AC3 —** los cuatro componentes de título eliminados, `SectionHeading` en su lugar, una sola `h1` por
+vista. Y la firma del DOM de un `.milestone` en la Home es **idéntica** a la de Sobre mí: es el mismo
+`TimelineItem`, no una copia compacta.
+
+### El defecto que apareció al borrar `styles/sass/`
+
+Antes de eliminarlo, los títulos de sección de la Home y de Sobre mí medían **32 px**. Deberían medir 72
+—`--text-3xl` a 1280 px—.
+
+La causa no era la que parecía. `_texts.scss` declara `.section-title { font-size: 56px }`, así que la
+primera hipótesis fue que ese archivo ganaba por orden de import. Enumerando **todas** las reglas que el
+elemento realmente matchea, el ganador era otro:
+
+```
+.section-title                                              var(--text-3xl)
+.section-title                                              56px
+.section-title  @(max-width: 766px) and (min-width: 368px)  1.5rem
+.section-title  @(min-width: 767px) and (max-width: 1024px) 1.8rem
+.section-title  @(min-width: 1025px) and (max-width: 1368px) 2rem   ← 32px, el que ganaba
+.section-title  @(min-width: 1920px)                        2.2rem
+```
+
+`_pages.scss` traía un juego de sobreescrituras responsive de `.section-title` que **ninguna búsqueda de
+texto por el valor 32 habría encontrado**, porque el valor era `2rem` y estaba repartido en cuatro media
+queries. Al borrar los dos parciales, los títulos pasan a **72 px** en las dos vistas.
+
+Es el argumento concreto contra dejar CSS muerto "por si acaso": no estaba inerte, estaba ganando.
+
+**Y una advertencia de método:** la primera enumeración de reglas devolvió *cero* coincidencias, lo que
+habría llevado a concluir que ninguna regla aplicaba. El error era mío — el recorrido trataba
+`r.cssRules` como señal de "esto es un contenedor", y en este motor un `CSSStyleRule` también expone esa
+propiedad, así que **saltaba todas las reglas normales**. Filtrando por `r.type` aparecieron las seis.
+
+### `src/styles/sass/` desapareció
+
+`_navbar.scss` (1.5), `_buttons.scss` (3.2), `_texts.scss` y `_pages.scss` (esta). La carpeta y su
+import en `main.js` ya no existen, y el árbol objetivo de la arquitectura queda cumplido.
+
+### `TimelineItem` se reutiliza, no se clona
+
+La Home filtra por `type === 'work'` en la **vista**; el componente es el mismo. Tercer caso del mismo
+patrón en dos épicas —`ProjectGrid`, `SkillGrid`, `TimelineItem`— y las tres veces el componente sirvió
+a las dos pantallas sin una prop de modo.
+
+### Sin desbordes en los cuatro anchos
+
+Las cuatro rutas × 390, 768, 1280 y 1920 px: **16 de 16 sin scroll horizontal.**
 
 ### File List

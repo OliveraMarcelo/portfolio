@@ -1,8 +1,0 @@
-/* Módulos heredados del diseño anterior.
-   Cada parcial se elimina cuando su componente se reemplaza:
-     _texts.scss   -> historia 5.5 (SectionHeading)
-     _pages.scss   -> historias 3 a 5, según se reescriben las vistas
-   Cuando queden todos vacíos, este archivo y la carpeta sass/ desaparecen. */
-
-@import 'modules/texts';
-@import 'modules/pages';

@@ -33,7 +33,8 @@
     "helloIm": "Hello I am",
     "developer": "Developer",
     "aboutMeDesc": "I am a passionate web developer with experience in front-end and back-end. I love creating amazing web applications and solving challenging problems.",
-    "downloadCV": "Download CV"
+    "downloadCV": "Download CV",
+    "cerrar": "Close"
   },
   "meta": {
     "home": {
@@ -78,6 +79,34 @@
   "home": {
     "destacadosTitulo": "Projects",
     "destacadosLede": "Three things that are actually running, not course exercises.",
-    "verTodos": "See all projects"
+    "verTodos": "See all projects",
+    "verTrayectoria": "See the full track record"
+  },
+  "trayectoria": {
+    "kicker": "Track record",
+    "titulo": "How I got here",
+    "ongoing": "Present",
+    "completed": "Completed",
+    "always": "Always",
+    "hasta": "present",
+    "aria": "Timeline of my track record"
+  },
+  "habilidades": {
+    "titulo": "My skills",
+    "lede": "What I use every day, and what I can pick up when it is needed.",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "tools": "Tools"
+  },
+  "sobreMi": {
+    "titulo": "About me",
+    "lede": "Building beautiful, functional websites is what I love doing, and that is why I give my best on every new challenge."
+  },
+  "certificado": {
+    "kicker": "Certification",
+    "titulo": "Full Stack Developer certificate",
+    "nota": "The full programme: web fundamentals, JavaScript, back-end with Node.js and Express, React and databases. Open the image to see it in detail.",
+    "pie": "Digital House · Full Stack Developer",
+    "alt": "Full Stack Developer certificate — Digital House"
   }
 }
