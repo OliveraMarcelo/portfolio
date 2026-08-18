@@ -3,6 +3,9 @@ name: Deploy a producción
 on:
   push:
     branches: [main]
+  # Permite relanzar el deploy desde la interfaz de GitHub sin necesidad de un
+  # commit vacio.
+  workflow_dispatch:
 
 jobs:
   # ─── Build imagen Docker y push a Docker Hub ─────────────────────────────
@@ -111,6 +114,23 @@ jobs:
             # El deploy no puede darse por bueno sin comprobar que el sitio
             # responde con la version que se acaba de publicar. Antes decia
             # "Deploy exitoso" sin verificar nada.
+            echo "──── quien le esta pegando al servidor ────"
+            # Si Cloudflare estuviera enviando el trafico de marcecode.com a
+            # ESTE servidor, su log de acceso tendria peticiones recientes desde
+            # rangos de Cloudflare. Si solo aparece trafico local, entonces el
+            # origen configurado en Cloudflare es otra maquina y por eso el
+            # sitio publico no cambia aunque el deploy salga bien.
+            #
+            # No se imprime ninguna IP del servidor: solo se cuenta y se
+            # clasifica lo que llega.
+            docker compose -f docker-compose.prod.yml logs --tail 200 --no-log-prefix portfolio 2>/dev/null \
+              | grep -E '^[0-9]+\.' | awk '{print $1}' | sort | uniq -c | sort -rn | head -10 \
+              | awk '{ printf "  %6d peticiones desde %s\n", $1, $2 }' || echo "  (sin log de acceso todavia)"
+
+            echo "──── que devuelve el dominio publico vs este servidor ────"
+            printf "  desde este servidor:  %s\n" "$(curl -sk https://localhost/ -H 'Host: marcecode.com' | grep -o '<title>[^<]*</title>' || echo '(sin respuesta)')"
+            printf "  desde el dominio:     %s\n" "$(curl -s https://marcecode.com/ | grep -o '<title>[^<]*</title>' || echo '(sin respuesta)')"
+
             echo "──── verificando el sitio ────"
             for i in $(seq 1 15); do
               if curl -skf https://localhost/ -H 'Host: marcecode.com' -o /tmp/publicado.html; then break; fi
