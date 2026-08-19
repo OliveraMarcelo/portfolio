@@ -139,6 +139,30 @@ jobs:
 
             cd /opt/portfolio
 
+            echo "──── donde estamos desplegando ────"
+            # El nombre del job dice "DigitalOcean", pero eso es una etiqueta
+            # que escribio alguien, no un hecho verificado. El host real vive en
+            # un secret y no se puede leer desde el log.
+            #
+            # El servicio de metadatos de cada nube responde en 169.254.169.254
+            # con rutas distintas, asi que sirve para identificar al proveedor
+            # sin imprimir ninguna IP.
+            if curl -s --max-time 3 http://169.254.169.254/metadata/v1/id >/dev/null 2>&1; then
+              printf "  proveedor: DigitalOcean\n"
+              printf "  region:    %s\n" "$(curl -s --max-time 3 http://169.254.169.254/metadata/v1/region)"
+              printf "  droplet:   %s\n" "$(curl -s --max-time 3 http://169.254.169.254/metadata/v1/hostname)"
+            elif curl -s --max-time 3 -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/zone >/dev/null 2>&1; then
+              printf "  proveedor: Google Cloud\n"
+            elif curl -s --max-time 3 http://169.254.169.254/latest/meta-data/instance-id >/dev/null 2>&1; then
+              printf "  proveedor: AWS\n"
+            else
+              printf "  proveedor: sin servicio de metadatos — VM propia o bare metal\n"
+            fi
+            printf "  sistema:   %s\n" "$(. /etc/os-release 2>/dev/null && echo "$PRETTY_NAME")"
+            printf "  kernel:    %s\n" "$(uname -r)"
+            printf "  virt:      %s\n" "$(systemd-detect-virt 2>/dev/null || echo 'desconocido')"
+            printf "  cpu/ram:   %s vCPU, %s\n" "$(nproc)" "$(free -h | awk '/^Mem:/{print $2}')"
+
             echo "──── estado antes del deploy ────"
             docker ps -a --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
 
